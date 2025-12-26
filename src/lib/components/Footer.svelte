@@ -34,7 +34,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 0 1rem;
+    padding: 2rem 0 0.5rem; /* Bottom padding matches header top (0.5rem) */
     margin-top: 40px; /* Reduced since flex handles spacing */
     font-size: 1.1rem;
     font-weight: 400; /* Normal weight */

@@ -98,7 +98,7 @@
   --font-mono: "PP Neue Montreal Mono", "Courier New", Courier, monospace;
 
   /* Layout */
-  --page-padding: 10px; /* User requested "like 10" */
+  --page-padding: 30px; /* Increased to 30px per user request */
   --max-width: 100%; /* Remove fixed width to prevent large auto margins */
 
   /* Effects */
