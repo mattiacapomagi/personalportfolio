@@ -24,7 +24,7 @@
     align-items: center;
     padding: 0.5rem 0; /* Further reduced from 1rem */
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.5rem; /* Increased further to 1.5rem per user request */
     text-transform: uppercase;
   }
 
@@ -54,6 +54,6 @@
 
   .main-nav a.active {
     opacity: 1;
-    color: var(--color-text);
+    color: var(--color-accent); /* Active state matches hover color */
   }
 </style>

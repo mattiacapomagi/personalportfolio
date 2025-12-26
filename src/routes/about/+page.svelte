@@ -5,25 +5,25 @@
 <div class="about">
   <div class="about-content">
     <p class="bio">
-      Graphic designer based in Rome. <br />
-      Exploring visual storytelling, typography, and experimental layouts.
+      rome based graphic designer specializing in minimalism and brand creation.
+      i leverage editorial design to challenge convention, occasionally breaking
+      the rules to engineer aesthetic friction and new visual languages.
     </p>
 
     <div class="contact-info">
       <a href="mailto:mattia.capomagi@gmail.com" class="email"
         >mattia.capomagi@gmail.com</a
       >
-
-      <nav class="social-links">
-        <a
-          href="https://instagram.com"
-          target="_blank"
-          rel="noopener noreferrer">Instagram</a
-        >
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
-          >LinkedIn</a
-        >
-      </nav>
+      <a
+        href="https://instagram.com/mattiacapomagi"
+        target="_blank"
+        rel="noopener noreferrer">Instagram</a
+      >
+      <a
+        href="https://www.linkedin.com/in/mattiacapomagi/"
+        target="_blank"
+        rel="noopener noreferrer">LinkedIn</a
+      >
     </div>
   </div>
 </div>
@@ -33,7 +33,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh; /* Centered visually in the viewport */
+    min-height: 80vh; /* Increased to push center point down */
     padding: 0 40px;
   }
 
@@ -53,24 +53,21 @@
 
   .contact-info {
     display: flex;
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row; /* Horizontal alignment */
+    justify-content: center;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 24px;
     font-size: 1.1rem;
     color: var(--color-text);
   }
 
-  .email {
+  .contact-info a {
     text-decoration: none;
+    color: var(--color-text);
+    transition: color 0.2s ease;
   }
 
-  .email:hover,
-  .social-links a:hover {
+  .contact-info a:hover {
     color: var(--color-accent);
-  }
-
-  .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
   }
 </style>
