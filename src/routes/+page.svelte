@@ -38,19 +38,20 @@
 
 <style>
   .home {
-    padding: 40px 0;
+    padding: 0 0 40px; /* Removed top padding completely */
   }
 
   .project-list-header {
     display: grid;
     grid-template-columns: 2fr 1.5fr 1fr 0.5fr;
     gap: 20px;
-    padding: 8px 40px 16px;
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.05em;
-    text-transform: lowercase;
-    opacity: 0.5;
+    padding: 0 0 6px; /* User requested 6px bottom */
+    margin-top: 10px; /* User requested 10px top */
+    font-size: 1.1rem;
+    font-weight: 700; /* Bold as per screenshot */
+    text-transform: lowercase; /* Actually screenshot shows 'project title' lowercase but bold */
+    color: var(--color-text);
+    opacity: 1; /* Fully visible */
   }
 
   .year {

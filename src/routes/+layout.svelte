@@ -1,29 +1,31 @@
 <script>
-	import '../app.css';
-	import Header from '$lib/components/Header.svelte';
-	import Footer from '$lib/components/Footer.svelte';
-	
-	let { children } = $props();
+  import "../app.css";
+  import Header from "$lib/components/Header.svelte";
+  import Footer from "$lib/components/Footer.svelte";
+
+  let { children } = $props();
 </script>
 
-<div class="app">
-	<Header />
-	<main class="main">
-		{@render children()}
-	</main>
-	<Footer />
+<div class="container">
+  <Header />
+  <main class="main">
+    {@render children()}
+  </main>
+  <Footer />
 </div>
 
 <style>
-	.app {
-		min-height: 100vh;
-		display: flex;
-		flex-direction: column;
-	}
-	
-	.main {
-		flex: 1;
-		padding-top: 80px;
-		padding-bottom: 80px;
-	}
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--page-padding);
+  }
+
+  .main {
+    flex: 1; /* Takes up remaining space, pushing footer down */
+    padding-bottom: 40px;
+  }
 </style>

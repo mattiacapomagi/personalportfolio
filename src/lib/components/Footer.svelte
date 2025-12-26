@@ -1,51 +1,49 @@
 <script>
   import { onMount, onDestroy } from "svelte";
 
-  let currentTime = $state("");
-  let intervalId;
+  let timestamp = $state("");
+  let interval;
 
   function updateTime() {
     const now = new Date();
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-    currentTime = `${hours}:${minutes}:${seconds}`;
+    // Format: DD/MM/YYYY HH:MM:SS
+    const date = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
+    const time = now.toLocaleTimeString("en-GB"); // HH:MM:SS
+    timestamp = `${date} ${time}`;
   }
 
   onMount(() => {
     updateTime();
-    intervalId = setInterval(updateTime, 1000);
+    interval = setInterval(updateTime, 1000);
   });
 
   onDestroy(() => {
-    if (intervalId) clearInterval(intervalId);
+    if (interval) clearInterval(interval);
   });
 </script>
 
-<footer class="footer">
-  <span class="copyright">COPYRIGHT MATTIA CAPOMAGI 2024</span>
-  <span class="timestamp">{currentTime}</span>
+<footer class="site-footer">
+  <div class="copyright">COPYRIGHT MATTIA CAPOMAGI 2025</div>
+  <div class="timestamp">
+    {timestamp}
+  </div>
 </footer>
 
 <style>
-  .footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  .site-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px 40px;
-    z-index: 100;
-    background-color: var(--color-bg);
-    font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+    padding: 2rem 0 1rem;
+    margin-top: 40px; /* Reduced since flex handles spacing */
+    font-size: 1.1rem;
+    font-weight: 400; /* Normal weight */
+    text-transform: uppercase;
+    color: var(--color-text);
   }
 
-  .copyright,
   .timestamp {
-    opacity: 0.6;
+    /* Ensure monospace alignment */
+    font-variant-numeric: tabular-nums;
   }
 </style>

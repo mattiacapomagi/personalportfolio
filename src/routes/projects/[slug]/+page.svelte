@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>{project.title} — PORTFOLIO</title>
+  <title>{project.title} — MATTIA CAPOMAGI</title>
 </svelte:head>
 
 <article class="project-detail">
@@ -40,72 +40,72 @@
 
 <style>
   .project-detail {
-    padding: 40px;
-    max-width: 1200px;
+    max-width: var(--max-width);
     margin: 0 auto;
   }
 
   .project-header {
-    margin-bottom: 60px;
+    margin-bottom: 40px;
   }
 
   .project-title {
-    font-size: clamp(48px, 8vw, 96px);
+    font-size: 2.5rem; /* Large but not display size */
     font-weight: 700;
-    line-height: 1;
-    margin-bottom: 40px;
-    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 32px;
+    text-transform: uppercase;
   }
 
   .project-meta {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    max-width: 600px;
+    display: flex;
+    gap: 60px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   }
 
   .meta-item {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
   }
 
   .meta-label {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.5;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: lowercase;
   }
 
   .meta-value {
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 400;
+    opacity: 0.7;
   }
 
   .project-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 60px;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
   }
 
   .project-description {
-    font-size: 14px;
-    line-height: 1.7;
-    max-width: 400px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    max-width: 800px;
   }
 
   .project-gallery {
     width: 100%;
+    margin-top: 20px;
   }
 
-  @media (max-width: 900px) {
-    .project-content {
-      grid-template-columns: 1fr;
+  @media (max-width: 768px) {
+    .project-meta {
+      gap: 30px;
+      flex-wrap: wrap;
     }
 
-    .project-meta {
-      grid-template-columns: repeat(2, 1fr);
+    .project-title {
+      font-size: 2rem;
     }
   }
 </style>

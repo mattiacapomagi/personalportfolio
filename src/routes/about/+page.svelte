@@ -1,37 +1,30 @@
 <svelte:head>
-  <title>About — PORTFOLIO</title>
+  <title>about — MATTIA CAPOMAGI</title>
 </svelte:head>
 
 <div class="about">
   <div class="about-content">
     <p class="bio">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mattia Capomagi
-      is a graphic designer based in Milan, Italy, specializing in editorial
-      design, branding, and visual identity systems. With a focus on clean
-      aesthetics and thoughtful typography, each project is approached with
-      attention to detail and a commitment to meaningful visual communication.
-    </p>
-    <p class="bio">
-      Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-      ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-      ex ea commodo consequat.
+      Graphic designer based in Rome. <br />
+      Exploring visual storytelling, typography, and experimental layouts.
     </p>
 
-    <nav class="contact-links">
-      <a href="mailto:hello@mattiacapomagi.com" class="contact-link">Email</a>
-      <a
-        href="https://instagram.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="contact-link">Instagram</a
+    <div class="contact-info">
+      <a href="mailto:mattia.capomagi@gmail.com" class="email"
+        >mattia.capomagi@gmail.com</a
       >
-      <a
-        href="https://linkedin.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="contact-link">LinkedIn</a
-      >
-    </nav>
+
+      <nav class="social-links">
+        <a
+          href="https://instagram.com"
+          target="_blank"
+          rel="noopener noreferrer">Instagram</a
+        >
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"
+          >LinkedIn</a
+        >
+      </nav>
+    </div>
   </div>
 </div>
 
@@ -40,39 +33,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 160px);
-    padding: 40px;
+    min-height: 60vh; /* Centered visually in the viewport */
+    padding: 0 40px;
   }
 
   .about-content {
-    max-width: 600px;
+    max-width: 800px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
   }
 
   .bio {
-    font-size: 14px;
-    line-height: 1.8;
-    margin-bottom: 24px;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.4;
   }
 
-  .bio:last-of-type {
-    margin-bottom: 48px;
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 1.1rem;
+    color: var(--color-text);
   }
 
-  .contact-links {
+  .email {
+    text-decoration: none;
+  }
+
+  .email:hover,
+  .social-links a:hover {
+    color: var(--color-accent);
+  }
+
+  .social-links {
     display: flex;
     justify-content: center;
-    gap: 32px;
-  }
-
-  .contact-link {
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    transition: color 0.2s ease;
-  }
-
-  .contact-link:hover {
-    color: var(--color-accent);
+    gap: 24px;
   }
 </style>

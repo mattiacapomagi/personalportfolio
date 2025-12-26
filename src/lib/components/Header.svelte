@@ -1,69 +1,59 @@
 <script>
-	import { page } from '$app/state';
-	
-	const navLinks = [
-		{ href: '/', label: 'projects' },
-		{ href: '/about', label: 'about' }
-	];
-	
-	function isActive(href) {
-		const pathname = page.url.pathname;
-		if (href === '/') {
-			return pathname === '/' || pathname.startsWith('/projects');
-		}
-		return pathname === href || pathname.startsWith(href);
-	}
+  import { page } from "$app/stores";
 </script>
 
-<header class="header">
-	<a href="/" class="logo">MATTIA CAPOMAGI</a>
-	<nav class="nav">
-		{#each navLinks as link}
-			<a 
-				href={link.href} 
-				class="nav-link"
-				class:active={isActive(link.href)}
-			>
-				{link.label}
-			</a>
-		{/each}
-	</nav>
+<header class="site-header">
+  <div class="logo">
+    <a href="/">MATTIA CAPOMAGI</a>
+  </div>
+
+  <nav class="main-nav">
+    <a
+      href="/"
+      class:active={$page.url.pathname === "/" ||
+        $page.url.pathname.startsWith("/projects")}>projects</a
+    >
+    <a href="/about" class:active={$page.url.pathname === "/about"}>about</a>
+  </nav>
 </header>
 
 <style>
-	.header {
-		position: fixed;
-		top: 0;
-		left: 0;
-		right: 0;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 24px 40px;
-		z-index: 100;
-		background-color: var(--color-bg);
-	}
-	
-	.logo {
-		font-size: 14px;
-		font-weight: 400;
-		letter-spacing: 0.02em;
-	}
-	
-	.nav {
-		display: flex;
-		gap: 32px;
-	}
-	
-	.nav-link {
-		font-size: 14px;
-		font-weight: 400;
-		letter-spacing: 0.02em;
-		transition: color 0.2s ease;
-	}
-	
-	.nav-link:hover,
-	.nav-link.active {
-		color: var(--color-accent);
-	}
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0; /* Further reduced from 1rem */
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+  }
+
+  .logo a {
+    text-decoration: none;
+  }
+
+  .main-nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .main-nav a {
+    text-transform: lowercase;
+    position: relative;
+    color: var(--color-text);
+    opacity: 0.4;
+    transition:
+      opacity 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .main-nav a:hover {
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  .main-nav a.active {
+    opacity: 1;
+    color: var(--color-text);
+  }
 </style>

@@ -87,24 +87,28 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 48px;
-    height: 48px;
+    width: auto;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 32px; /* Larger arrow */
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
+    background: none; /* No background */
+    border: none;
     z-index: 10;
     transition:
-      background-color 0.2s ease,
-      color 0.2s ease;
+      opacity 0.2s ease,
+      transform 0.2s ease;
+    opacity: 0.5;
+    padding: 20px; /* Larger hit area */
   }
 
   .nav-btn:hover {
-    background: var(--color-text);
-    color: var(--color-bg);
+    background: none;
+    color: var(--color-text);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
   }
 
   .prev {

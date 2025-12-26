@@ -28,14 +28,14 @@
     display: grid;
     grid-template-columns: 2fr 1.5fr 1fr 0.5fr;
     gap: 20px;
-    padding: 16px 40px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    transition: color 0.2s ease;
-    cursor: pointer;
+    padding: 6px 0; /* Reduced to 6px per user request */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    align-items: baseline;
+    text-decoration: none;
   }
 
   .project-row:first-child {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
   }
 
   .project-row:hover {
@@ -43,9 +43,8 @@
   }
 
   .col {
-    font-size: 14px;
+    font-size: 1.1rem;
     font-weight: 400;
-    letter-spacing: 0.02em;
   }
 
   .title {
