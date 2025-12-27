@@ -51,7 +51,7 @@
           rel="noopener noreferrer"
           class="gumroad-button"
         >
-          {$language === "en" ? "Get Typeface" : "Get Typeface"}
+          {$language === "en" ? "Get Typeface" : "Ottieni Typeface"}
         </a>
       {/if}
     </div>
@@ -114,10 +114,9 @@
   }
 
   .description-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    gap: 40px;
-    align-items: end; /* Align button to bottom of text */
+    display: flex;
+    flex-direction: column; /* Stack vertically below text */
+    gap: 20px;
     max-width: 100%;
   }
 
@@ -129,10 +128,11 @@
   }
 
   .gumroad-button {
-    display: inline-flex;
+    display: flex; /* Full width flex */
     align-items: center;
     justify-content: center;
     padding: 12px 24px;
+    width: 100%; /* Match text width */
     background-color: var(--color-text);
     color: var(--color-bg);
     font-family: var(--font-mono);
@@ -140,17 +140,15 @@
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
-    transition:
-      background-color 0.2s ease,
-      transform 0.2s ease;
+    transition: background-color 0.2s ease; /* Removed transform */
     border: 1px solid var(--color-text);
-    justify-self: start; /* Align left in the right column */
+    box-sizing: border-box;
   }
 
   .gumroad-button:hover {
     background-color: var(--color-bg);
     color: var(--color-text);
-    transform: translateY(-2px);
+    /* Removed transform */
   }
 
   .project-gallery {
