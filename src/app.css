@@ -106,7 +106,7 @@
   --color-accent: #f27200; /* Orange highlight */
 
   /* Fonts */
-  --font-mono: "galix-mono", "Courier New", Courier, monospace;
+  --font-mono: "forma-djr-mono", sans-serif;
   --font-body: "PP Kyoto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Layout */
