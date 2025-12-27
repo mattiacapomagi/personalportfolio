@@ -403,8 +403,9 @@
       padding-bottom: 40px;
     }
 
-    /* Header: Keep Horizontal */
+    /* Header: Keep Horizontal and FULL WIDTH */
     .header-card {
+      grid-column: 1 / -1; /* Force full width */
       flex-direction: row;
       text-align: left;
       padding: 24px;
