@@ -186,11 +186,10 @@
     "imports": [
       "_index2.js",
       "_server.js",
-      "_language.js",
       "_context.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.C_aVKYFp.css"
+      "_app/immutable/assets/_page.CzTu5jQx.css"
     ]
   },
   "src/routes/projects/[slug]/+page.js": {
