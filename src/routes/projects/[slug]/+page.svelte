@@ -113,10 +113,18 @@
     gap: 20px; /* Space X (was 40px) */
   }
 
+  .project-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
   .description-container {
     display: flex;
     flex-direction: column; /* Stack vertically below text */
     gap: 20px;
+    width: 50%; /* Constrain to left half on desktop */
+    min-width: 300px; /* Prevent being too narrow on resizing */
     max-width: 100%;
   }
 
@@ -128,11 +136,11 @@
   }
 
   .gumroad-button {
-    display: flex; /* Full width flex */
+    display: flex;
     align-items: center;
     justify-content: center;
     padding: 12px 24px;
-    width: 100%; /* Match text width */
+    width: 100%; /* Match text block width */
     background-color: var(--color-text);
     color: var(--color-bg);
     font-family: var(--font-mono);
@@ -140,7 +148,7 @@
     text-decoration: none;
     text-transform: uppercase;
     white-space: nowrap;
-    transition: background-color 0.2s ease; /* Removed transform */
+    transition: background-color 0.2s ease;
     border: 1px solid var(--color-text);
     box-sizing: border-box;
   }
@@ -148,7 +156,6 @@
   .gumroad-button:hover {
     background-color: var(--color-bg);
     color: var(--color-text);
-    /* Removed transform */
   }
 
   .project-gallery {
@@ -166,9 +173,9 @@
       font-size: 2rem;
     }
 
-    /* Mobile Reordering Magic */
     .description-container {
-      display: contents; /* Ungroup items so they become siblings of gallery */
+      width: 100%; /* Full width on mobile */
+      display: contents; /* Ungroup items for mobile reordering */
     }
 
     .project-description {
