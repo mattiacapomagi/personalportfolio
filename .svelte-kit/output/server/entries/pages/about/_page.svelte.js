@@ -24,7 +24,8 @@ At the same time, I embrace technology to break boundaries. I use artificial int
       {
         name: "Gumroad",
         url: "https://mattiacapomagi.gumroad.com/",
-        viewBox: "0 0 2500 2500",
+        /* Added padding to viewBox (-200 offset, 2900 size) to match visual height of other icons (approx 83% fill) */
+        viewBox: "-200 -200 2900 2900",
         /* Using inner HTML to preserve specific colors (Black & White with strokes) as requested */
         content: `<path d="M1419.3,2462.2c596.9,0,1080.7-467.1,1080.7-1043.3S2016.1,375.6,1419.3,375.6,338.5,842.7,338.5,1418.9s483.9,1043.3,1080.8,1043.3Z" fill="currentColor"/><path d="M1140.3,2243.6c627.8,0,1140.3-491.8,1140.3-1102.9S1768.1,37.8,1140.3,37.8,0,529.6,0,1140.7s512.6,1102.9,1140.3,1102.9Z" fill="#fff" stroke="#000" stroke-width="11.8" stroke-miterlimit="30.2"/><path d="M1054.6,1697.1c-319.1,0-506.9-257.9-506.9-578.6s206.5-603.8,600.7-603.8,544.4,276.7,550.7,434h-294.1c-6.3-88-81.3-220.1-262.8-220.1s-319.1,169.8-319.1,377.4,125.2,377.4,319.1,377.4,250.3-138.4,281.6-276.7h-281.6v-113.2h590.9v578.6h-259.2v-364.8c-18.8,132.1-100.1,389.9-419.3,389.9h0Z" fill="currentColor"/>`
       },
