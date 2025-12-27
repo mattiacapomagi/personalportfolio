@@ -59,9 +59,7 @@
         {#key subHeaderText}
           <h2 in:fade={{ duration: 200 }}>{subHeaderText}</h2>
         {/key}
-        <p class="location">
-          <span class="pin">📍</span> Rome, Italy
-        </p>
+        <p class="location">Rome, Italy</p>
       </div>
       <div class="arrow-icon">
         <svg
@@ -297,13 +295,19 @@
     opacity: 0.5;
   }
 
+  .location {
+    font-family: var(--font-mono);
+  }
+
   /* --- PORTFOLIO --- */
   .portfolio-card {
     grid-column: 1;
     grid-row: 2 / 4;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Align top */
+    justify-content: center; /* Center Vertically */
+    align-items: center; /* Center Horizontally */
+    text-align: center;
     gap: 10px;
     min-height: 400px; /* Taller */
     background: rgba(255, 255, 255, 0.5);
@@ -314,6 +318,7 @@
     font-weight: 700;
     margin: 0;
     line-height: 1;
+    font-family: var(--font-mono); /* Force Mono */
   }
 
   .domain {
@@ -324,7 +329,7 @@
     opacity: 0.6;
     background: none; /* Removed badge style for clean look */
     padding: 0;
-    font-family: var(--font-body); /* Correct site font (PP Kyoto) */
+    font-family: var(--font-mono); /* Switch to Mono as requested */
   }
 
   /* --- LINKEDIN --- */
@@ -389,28 +394,33 @@
   }
 
   /* RESPONSIVE */
+  /* RESPONSIVE */
   @media (max-width: 768px) {
     .bento-container {
       grid-template-columns: 1fr;
       grid-template-rows: auto;
-      gap: 20px;
+      gap: 16px;
       padding-bottom: 40px; /* Scroll room */
     }
 
     .header-card {
       flex-direction: column;
       text-align: center;
-      padding: 30px;
+      padding: 30px 20px;
+      gap: 16px;
     }
 
     .avatar-container {
-      margin-bottom: 20px;
+      width: 100px; /* Smaller avatar on mobile */
+      height: 100px;
+      margin-bottom: 0;
     }
 
-    .header-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .header-info h1 {
+      font-size: 2rem;
+    } /* Scaled down */
+    .header-info h2 {
+      font-size: 1.2rem;
     }
 
     .arrow-icon {
@@ -418,11 +428,30 @@
     }
 
     .portfolio-card {
-      min-height: 280px;
+      min-height: 250px;
+      justify-content: center;
+    }
+
+    .portfolio-card h3 {
+      font-size: 2.8rem; /* Scaled down portfolio title */
+    }
+
+    .domain {
+      font-size: 1.1rem;
+    }
+
+    .linkedin span {
+      font-size: 1.5rem;
     }
 
     .social-split {
-      height: 160px;
+      height: 140px;
+      gap: 16px;
+    }
+
+    .card {
+      padding: 24px;
+      border-radius: 30px;
     }
   }
 </style>
