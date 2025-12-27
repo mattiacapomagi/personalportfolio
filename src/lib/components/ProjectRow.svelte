@@ -172,7 +172,7 @@
       width: 50%;
       aspect-ratio: 16 / 9; /* Standard preview ratio */
       overflow: hidden;
-      border-radius: 4px;
+      border-radius: 0;
     }
 
     .preview-media {
