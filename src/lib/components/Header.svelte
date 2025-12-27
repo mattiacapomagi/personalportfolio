@@ -25,6 +25,7 @@
     <a href="{base}/">MATTIA CAPOMAGI</a>
   </div>
 
+  <nav class="nav">
     <button class="nav-link lang-toggle" onclick={toggleLanguage}>
       {$language === "en" ? "it" : "en"}
     </button>
@@ -41,7 +42,8 @@
     <a
       href="{base}/about"
       class="nav-link"
-      class:active={normalizePath(activePath) === normalizePath(`${base}/about`)}
+      class:active={normalizePath(activePath) ===
+        normalizePath(`${base}/about`)}
     >
       <span class="desktop-text"
         >{$language === "en" ? "about" : "chi sono?"}</span
