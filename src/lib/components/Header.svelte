@@ -12,6 +12,12 @@
   function toggleLanguage() {
     language.update((l) => (l === "en" ? "it" : "en"));
   }
+
+  function normalizePath(path) {
+    if (!path) return "";
+    // Remove trailing slash if present, unless it's just "/"
+    return path.endsWith("/") && path.length > 1 ? path.slice(0, -1) : path;
+  }
 </script>
 
 <header class="header">
@@ -19,14 +25,13 @@
     <a href="{base}/">MATTIA CAPOMAGI</a>
   </div>
 
-  <nav class="nav">
     <button class="nav-link lang-toggle" onclick={toggleLanguage}>
       {$language === "en" ? "it" : "en"}
     </button>
     <a
       href="{base}/"
       class="nav-link"
-      class:active={activePath === "{base}/" || activePath === "/"}
+      class:active={normalizePath(activePath) === normalizePath(base)}
     >
       <span class="desktop-text"
         >{$language === "en" ? "projects" : "progetti"}</span
@@ -36,7 +41,7 @@
     <a
       href="{base}/about"
       class="nav-link"
-      class:active={activePath === "{base}/about"}
+      class:active={normalizePath(activePath) === normalizePath(`${base}/about`)}
     >
       <span class="desktop-text"
         >{$language === "en" ? "about" : "chi sono?"}</span
