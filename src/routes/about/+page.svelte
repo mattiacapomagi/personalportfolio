@@ -319,21 +319,21 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
   button {
     background: none;
-    border: none;
-    text-align: left;
-    padding: 10px 0;
+    border: 1px solid var(--color-text);
+    text-align: center;
+    padding: 10px 20px;
     font-family: inherit;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--color-text);
     cursor: pointer;
     text-transform: uppercase;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
     align-self: flex-start;
   }
 
   .contact-header {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-text);
     margin: 0;
@@ -342,7 +342,8 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
   }
 
   button:hover {
-    color: var(--color-accent);
+    background: var(--color-text);
+    color: var(--color-bg);
   }
   button:disabled {
     color: var(--color-border);
@@ -417,6 +418,33 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
     .contact-link {
       font-size: 0; /* Hide any fallback text spacing */
+    }
+
+    /* Compress form on mobile */
+    .contact-form {
+      gap: 12px;
+    }
+
+    .form-group {
+      gap: 4px;
+    }
+
+    input,
+    textarea {
+      padding: 8px 0;
+    }
+
+    textarea {
+      min-height: 60px;
+    }
+
+    .contact-header {
+      font-size: 1.1rem;
+    }
+
+    button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
     }
   }
 
