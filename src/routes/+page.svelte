@@ -2,6 +2,7 @@
   import { projects } from "$lib/data/projects.js";
   import ProjectRow from "$lib/components/ProjectRow.svelte";
   import ImagePreview from "$lib/components/ImagePreview.svelte";
+  import { language } from "$lib/stores/language";
 
   let previewImage = $state(null);
   let mouseX = $state(0);
@@ -21,10 +22,12 @@
 
 <div class="home">
   <div class="project-list-header">
-    <span class="col">project title</span>
-    <span class="col">client</span>
-    <span class="col">category</span>
-    <span class="col year">year</span>
+    <span class="col"
+      >{$language === "en" ? "project title" : "titolo progetto"}</span
+    >
+    <span class="col">{$language === "en" ? "client" : "cliente"}</span>
+    <span class="col">{$language === "en" ? "category" : "categoria"}</span>
+    <span class="col year">{$language === "en" ? "year" : "anno"}</span>
   </div>
 
   <div class="project-list">

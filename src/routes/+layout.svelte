@@ -2,9 +2,13 @@
   import "../app.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
+  import CursorTrail from "$lib/components/CursorTrail.svelte";
 
   let { children } = $props();
 </script>
+
+<!-- Global Cursor Trail -->
+<CursorTrail />
 
 <div class="container">
   <Header />

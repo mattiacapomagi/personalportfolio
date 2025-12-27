@@ -1,4 +1,6 @@
 <script>
+  import { language } from "$lib/stores/language";
+
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
   let { project, onhover } = $props();
 
@@ -19,7 +21,9 @@
 >
   <span class="col title">{project.title}</span>
   <span class="col client">{project.client}</span>
-  <span class="col category">{project.category}</span>
+  <span class="col category"
+    >{$language === "en" ? project.category : project.category_it}</span
+  >
   <span class="col year">{project.year}</span>
 </a>
 

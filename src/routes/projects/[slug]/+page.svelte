@@ -1,5 +1,6 @@
 <script>
   import ImageCarousel from "$lib/components/ImageCarousel.svelte";
+  import { language } from "$lib/stores/language";
 
   let { data } = $props();
   const { project } = data;
@@ -15,22 +16,30 @@
 
     <div class="project-meta">
       <div class="meta-item">
-        <span class="meta-label">Client</span>
+        <span class="meta-label"
+          >{$language === "en" ? "Client" : "Cliente"}</span
+        >
         <span class="meta-value">{project.client}</span>
       </div>
       <div class="meta-item">
-        <span class="meta-label">Category</span>
-        <span class="meta-value">{project.category}</span>
+        <span class="meta-label"
+          >{$language === "en" ? "Category" : "Categoria"}</span
+        >
+        <span class="meta-value"
+          >{$language === "en" ? project.category : project.category_it}</span
+        >
       </div>
       <div class="meta-item">
-        <span class="meta-label">Year</span>
+        <span class="meta-label">{$language === "en" ? "Year" : "Anno"}</span>
         <span class="meta-value">{project.year}</span>
       </div>
     </div>
   </header>
 
   <div class="project-content">
-    <p class="project-description">{project.description}</p>
+    <p class="project-description">
+      {$language === "en" ? project.description_en : project.description_it}
+    </p>
 
     <div class="project-gallery">
       <ImageCarousel images={project.images} />
@@ -42,25 +51,25 @@
   .project-detail {
     max-width: var(--max-width);
     margin: 0 auto;
+    padding-top: 10px; /* Reduced to minimize space between navbar and content */
   }
 
   .project-header {
-    margin-bottom: 40px;
+    margin-bottom: 20px; /* Space X */
   }
 
   .project-title {
-    font-size: 2.5rem; /* Large but not display size */
+    font-size: 2.5rem;
     font-weight: 700;
     line-height: 1.1;
-    margin-bottom: 32px;
+    margin-bottom: 20px; /* Space X */
     text-transform: uppercase;
   }
 
   .project-meta {
     display: flex;
     gap: 60px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    /* Removed border and padding */
   }
 
   .meta-item {
@@ -84,7 +93,7 @@
   .project-content {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px; /* Space X (was 40px) */
   }
 
   .project-description {
@@ -95,7 +104,7 @@
 
   .project-gallery {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 0; /* Removed to rely on flex gap */
   }
 
   @media (max-width: 768px) {

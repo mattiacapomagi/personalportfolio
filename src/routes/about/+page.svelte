@@ -1,73 +1,353 @@
+<script>
+  import { language } from "$lib/stores/language";
+
+  const bio_en = `rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. i don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
+
+typography is a fundamental pillar of my work. i love experimenting with type design and lettering, treating letters as structural elements that give a specific voice to every concept.
+
+at the same time, i embrace technology to break boundaries. i use artificial intelligence as a dedicated laboratory for experimentation, a tool that allows me to explore new visual territories and generate ideas that go beyond traditional methods.`;
+
+  const bio_it = `graphic designer di 23 anni con base a roma, focalizzato sulla costruzione di brand identity forti e adattive. non credo nel limitarmi a un’unica estetica; il mio approccio è fluido e naviga l'ampio spazio tra un minimalismo preciso e un brutalismo crudo, a seconda di ciò che serve davvero al progetto.
+
+la tipografia è un pilastro fondamentale del mio lavoro. amo sperimentare con il type design e il lettering, trattando le lettere come elementi strutturali che danno una voce specifica a ogni concetto.
+
+allo stesso tempo, accolgo la tecnologia per superare i confini. uso l'intelligenza artificiale come un laboratorio dedicato alla sperimentazione, uno strumento che mi permette di esplorare nuovi territori visivi e generare idee che vanno oltre i metodi tradizionali.`;
+  let formStatus = $state("idle"); // 'idle', 'submitting', 'success', 'error'
+  let formErrors = $state({ name: false, email: false, message: false });
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    // Reset errors
+    formErrors = { name: false, email: false, message: false };
+
+    const formData = new FormData(e.target);
+    const name = formData.get("name");
+    const email = formData.get("email");
+    const message = formData.get("message");
+
+    let isValid = true;
+
+    if (!name) {
+      formErrors.name = true;
+      isValid = false;
+      setTimeout(() => (formErrors.name = false), 3000); // Revert after 3s
+    }
+    if (!email) {
+      formErrors.email = true;
+      isValid = false;
+      setTimeout(() => (formErrors.email = false), 3000);
+    }
+    if (!message) {
+      formErrors.message = true;
+      isValid = false;
+      setTimeout(() => (formErrors.message = false), 3000);
+    }
+
+    // Captcha Validation - Removed per user request (utilizing FormSubmit default)
+
+    if (!isValid) return;
+
+    formStatus = "submitting";
+
+    try {
+      const response = await fetch(
+        "https://formsubmit.co/ajax/mattia.capomagi@gmail.com",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        formStatus = "success";
+        e.target.reset();
+        setTimeout(() => {
+          formStatus = "idle";
+        }, 5000);
+      } else {
+        formStatus = "error";
+      }
+    } catch (err) {
+      formStatus = "error";
+    }
+  }
+</script>
+
 <svelte:head>
-  <title>about — MATTIA CAPOMAGI</title>
+  <title>About — MATTIA CAPOMAGI</title>
 </svelte:head>
 
-<div class="about">
+<div class="about-container">
   <div class="about-content">
-    <p class="bio">
-      rome based graphic designer specializing in minimalism and brand creation.
-      i leverage editorial design to challenge convention, occasionally breaking
-      the rules to engineer aesthetic friction and new visual languages.
-    </p>
+    <div class="bio-column">
+      <p class="bio">
+        {$language === "en" ? bio_en : bio_it}
+      </p>
 
-    <div class="contact-info">
-      <a href="mailto:mattia.capomagi@gmail.com" class="email"
-        >mattia.capomagi@gmail.com</a
-      >
-      <a
-        href="https://instagram.com/mattiacapomagi"
-        target="_blank"
-        rel="noopener noreferrer">Instagram</a
-      >
-      <a
-        href="https://www.linkedin.com/in/mattiacapomagi/"
-        target="_blank"
-        rel="noopener noreferrer">LinkedIn</a
-      >
+      <div class="social-links">
+        <a
+          href="https://www.instagram.com/mattiacapomagi"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-link">instagram</a
+        >
+        <a
+          href="https://www.linkedin.com/in/mattia-capomagi-461386221/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-link">linkedin</a
+        >
+      </div>
+    </div>
+
+    <div class="form-column">
+      <h3 class="contact-header">
+        {$language === "en" ? "get in touch with me" : "contattami"}
+      </h3>
+
+      <form class="contact-form" onsubmit={handleSubmit} novalidate>
+        <!-- Honey pot to avoid spam -->
+        <input type="text" name="_honey" style="display:none" />
+
+        <!-- Enable captcha (invisible by default on AJAX, filters spam) -->
+        <input type="hidden" name="_captcha" value="true" />
+
+        <input
+          type="hidden"
+          name="_subject"
+          value="New Contact from Portfolio"
+        />
+
+        <div class="form-group">
+          <input
+            type="text"
+            name="name"
+            class:input-error={formErrors.name}
+            placeholder={formErrors.name
+              ? $language === "en"
+                ? "Required field"
+                : "Campo obbligatorio"
+              : $language === "en"
+                ? "Name"
+                : "Nome"}
+            disabled={formStatus === "submitting"}
+          />
+        </div>
+        <div class="form-group">
+          <input
+            type="email"
+            name="email"
+            class:input-error={formErrors.email}
+            placeholder={formErrors.email
+              ? $language === "en"
+                ? "Required field"
+                : "Campo obbligatorio"
+              : "Email"}
+            disabled={formStatus === "submitting"}
+          />
+        </div>
+        <div class="form-group">
+          <textarea
+            name="message"
+            rows="4"
+            class:input-error={formErrors.message}
+            placeholder={formErrors.message
+              ? $language === "en"
+                ? "Required field"
+                : "Campo obbligatorio"
+              : $language === "en"
+                ? "Message"
+                : "Messaggio"}
+            disabled={formStatus === "submitting"}
+          ></textarea>
+        </div>
+
+        <button type="submit" disabled={formStatus === "submitting"}>
+          {#if formStatus === "submitting"}
+            {$language === "en" ? "sending..." : "inviando..."}
+          {:else}
+            {$language === "en" ? "send" : "invia"}
+          {/if}
+        </button>
+
+        {#if formStatus === "success"}
+          <p class="success-message">
+            {$language === "en"
+              ? "Message sent successfully."
+              : "Messaggio inviato con successo."}
+          </p>
+        {/if}
+
+        {#if formStatus === "error"}
+          <p class="error-message">
+            {$language === "en"
+              ? "Something went wrong. Please try again."
+              : "Qualcosa è andato storto. Riprova."}
+          </p>
+        {/if}
+      </form>
     </div>
   </div>
 </div>
 
 <style>
-  .about {
+  .about-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Aligned left to the page structure */
     align-items: center;
-    min-height: 80vh; /* Increased to push center point down */
-    padding: 0 40px;
+    min-height: 80vh;
+    padding: 0; /* Removing padding to align with Header (global padding applies) */
   }
 
   .about-content {
-    max-width: 800px;
-    text-align: center;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+    text-align: left;
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .about-content {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+  }
+
+  .bio-column {
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 24px;
   }
 
   .bio {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 400;
     line-height: 1.4;
+    white-space: pre-line;
+    text-align: justify; /* Justified per user request */
   }
 
-  .contact-info {
+  /* Fix for justified text last line handling if needed, but usually default is left */
+
+  .form-column {
     display: flex;
-    flex-direction: row; /* Horizontal alignment */
-    justify-content: center;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    gap: 24px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 15px; /* Reduced gap per user request */
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-text);
+    padding: 10px 0;
+    font-family: inherit;
     font-size: 1.1rem;
     color: var(--color-text);
+    outline: none;
+    border-radius: 0;
+    resize: none;
   }
 
-  .contact-info a {
+  input:focus,
+  textarea:focus {
+    border-bottom-color: var(--color-accent);
+  }
+
+  input:disabled,
+  textarea:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Error state styling */
+  .input-error::placeholder {
+    color: red; /* Or accent color, but red is clearer for errors */
+    opacity: 1;
+  }
+
+  button {
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
+    cursor: pointer;
+    text-transform: uppercase; /* Capslock per user request */
+    transition: color 0.2s ease;
+    align-self: flex-start;
+  }
+
+  .contact-header {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.4;
+    text-transform: uppercase; /* Uppercase header */
+  }
+
+  button:hover {
+    color: var(--color-accent);
+  }
+
+  button:disabled {
+    color: var(--color-border);
+    cursor: not-allowed;
+  }
+
+  .success-message {
+    color: var(--color-accent); /* Or green, but accent fits brand */
+    font-size: 1rem;
+    margin-top: -10px;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: -10px;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 20px;
+    /* margin-top: 10px; */
+  }
+
+  .contact-link {
+    font-size: 1.3rem;
+    font-weight: 700;
     text-decoration: none;
     color: var(--color-text);
     transition: color 0.2s ease;
   }
 
-  .contact-info a:hover {
+  .contact-link:hover {
     color: var(--color-accent);
   }
 </style>
