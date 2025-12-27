@@ -1,6 +1,6 @@
 import { r as run_all, c as deferred, f as safe_equals, h as equals, o as object_prototype, i as array_prototype, j as get_descriptor, k as get_prototype_of, l as is_array, m as is_extensible, p as index_of, e as escape_html, n as noop, q as set_ssr_context, b as ssr_context, t as push$1, u as pop$1 } from "./context.js";
 import { clsx as clsx$1 } from "clsx";
-import { B as BROWSER } from "./false.js";
+import { D as DEV } from "./false.js";
 const DERIVED = 1 << 1;
 const EFFECT = 1 << 2;
 const RENDER_EFFECT = 1 << 3;
@@ -537,12 +537,12 @@ function flush_effects() {
       var batch = Batch.ensure();
       if (flush_count++ > 1e3) {
         var updates, entry;
-        if (BROWSER) ;
+        if (DEV) ;
         infinite_loop_guard();
       }
       batch.process(queued_root_effects);
       old_values.clear();
-      if (BROWSER) ;
+      if (DEV) ;
     }
   } finally {
     is_flushing = false;
@@ -1597,7 +1597,7 @@ function update_effect(effect) {
     effect.teardown = typeof teardown === "function" ? teardown : null;
     effect.wv = write_version;
     var dep;
-    if (BROWSER && tracing_mode_flag && (effect.f & DIRTY) !== 0 && effect.deps !== null) ;
+    if (DEV && tracing_mode_flag && (effect.f & DIRTY) !== 0 && effect.deps !== null) ;
   } finally {
     is_updating_effect = was_updating_effect;
     active_effect = previous_effect;

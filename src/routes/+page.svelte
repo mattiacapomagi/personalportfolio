@@ -3,6 +3,7 @@
   import ProjectRow from "$lib/components/ProjectRow.svelte";
   import ImagePreview from "$lib/components/ImagePreview.svelte";
   import { language } from "$lib/stores/language";
+  import { fly } from "svelte/transition";
 
   let previewImage = $state(null);
   let mouseX = $state(0);
