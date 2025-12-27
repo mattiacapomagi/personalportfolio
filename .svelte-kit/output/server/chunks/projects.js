@@ -15,7 +15,7 @@ const projects = [
       "/media/INTO/DSC3768.webp",
       "/media/INTO/IMG_9599.webp"
     ],
-    previewImage: "/media/INTO/DSC3620.webp"
+    previewImage: "/media/INTO/animazioneINTO.mp4"
   },
   {
     slug: "poster-treccani",
@@ -66,7 +66,7 @@ const projects = [
       "/media/Naturamatic/coverpic.webp",
       "/media/Naturamatic/foto magtomag 2025 naturamatic.webp"
     ],
-    previewImage: "/media/Naturamatic/coverpic.webp"
+    previewImage: "/media/Naturamatic/libricino.mp4"
   },
   {
     slug: "dottie",
@@ -83,7 +83,7 @@ const projects = [
       "/media/DOTTIE/specimen16-9.webp",
       "/media/DOTTIE/mockup1.webp"
     ],
-    previewImage: "/media/DOTTIE/mockup specimen.webp"
+    previewImage: "/media/DOTTIE/16-9 video DOTTIE.mp4"
   },
   {
     slug: "what-a-mag",
