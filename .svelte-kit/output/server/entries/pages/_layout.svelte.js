@@ -17,7 +17,8 @@ function Header($$renderer, $$props) {
     var $$store_subs;
     let activePath = "";
     function normalizePath(path) {
-      if (!path) return "";
+      if (!path) return "/";
+      if (!path.startsWith("/")) path = "/" + path;
       return path.endsWith("/") && path.length > 1 ? path.slice(0, -1) : path;
     }
     $$renderer2.push(`<header class="header svelte-1elxaub"><div class="logo svelte-1elxaub"><a${attr("href", `${stringify(base)}/`)} class="svelte-1elxaub">MATTIA CAPOMAGI</a></div> <nav class="nav svelte-1elxaub"><button class="nav-link lang-toggle svelte-1elxaub">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "it" : "en")}</button> <a${attr("href", `${stringify(base)}/`)}${attr_class("nav-link svelte-1elxaub", void 0, { "active": normalizePath(activePath) === normalizePath(base) })}><span class="desktop-text svelte-1elxaub">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "projects" : "progetti")}</span> <span class="mobile-text svelte-1elxaub">prj</span></a> <a${attr("href", `${stringify(base)}/about`)}${attr_class("nav-link svelte-1elxaub", void 0, {

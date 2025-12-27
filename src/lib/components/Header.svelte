@@ -14,7 +14,9 @@
   }
 
   function normalizePath(path) {
-    if (!path) return "";
+    if (!path) return "/"; // Treat empty/undefined as root
+    // Ensure leading slash
+    if (!path.startsWith("/")) path = "/" + path;
     // Remove trailing slash if present, unless it's just "/"
     return path.endsWith("/") && path.length > 1 ? path.slice(0, -1) : path;
   }
