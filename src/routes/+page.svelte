@@ -102,8 +102,8 @@
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
-    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
   }
 
   .filter-btn {
