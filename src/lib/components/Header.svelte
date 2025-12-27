@@ -1,17 +1,13 @@
 <script>
   import { page } from "$app/stores";
   import { base } from "$app/paths";
-  import { language } from "$lib/stores/language.svelte.js";
+  import { language, toggleLanguage } from "$lib/stores/language.js";
 
   let activePath = $state("");
 
   $effect(() => {
     activePath = $page.url.pathname;
   });
-
-  function toggleLanguage() {
-    language.toggle();
-  }
 
   function normalizePath(path) {
     if (!path) return "/"; // Treat empty/undefined as root
@@ -29,7 +25,7 @@
 
   <nav class="nav">
     <button type="button" class="nav-link lang-toggle" onclick={toggleLanguage}>
-      {language.current === "en" ? "it" : "en"}
+      {$language === "en" ? "it" : "en"}
     </button>
     <a
       href="{base}/"

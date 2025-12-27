@@ -1,5 +1,5 @@
 <script>
-  import { language } from "$lib/stores/language.svelte.js";
+  import { language } from "$lib/stores/language.js";
   import { base } from "$app/paths";
 
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
@@ -46,7 +46,7 @@
 
   function getCategoryTags(project) {
     const rawCat =
-      language.current === "en"
+      $language === "en"
         ? project.category
         : project.category_it || project.category;
     // Split by / or +
@@ -65,7 +65,7 @@
 >
   <div class="text-content">
     <span class="col title"
-      >{language.current === "en"
+      >{$language === "en"
         ? project.title
         : project.title_it || project.title}</span
     >

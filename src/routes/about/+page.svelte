@@ -1,5 +1,5 @@
 <script>
-  import { language } from "$lib/stores/language.svelte.js";
+  import { language } from "$lib/stores/language.js";
 
   const bio_en = `Rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. I don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
 
@@ -105,7 +105,7 @@ At the same time, I embrace technology to break boundaries. I use artificial int
   <div class="about-content">
     <div class="bio-column">
       <p class="bio">
-        {language.current === "en" ? bio_en : bio_it}
+        {$language === "en" ? bio_en : bio_it}
       </p>
 
       <div class="social-links">
@@ -143,7 +143,7 @@ At the same time, I embrace technology to break boundaries. I use artificial int
     <div class="form-column">
       <!-- ... (keeping form content same as before) ... -->
       <h3 class="contact-header">
-        {language.current === "en" ? "get in touch with me" : "contattami"}
+        {$language === "en" ? "get in touch with me" : "contattami"}
       </h3>
       <!-- ... form ... -->
       <form class="contact-form" onsubmit={handleSubmit} novalidate>
