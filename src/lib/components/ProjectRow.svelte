@@ -160,7 +160,7 @@
       justify-content: space-between;
       align-items: center; /* Center vertically */
       gap: 15px;
-      padding: 15px 0;
+      padding: 18px 0; /* Increased by ~20% */
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
@@ -175,8 +175,8 @@
       display: block;
       width: 50%;
       aspect-ratio: 16 / 9; /* Standard preview ratio */
-      overflow: hidden;
       border-radius: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Micro shadow for separation */
     }
 
     .preview-media {
