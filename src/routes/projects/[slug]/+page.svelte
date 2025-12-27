@@ -39,9 +39,22 @@
   </header>
 
   <div class="project-content">
-    <p class="project-description">
-      {$language === "en" ? project.description_en : project.description_it}
-    </p>
+    <div class="description-container">
+      <p class="project-description">
+        {$language === "en" ? project.description_en : project.description_it}
+      </p>
+
+      {#if project.gumroadLink}
+        <a
+          href={project.gumroadLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gumroad-button"
+        >
+          {$language === "en" ? "Buy Typeface" : "Acquista Font"}
+        </a>
+      {/if}
+    </div>
 
     <div class="project-gallery">
       <ImageCarousel images={project.images} />
@@ -100,11 +113,44 @@
     gap: 20px; /* Space X (was 40px) */
   }
 
+  .description-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 100%;
+  }
+
   .project-description {
     font-size: 1.1rem;
     line-height: 1.5;
     max-width: 800px;
     text-align: justify;
+    flex: 1; /* Allow description to take available space */
+  }
+
+  .gumroad-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 24px;
+    background-color: var(--color-text);
+    color: var(--color-bg);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+    border: 1px solid var(--color-text);
+  }
+
+  .gumroad-button:hover {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    transform: translateY(-2px);
   }
 
   .project-gallery {
@@ -122,8 +168,20 @@
       font-size: 2rem;
     }
 
+    .description-container {
+      flex-direction: column; /* Stack description and button on mobile */
+      gap: 20px;
+    }
+
     .project-description {
       font-size: 1rem;
+      max-width: 100%;
+    }
+
+    .gumroad-button {
+      width: 100%; /* Full width button on mobile */
+      text-align: center;
+      order: 2; /* Ensure it comes after description if needed, logical flow is natural here */
     }
 
     .meta-label,

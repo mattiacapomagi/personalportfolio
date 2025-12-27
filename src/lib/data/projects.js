@@ -97,6 +97,7 @@ export const projects = [
 			'/media/DOTTIE/specimen16-9.webp',
 			'/media/DOTTIE/mockup1.webp'
 		],
+		gumroadLink: 'https://mattiacapomagi.gumroad.com/l/dottievf',
 		previewImage: '/media/DOTTIE/16-9 video DOTTIE.mp4'
 	},
 	{
