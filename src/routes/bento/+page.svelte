@@ -39,7 +39,6 @@
 <div class="bento-page">
   <div class="bento-container">
     <!-- HEADER CARD (Easter Egg Interaction) -->
-    <!-- Changed to button for semantics since it is an interaction now -->
     <button
       class="card header-card"
       onclick={triggerEasterEgg}
@@ -238,6 +237,7 @@
     text-align: left;
     font-family: var(--font-mono);
     cursor: pointer;
+    width: 100%;
   }
 
   /* --- HEADER --- */
@@ -282,21 +282,18 @@
 
   .location {
     font-size: 1.1rem;
-    display: flex;
+    display: flex; /* Flex required for alignment if icon was here, but text only is fine */
     align-items: center;
     gap: 8px;
     font-weight: 600;
     opacity: 0.6;
     margin: 0;
+    font-family: var(--font-mono); /* Force Mono */
   }
 
   .arrow-icon {
     margin-left: auto;
     opacity: 0.5;
-  }
-
-  .location {
-    font-family: var(--font-mono);
   }
 
   /* --- PORTFOLIO --- */
@@ -394,63 +391,101 @@
   }
 
   /* RESPONSIVE */
-  /* RESPONSIVE */
   @media (max-width: 768px) {
+    .bento-page {
+      padding: 30px; /* Increased border padding */
+    }
+
     .bento-container {
       grid-template-columns: 1fr;
       grid-template-rows: auto;
-      gap: 16px;
-      padding-bottom: 40px; /* Scroll room */
+      gap: 20px;
+      padding-bottom: 40px;
     }
 
+    /* Header: Keep Horizontal */
     .header-card {
-      flex-direction: column;
-      text-align: center;
-      padding: 30px 20px;
-      gap: 16px;
+      flex-direction: row;
+      text-align: left;
+      padding: 24px;
+      gap: 20px;
+      align-items: center;
     }
 
     .avatar-container {
-      width: 100px; /* Smaller avatar on mobile */
-      height: 100px;
+      width: 80px;
+      height: 80px;
       margin-bottom: 0;
+      border-radius: 20px;
+    }
+
+    .header-info {
+      display: block;
+      align-items: flex-start;
     }
 
     .header-info h1 {
-      font-size: 2rem;
-    } /* Scaled down */
-    .header-info h2 {
-      font-size: 1.2rem;
+      font-size: 1.6rem;
+      line-height: 1.1;
     }
 
+    .header-info h2 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+    }
+    .location {
+      font-size: 0.9rem;
+    }
     .arrow-icon {
       display: none;
     }
 
+    /* Portfolio: Wide Horizontal Card */
     .portfolio-card {
-      min-height: 250px;
-      justify-content: center;
+      min-height: 200px;
+      padding: 30px;
     }
 
     .portfolio-card h3 {
-      font-size: 2.8rem; /* Scaled down portfolio title */
+      font-size: 2.2rem;
     }
-
     .domain {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
 
+    /* LinkedIn: Horizontal Bar */
+    .linkedin {
+      flex-direction: row;
+      align-items: center;
+      height: 100px;
+      padding: 0 30px;
+    }
+
+    .linkedin .social-icon svg {
+      width: 40px;
+      height: 40px;
+    }
     .linkedin span {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
+    }
+
+    .mini-arrow {
+      position: relative;
+      top: auto;
+      right: auto;
     }
 
     .social-split {
-      height: 140px;
-      gap: 16px;
+      height: 120px;
+      gap: 20px;
+    }
+
+    .social-split svg {
+      width: 40px;
+      height: 40px;
     }
 
     .card {
-      padding: 24px;
       border-radius: 30px;
     }
   }
