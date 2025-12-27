@@ -195,8 +195,8 @@
 
   .bento-container {
     display: grid;
-    /* 3 Columns: 2 for Portfolio, 1 for Social Stack */
-    grid-template-columns: 2fr 1.2fr;
+    /* 3 Columns System */
+    grid-template-columns: 1fr 1fr 1fr;
     /* Increased heights per "bigger and airier" request */
     grid-template-rows: auto 240px 180px;
     gap: 30px; /* Increased Gap */
@@ -298,7 +298,7 @@
 
   /* --- PORTFOLIO --- */
   .portfolio-card {
-    grid-column: 1;
+    grid-column: 1 / 3; /* Spans 2 columns of 3 */
     grid-row: 2 / 4;
     display: flex;
     flex-direction: column;
@@ -331,7 +331,7 @@
 
   /* --- LINKEDIN --- */
   .linkedin {
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 2;
     flex-direction: column;
     align-items: flex-start;
@@ -363,7 +363,7 @@
 
   /* --- SOCIAL SPLIT --- */
   .social-split {
-    grid-column: 2;
+    grid-column: 3;
     grid-row: 3;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -393,7 +393,7 @@
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .bento-page {
-      padding: 16px; /* Reduced padding for "full width" feel */
+      padding: 10px; /* Minimal padding for "full width" feel */
     }
 
     .bento-container {
