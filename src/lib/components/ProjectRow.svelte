@@ -1,5 +1,5 @@
 <script>
-  import { language } from "$lib/stores/language";
+  import { language } from "$lib/stores/language.svelte";
   import { base } from "$app/paths";
 
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
@@ -34,6 +34,7 @@
       Motion: "MOT",
       "Brand/Design Editoriale": "BRA/EDI",
       "Modellazione 3D": "3D",
+      "Brand/Editorial Design": "BRA/EDI",
     };
     // Helper to catch partial matches if exact map fails, or just return trimmed 3 chars
     const mapped =
@@ -45,7 +46,7 @@
 
   function getCategoryTags(project) {
     const rawCat =
-      $language === "en"
+      language.current === "en"
         ? project.category
         : project.category_it || project.category;
     // Split by / or +
@@ -64,7 +65,7 @@
 >
   <div class="text-content">
     <span class="col title"
-      >{$language === "en"
+      >{language.current === "en"
         ? project.title
         : project.title_it || project.title}</span
     >
