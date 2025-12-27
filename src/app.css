@@ -130,7 +130,7 @@ body {
   line-height: 1.4;
   position: relative;
   overflow-x: hidden; /* Prevent horizontal scroll */
-  letter-spacing: -0.05em; /* Reduced kerning by ~5% per user request */
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Vignette Effect */
