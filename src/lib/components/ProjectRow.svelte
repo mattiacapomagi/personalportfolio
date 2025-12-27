@@ -180,7 +180,9 @@
       height: 100%; /* Fill the fixed 250px height */
       /* aspect-ratio removed */
       border-radius: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Micro shadow for separation */
+      /* box-shadow removed, moving to image filter */
+      padding: 15px; /* Add breathing room so images don't touch edges */
+      box-sizing: border-box; /* Ensure padding is included in width/height */
     }
 
     .preview-media {
@@ -188,6 +190,9 @@
       height: 100%;
       object-fit: contain; /* Show full image without cropping */
       display: block;
+      filter: drop-shadow(
+        0 4px 6px rgba(0, 0, 0, 0.15)
+      ); /* Shadow applies to the image itself */
     }
 
     .col {
