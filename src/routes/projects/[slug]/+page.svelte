@@ -51,7 +51,7 @@
           rel="noopener noreferrer"
           class="gumroad-button"
         >
-          {$language === "en" ? "Buy Typeface" : "Acquista Font"}
+          {$language === "en" ? "Get Typeface" : "Get Typeface"}
         </a>
       {/if}
     </div>
@@ -114,19 +114,18 @@
   }
 
   .description-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
     gap: 40px;
+    align-items: end; /* Align button to bottom of text */
     max-width: 100%;
   }
 
   .project-description {
     font-size: 1.1rem;
     line-height: 1.5;
-    max-width: 800px;
     text-align: justify;
-    flex: 1; /* Allow description to take available space */
+    margin: 0;
   }
 
   .gumroad-button {
@@ -145,6 +144,7 @@
       background-color 0.2s ease,
       transform 0.2s ease;
     border: 1px solid var(--color-text);
+    justify-self: start; /* Align left in the right column */
   }
 
   .gumroad-button:hover {
@@ -155,7 +155,7 @@
 
   .project-gallery {
     width: 100%;
-    margin-top: 0; /* Removed to rely on flex gap */
+    margin-top: 0;
   }
 
   @media (max-width: 768px) {
@@ -168,20 +168,26 @@
       font-size: 2rem;
     }
 
+    /* Mobile Reordering Magic */
     .description-container {
-      flex-direction: column; /* Stack description and button on mobile */
-      gap: 20px;
+      display: contents; /* Ungroup items so they become siblings of gallery */
     }
 
     .project-description {
       font-size: 1rem;
       max-width: 100%;
+      order: 1; /* First: Text */
+    }
+
+    .project-gallery {
+      order: 2; /* Second: Video/Gallery */
     }
 
     .gumroad-button {
-      width: 100%; /* Full width button on mobile */
+      width: 100%;
       text-align: center;
-      order: 2; /* Ensure it comes after description if needed, logical flow is natural here */
+      order: 3; /* Third: Button (below video) */
+      margin-top: 10px;
     }
 
     .meta-label,
