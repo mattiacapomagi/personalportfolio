@@ -5,8 +5,14 @@
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
   let { project, onhover } = $props();
 
+  let previewSource = $derived(project.previewImage || project.images[0]);
+  let isVideoPreview = $derived(
+    previewSource?.toLowerCase().endsWith(".mp4") ||
+      previewSource?.toLowerCase().endsWith(".mov")
+  );
+
   function handleMouseEnter() {
-    onhover(project.images[0] || project.previewImage);
+    onhover(previewSource);
   }
 
   function handleMouseLeave() {
@@ -35,11 +41,23 @@
 
   <!-- Mobile Only Preview -->
   <div class="mobile-preview">
-    <img
-      src="{base}{project.images[0] || project.previewImage}"
-      alt={project.title}
-      loading="lazy"
-    />
+    {#if isVideoPreview}
+      <video
+        src="{base}{previewSource}"
+        autoplay
+        loop
+        muted
+        playsinline
+        class="preview-media"
+      ></video>
+    {:else}
+      <img
+        src="{base}{previewSource}"
+        alt={project.title}
+        loading="lazy"
+        class="preview-media"
+      />
+    {/if}
   </div>
 </a>
 
@@ -119,7 +137,7 @@
       border-radius: 4px;
     }
 
-    .mobile-preview img {
+    .preview-media {
       width: 100%;
       height: 100%;
       object-fit: cover;

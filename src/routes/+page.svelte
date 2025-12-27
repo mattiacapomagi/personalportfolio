@@ -7,6 +7,26 @@
   let previewImage = $state(null);
   let mouseX = $state(0);
   let mouseY = $state(0);
+  let selectedCategory = $state("All");
+
+  let uniqueCategories = $derived([
+    "All",
+    ...new Set(
+      projects.map((p) =>
+        $language === "en" ? p.category : p.category_it || p.category
+      )
+    ),
+  ]);
+
+  let filteredProjects = $derived(
+    selectedCategory === "All"
+      ? projects
+      : projects.filter((p) => {
+          const currentCat =
+            $language === "en" ? p.category : p.category_it || p.category;
+          return currentCat === selectedCategory;
+        })
+  );
 
   function handleProjectHover(imageUrl) {
     previewImage = imageUrl;
@@ -16,11 +36,28 @@
     mouseX = event.clientX;
     mouseY = event.clientY;
   }
+
+  function setCategory(cat) {
+    selectedCategory = cat;
+  }
 </script>
 
 <svelte:window onmousemove={handleMouseMove} />
 
 <div class="home">
+  <!-- Category Filter -->
+  <div class="filter-container">
+    {#each uniqueCategories as category}
+      <button
+        class="filter-btn"
+        class:active={selectedCategory === category}
+        onclick={() => setCategory(category)}
+      >
+        {category}
+      </button>
+    {/each}
+  </div>
+
   <div class="project-list-header">
     <span class="col"
       >{$language === "en" ? "project title" : "titolo progetto"}</span
@@ -31,7 +68,7 @@
   </div>
 
   <div class="project-list">
-    {#each projects as project}
+    {#each filteredProjects as project}
       <ProjectRow {project} onhover={handleProjectHover} />
     {/each}
   </div>
@@ -42,6 +79,40 @@
 <style>
   .home {
     padding: 0;
+  }
+
+  /* Filter Styles */
+  .filter-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+
+  .filter-btn {
+    background: none;
+    border: 1px solid var(--color-text);
+    color: var(--color-text);
+    padding: 5px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-transform: capitalize;
+  }
+
+  .filter-btn:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .filter-btn.active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
   }
 
   .project-list-header {
