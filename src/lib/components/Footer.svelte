@@ -1,15 +1,14 @@
 <script>
   import { onMount, onDestroy } from "svelte";
 
-  let timestamp = $state("");
+  let timeStr = $state("");
+  let dateStr = $state("");
   let interval;
 
   function updateTime() {
     const now = new Date();
-    // Format: DD/MM/YYYY HH:MM:SS
-    const date = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
-    const time = now.toLocaleTimeString("en-GB"); // HH:MM:SS
-    timestamp = `${date} ${time}`;
+    dateStr = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
+    timeStr = now.toLocaleTimeString("en-GB"); // HH:MM:SS
   }
 
   onMount(() => {
@@ -23,9 +22,13 @@
 </script>
 
 <footer class="site-footer">
-  <div class="copyright">COPYRIGHT MATTIA CAPOMAGI 2025</div>
+  <div class="copyright">
+    <span class="desktop-text">COPYRIGHT MATTIA CAPOMAGI 2025</span>
+    <span class="mobile-text">Mattia Capomagi 2025</span>
+  </div>
   <div class="timestamp">
-    {timestamp}
+    <span class="desktop-text">{dateStr} {timeStr}</span>
+    <span class="mobile-text">{timeStr}</span>
   </div>
 </footer>
 
@@ -34,8 +37,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem 0 0.5rem; /* Bottom padding matches header top (0.5rem) */
-    margin-top: 40px; /* Reduced since flex handles spacing */
+    padding: 0;
+    margin-bottom: 8px;
+    margin-top: 10px; /* Reduced from 40px */
     font-size: 1.1rem;
     font-weight: 400; /* Normal weight */
     text-transform: uppercase;
@@ -45,5 +49,29 @@
   .timestamp {
     /* Ensure monospace alignment */
     font-variant-numeric: tabular-nums;
+  }
+
+  /* Text Display Logic */
+  .mobile-text {
+    display: none;
+  }
+
+  .desktop-text {
+    display: inline;
+  }
+
+  @media (max-width: 480px) {
+    .site-footer {
+      font-size: 1.2rem; /* Increased slightly */
+      margin-top: 10px;
+    }
+
+    /* Toggle Text */
+    .desktop-text {
+      display: none;
+    }
+    .mobile-text {
+      display: inline;
+    }
   }
 </style>

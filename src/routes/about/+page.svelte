@@ -212,14 +212,6 @@ allo stesso tempo, accolgo la tecnologia per superare i confini. uso l'intellige
     text-align: left;
   }
 
-  /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .about-content {
-      grid-template-columns: 1fr;
-      gap: 40px;
-    }
-  }
-
   .bio-column {
     display: flex;
     flex-direction: column;
@@ -349,5 +341,40 @@ allo stesso tempo, accolgo la tecnologia per superare i confini. uso l'intellige
 
   .contact-link:hover {
     color: var(--color-accent);
+  }
+
+  /* Mobile Responsive - Moved to end for proper cascade */
+  @media (max-width: 768px) {
+    .about-content {
+      grid-template-columns: 1fr;
+      gap: 80px; /* Increased separation between Bio and Form */
+    }
+
+    .bio {
+      font-size: 0.9rem;
+    }
+
+    .contact-link,
+    .contact-header,
+    button {
+      font-size: 0.9rem;
+    }
+
+    input,
+    textarea {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bio {
+      font-size: 0.9rem;
+    }
+
+    .contact-link,
+    .contact-header,
+    button {
+      font-size: 0.9rem;
+    }
   }
 </style>

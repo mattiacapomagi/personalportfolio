@@ -12,7 +12,9 @@
 
 <article class="project-detail">
   <header class="project-header">
-    <h1 class="project-title">{project.title}</h1>
+    <h1 class="project-title">
+      {$language === "en" ? project.title : project.title_it || project.title}
+    </h1>
 
     <div class="project-meta">
       <div class="meta-item">
@@ -100,6 +102,7 @@
     font-size: 1.1rem;
     line-height: 1.5;
     max-width: 800px;
+    text-align: justify;
   }
 
   .project-gallery {
@@ -115,6 +118,29 @@
 
     .project-title {
       font-size: 2rem;
+    }
+
+    .project-description {
+      font-size: 1rem;
+    }
+
+    .meta-label,
+    .meta-value {
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .project-title {
+      font-size: 1.5rem;
+    }
+
+    .project-meta {
+      gap: 20px;
+    }
+
+    .project-description {
+      font-size: 0.9rem;
     }
   }
 </style>

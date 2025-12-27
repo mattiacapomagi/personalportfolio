@@ -5,7 +5,7 @@
   let { project, onhover } = $props();
 
   function handleMouseEnter() {
-    onhover(project.previewImage);
+    onhover(project.images[0] || project.previewImage);
   }
 
   function handleMouseLeave() {
@@ -19,7 +19,11 @@
   onmouseenter={handleMouseEnter}
   onmouseleave={handleMouseLeave}
 >
-  <span class="col title">{project.title}</span>
+  <span class="col title"
+    >{$language === "en"
+      ? project.title
+      : project.title_it || project.title}</span
+  >
   <span class="col client">{project.client}</span>
   <span class="col category"
     >{$language === "en" ? project.category : project.category_it}</span
@@ -57,5 +61,38 @@
 
   .year {
     text-align: right;
+  }
+
+  @media (max-width: 768px) {
+    .col {
+      font-size: 1rem;
+    }
+    .project-row {
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .project-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 10px 0;
+    }
+
+    .col {
+      font-size: 0.9rem;
+    }
+
+    .title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .year {
+      text-align: left;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
   }
 </style>

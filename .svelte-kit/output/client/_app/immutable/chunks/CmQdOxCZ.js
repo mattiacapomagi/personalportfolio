@@ -1,0 +1,2 @@
+import{K as a}from"./CDe51vAy.js";const e=[...` 	
+\r\f \v\uFEFF`];function g(s,f,u){var n=s==null?"":""+s;if(u){for(var t in u)if(u[t])n=n?n+" "+t:t;else if(n.length)for(var i=t.length,l=0;(l=n.indexOf(t,l))>=0;){var r=l+i;(l===0||e.includes(n[l-1]))&&(r===n.length||e.includes(n[r]))?n=(l===0?"":n.substring(0,l))+n.substring(r+1):l=r}}return n===""?null:n}function c(s,f){return s==null?null:String(s)}const h=a("en");export{c as a,h as l,g as t};

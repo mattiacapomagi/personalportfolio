@@ -41,7 +41,7 @@
 
 <style>
   .home {
-    padding: 0 0 40px; /* Removed top padding completely */
+    padding: 0;
   }
 
   .project-list-header {
@@ -64,5 +64,46 @@
   .project-list {
     display: flex;
     flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    .project-list-header {
+      font-size: 1rem;
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .project-list-header {
+      display: none; /* Hide header rows on mobile as layout shifts to cards/rows */
+    }
+  }
+
+  @media (max-width: 768px) {
+    .project-list-header {
+      font-size: 0.9rem;
+      /* Hide non-essential columns on tablet? Usually better to simplify grid */
+      grid-template-columns: 2fr 1fr 1fr;
+    }
+    .col:last-child {
+      /* Keep Year if important, otherwise maybe grid changes */
+      display: none; /* Hide year on tablet/mobile if needed, or adjust */
+    }
+    /* Actually, let's just scale text first as requested */
+  }
+
+  @media (max-width: 768px) {
+    .project-list-header {
+      font-size: 1rem;
+      /* Keep grid but tighter? */
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .project-list-header {
+      display: none; /* Often header is hidden on mobile for lists */
+    }
+    /* Or just smaller */
   }
 </style>
