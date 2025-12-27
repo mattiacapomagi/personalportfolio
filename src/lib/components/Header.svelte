@@ -1,7 +1,6 @@
-<script>
   import { page } from "$app/stores";
   import { base } from "$app/paths";
-  import { language } from "$lib/stores/language";
+  import { language } from "$lib/stores/language.svelte";
 
   let activePath = $state("");
 
@@ -10,7 +9,7 @@
   });
 
   function toggleLanguage() {
-    language.update((l) => (l === "en" ? "it" : "en"));
+    language.toggle();
   }
 
   function normalizePath(path) {
@@ -29,7 +28,7 @@
 
   <nav class="nav">
     <button class="nav-link lang-toggle" onclick={toggleLanguage}>
-      {$language === "en" ? "it" : "en"}
+      {language.current === "en" ? "it" : "en"}
     </button>
     <a
       href="{base}/"
@@ -37,7 +36,7 @@
       class:active={normalizePath(activePath) === normalizePath(base)}
     >
       <span class="desktop-text"
-        >{$language === "en" ? "projects" : "progetti"}</span
+        >{language.current === "en" ? "projects" : "progetti"}</span
       >
       <span class="mobile-text">prj</span>
     </a>
@@ -48,9 +47,9 @@
         normalizePath(`${base}/about`)}
     >
       <span class="desktop-text"
-        >{$language === "en" ? "about" : "chi sono?"}</span
+        >{language.current === "en" ? "about" : "chi sono?"}</span
       >
-      <span class="mobile-text">{$language === "en" ? "abt" : "bio"}</span>
+      <span class="mobile-text">{language.current === "en" ? "abt" : "bio"}</span>
     </a>
   </nav>
 </header>
