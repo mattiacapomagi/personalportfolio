@@ -160,7 +160,8 @@
       justify-content: space-between;
       align-items: center; /* Center vertically */
       gap: 15px;
-      padding: 18px 0; /* Increased by ~20% */
+      height: 250px; /* Fixed height as requested */
+      padding: 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
@@ -168,13 +169,16 @@
       display: flex;
       flex-direction: column;
       width: 50%;
+      height: 100%; /* Fill height to center content vertically */
+      justify-content: center;
       gap: 4px;
     }
 
     .mobile-preview {
       display: block;
       width: 50%;
-      aspect-ratio: 16 / 9; /* Standard preview ratio */
+      height: 100%; /* Fill the fixed 250px height */
+      /* aspect-ratio removed */
       border-radius: 0;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Micro shadow for separation */
     }
