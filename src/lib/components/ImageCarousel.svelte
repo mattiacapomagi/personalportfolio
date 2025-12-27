@@ -436,7 +436,7 @@
     align-items: center;
     gap: 15px;
     width: 100%;
-    font-family: inherit;
+    font-family: var(--font-mono); /* Use title font */
     pointer-events: auto; /* Re-enable pointer events for buttons */
   }
 
