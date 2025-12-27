@@ -3,95 +3,12 @@
    ============================================ */
 
 /* Font Face Declarations - Keeping existing if they are correct, but ensuring Monospace is primary */
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Thin.woff2") format("woff2");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Thin-Italic.woff2") format("woff2");
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Light-Italic.woff2") format("woff2");
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Bold-Italic.woff2") format("woff2");
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Extrabold.woff2") format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Extrabold-Italic.woff2") format("woff2");
-  font-weight: 800;
-@font-face {
-  font-family: "Targa Pro Mono";
-  src: url("/fonts/Targa-Pro-Mono-Extrabold-Italic.woff2") format("woff2");
-  font-weight: 800;
-  font-style: italic;
-  font-display: swap;
-}
 
 /* PP Kyoto Declarations */
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-Thin.woff2") format("woff2"),
-       url("/fonts/PPKyoto-Thin.woff") format("woff");
+    url("/fonts/PPKyoto-Thin.woff") format("woff");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -100,7 +17,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-ThinItalic.woff2") format("woff2"),
-       url("/fonts/PPKyoto-ThinItalic.woff") format("woff");
+    url("/fonts/PPKyoto-ThinItalic.woff") format("woff");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
@@ -109,7 +26,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-Light.woff2") format("woff2"),
-       url("/fonts/PPKyoto-Light.woff") format("woff");
+    url("/fonts/PPKyoto-Light.woff") format("woff");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -118,7 +35,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-LightItalic.woff2") format("woff2"),
-       url("/fonts/PPKyoto-LightItalic.woff") format("woff");
+    url("/fonts/PPKyoto-LightItalic.woff") format("woff");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
@@ -127,7 +44,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-Regular.woff2") format("woff2"),
-       url("/fonts/PPKyoto-Regular.woff") format("woff");
+    url("/fonts/PPKyoto-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -136,7 +53,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-RegularItalic.woff2") format("woff2"),
-       url("/fonts/PPKyoto-RegularItalic.woff") format("woff");
+    url("/fonts/PPKyoto-RegularItalic.woff") format("woff");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -145,7 +62,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-Medium.woff2") format("woff2"),
-       url("/fonts/PPKyoto-Medium.woff") format("woff");
+    url("/fonts/PPKyoto-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -154,7 +71,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-MediumItalic.woff2") format("woff2"),
-       url("/fonts/PPKyoto-MediumItalic.woff") format("woff");
+    url("/fonts/PPKyoto-MediumItalic.woff") format("woff");
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -163,7 +80,7 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-Extrabold.woff2") format("woff2"),
-       url("/fonts/PPKyoto-Extrabold.woff") format("woff");
+    url("/fonts/PPKyoto-Extrabold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -172,12 +89,11 @@
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-ExtraboldItalic.woff2") format("woff2"),
-       url("/fonts/PPKyoto-ExtraboldItalic.woff") format("woff");
+    url("/fonts/PPKyoto-ExtraboldItalic.woff") format("woff");
   font-weight: 800;
   font-style: italic;
   font-display: swap;
 }
-
 
 /* ============================================
    CSS Custom Properties
@@ -190,7 +106,7 @@
   --color-accent: #f27200; /* Orange highlight */
 
   /* Fonts */
-  --font-mono: "Targa Pro Mono", "Courier New", Courier, monospace;
+  --font-mono: "galix-mono", "Courier New", Courier, monospace;
   --font-body: "PP Kyoto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Layout */
@@ -255,7 +171,10 @@ a:hover {
   color: var(--color-accent);
 }
 
-p, .description, .running-text, article {
+p,
+.description,
+.running-text,
+article {
   font-family: var(--font-body);
 }
 
