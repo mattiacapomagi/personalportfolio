@@ -61,6 +61,7 @@
   }
 
   .project-title {
+    font-family: var(--font-mono);
     font-size: 2.5rem;
     font-weight: 700;
     line-height: 1.1;
@@ -69,6 +70,7 @@
   }
 
   .project-meta {
+    font-family: var(--font-mono);
     display: flex;
     gap: 60px;
     /* Removed border and padding */
