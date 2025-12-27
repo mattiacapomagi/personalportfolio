@@ -18,6 +18,40 @@
   function handleMouseLeave() {
     onhover(null);
   }
+
+  function getAbbreviation(category) {
+    const map = {
+      "Editorial Design": "Editorial",
+      "Design Editoriale": "Editorial",
+      "Motion Design": "Motion",
+      "Poster Design": "Poster",
+      "Type Design": "Type",
+      "Packaging Design": "Packaging",
+      "Brand/Editorial Design": "Brand/Edit.", // Fallback if not split
+      Brand: "Branding", // Normalize brand
+      Branding: "Branding",
+      "3D Modeling": "3D",
+      Motion: "Motion",
+      "Brand/Design Editoriale": "Brand/Edit.",
+      "Modellazione 3D": "3D",
+    };
+    // Helper to catch partial matches if exact map fails, or just return trimmed
+    return (
+      map[category] || category.replace(" Design", "").replace("Design ", "")
+    );
+  }
+
+  function getCategoryTags(project) {
+    const rawCat =
+      $language === "en"
+        ? project.category
+        : project.category_it || project.category;
+    // Split by / or +
+    return rawCat
+      .split(/\/|\+/)
+      .map((c) => getAbbreviation(c.trim()))
+      .filter(Boolean);
+  }
 </script>
 
 <a
@@ -33,9 +67,13 @@
         : project.title_it || project.title}</span
     >
     <span class="col client">{project.client}</span>
-    <span class="col category"
-      >{$language === "en" ? project.category : project.category_it}</span
-    >
+    <span class="col category">
+      <div class="tags">
+        {#each getCategoryTags(project) as tag}
+          <span class="category-tag">{tag}</span>
+        {/each}
+      </div>
+    </span>
     <span class="col year">{project.year}</span>
   </div>
 
@@ -148,6 +186,19 @@
       font-size: 0.9rem;
     }
 
+    .category {
+      /* Mobile override if needed, or rely on tags flex */
+    }
+
+    .tags {
+      flex-wrap: wrap; /* Wrap tags on mobile if needed */
+    }
+
+    .category-tag {
+      font-size: 0.75rem; /* Smaller tags on mobile */
+      padding: 2px 6px;
+    }
+
     .title {
       font-size: 1rem;
       font-weight: 700;
@@ -159,5 +210,22 @@
       font-size: 0.8rem;
       opacity: 0.6;
     }
+  }
+
+  /* Tag Styles */
+  .tags {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .category-tag {
+    border: 1px solid currentColor;
+    border-radius: 0;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    white-space: nowrap;
   }
 </style>

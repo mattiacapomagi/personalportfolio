@@ -1,4 +1,4 @@
-import { U as attr, Y as stringify, W as store_get, X as unsubscribe_stores, Z as ensure_array_like, V as attr_class } from "../../chunks/index2.js";
+import { U as attr, Y as stringify, W as store_get, Z as ensure_array_like, X as unsubscribe_stores, V as attr_class } from "../../chunks/index2.js";
 import { p as projects } from "../../chunks/projects.js";
 import { l as language } from "../../chunks/language.js";
 import { b as base } from "../../chunks/server.js";
@@ -11,7 +11,37 @@ function ProjectRow($$renderer, $$props) {
     let { project } = $$props;
     let previewSource = project.previewImage || project.images[0];
     let isVideoPreview = previewSource?.toLowerCase().endsWith(".mp4") || previewSource?.toLowerCase().endsWith(".mov");
-    $$renderer2.push(`<a${attr("href", `${stringify(base)}/projects/${stringify(project.slug)}`)} class="project-row svelte-1ftngtl"><div class="text-content svelte-1ftngtl"><span class="col title svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</span> <span class="col client svelte-1ftngtl">${escape_html(project.client)}</span> <span class="col category svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.category : project.category_it)}</span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></div> <div class="mobile-preview svelte-1ftngtl">`);
+    function getAbbreviation(category) {
+      const map = {
+        "Editorial Design": "Editorial",
+        "Design Editoriale": "Editorial",
+        "Motion Design": "Motion",
+        "Poster Design": "Poster",
+        "Type Design": "Type",
+        "Packaging Design": "Packaging",
+        "Brand/Editorial Design": "Brand/Edit.",
+        // Fallback if not split
+        Brand: "Branding",
+        // Normalize brand
+        Branding: "Branding",
+        "3D Modeling": "3D",
+        Motion: "Motion",
+        "Brand/Design Editoriale": "Brand/Edit.",
+        "Modellazione 3D": "3D"
+      };
+      return map[category] || category.replace(" Design", "").replace("Design ", "");
+    }
+    function getCategoryTags(project2) {
+      const rawCat = store_get($$store_subs ??= {}, "$language", language) === "en" ? project2.category : project2.category_it || project2.category;
+      return rawCat.split(/\/|\+/).map((c) => getAbbreviation(c.trim())).filter(Boolean);
+    }
+    $$renderer2.push(`<a${attr("href", `${stringify(base)}/projects/${stringify(project.slug)}`)} class="project-row svelte-1ftngtl"><div class="text-content svelte-1ftngtl"><span class="col title svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</span> <span class="col client svelte-1ftngtl">${escape_html(project.client)}</span> <span class="col category svelte-1ftngtl"><div class="tags svelte-1ftngtl"><!--[-->`);
+    const each_array = ensure_array_like(getCategoryTags(project));
+    for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+      let tag = each_array[$$index];
+      $$renderer2.push(`<span class="category-tag svelte-1ftngtl">${escape_html(tag)}</span>`);
+    }
+    $$renderer2.push(`<!--]--></div></span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></div> <div class="mobile-preview svelte-1ftngtl">`);
     if (isVideoPreview) {
       $$renderer2.push("<!--[-->");
       $$renderer2.push(`<video${attr("src", `${stringify(base)}${stringify(previewSource)}`)} autoplay loop muted playsinline class="preview-media svelte-1ftngtl"></video>`);
