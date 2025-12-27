@@ -38,16 +38,14 @@ function Footer($$renderer, $$props) {
   });
 }
 function _layout($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { children } = $$props;
-    $$renderer2.push(`<div class="container svelte-12qhfyh">`);
-    Header($$renderer2);
-    $$renderer2.push(`<!----> <main class="main svelte-12qhfyh">`);
-    children($$renderer2);
-    $$renderer2.push(`<!----></main> `);
-    Footer($$renderer2);
-    $$renderer2.push(`<!----></div>`);
-  });
+  let { children } = $$props;
+  $$renderer.push(`<div class="container svelte-12qhfyh">`);
+  Header($$renderer);
+  $$renderer.push(`<!----> <main class="main svelte-12qhfyh">`);
+  children($$renderer);
+  $$renderer.push(`<!----></main> `);
+  Footer($$renderer);
+  $$renderer.push(`<!----></div>`);
 }
 export {
   _layout as default

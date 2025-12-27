@@ -1,1 +1,0 @@
-import{i as o,j as u,H as p,k as t,o as _,C as g,p as a,v as l,w as d,x as v}from"./DmOxnaRq.js";function E(n,r){let s=null,f=t;var i;if(t){s=v;for(var e=_(document.head);e!==null&&(e.nodeType!==g||e.data!==n);)e=a(e);if(e===null)l(!1);else{var y=a(e);e.remove(),d(y)}}t||(i=document.head.appendChild(o()));try{u(()=>r(i),p)}finally{f&&(l(!0),d(s))}}export{E as h};

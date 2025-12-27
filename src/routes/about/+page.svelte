@@ -7,6 +7,12 @@ Typography is a fundamental pillar of my work. I love experimenting with type de
 
 At the same time, I embrace technology to break boundaries. I use artificial intelligence as a dedicated laboratory for experimentation, a tool that allows me to explore new visual territories and generate ideas that go beyond traditional methods.`;
 
+  const bio_it = `Graphic designer romano di 23 anni, concentrato sulla creazione di identità di marca solide e adattive. Non credo nel limitarmi a un'unica estetica; il mio approccio è fluido, navigando l'ampio spazio tra il minimalismo preciso e il brutalismo grezzo a seconda di ciò che il progetto richiede veramente.
+
+La tipografia è un pilastro fondamentale del mio lavoro. Amo sperimentare con il type design e il lettering, trattando le lettere come elementi strutturali che danno una voce specifica a ogni concetto.
+
+Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelligenza artificiale come un laboratorio dedicato alla sperimentazione, uno strumento che mi permette di esplorare nuovi territori visivi e generare idee che vanno oltre i metodi tradizionali.`;
+
   /* Define social links with icons */
   const socials = [
     {
@@ -162,10 +168,10 @@ At the same time, I embrace technology to break boundaries. I use artificial int
             name="name"
             class:input-error={formErrors.name}
             placeholder={formErrors.name
-              ? language.current === "en"
+              ? $language === "en"
                 ? "Required field"
                 : "Campo obbligatorio"
-              : language.current === "en"
+              : $language === "en"
                 ? "Name"
                 : "Nome"}
             disabled={formStatus === "submitting"}
@@ -177,7 +183,7 @@ At the same time, I embrace technology to break boundaries. I use artificial int
             name="email"
             class:input-error={formErrors.email}
             placeholder={formErrors.email
-              ? language.current === "en"
+              ? $language === "en"
                 ? "Required field"
                 : "Campo obbligatorio"
               : "Email"}
@@ -190,10 +196,10 @@ At the same time, I embrace technology to break boundaries. I use artificial int
             rows="4"
             class:input-error={formErrors.message}
             placeholder={formErrors.message
-              ? language.current === "en"
+              ? $language === "en"
                 ? "Required field"
                 : "Campo obbligatorio"
-              : language.current === "en"
+              : $language === "en"
                 ? "Message"
                 : "Messaggio"}
             disabled={formStatus === "submitting"}
@@ -202,15 +208,15 @@ At the same time, I embrace technology to break boundaries. I use artificial int
 
         <button type="submit" disabled={formStatus === "submitting"}>
           {#if formStatus === "submitting"}
-            {language.current === "en" ? "sending..." : "inviando..."}
+            {$language === "en" ? "sending..." : "inviando..."}
           {:else}
-            {language.current === "en" ? "send" : "invia"}
+            {$language === "en" ? "send" : "invia"}
           {/if}
         </button>
 
         {#if formStatus === "success"}
           <p class="success-message">
-            {language.current === "en"
+            {$language === "en"
               ? "Message sent successfully."
               : "Messaggio inviato con successo."}
           </p>
@@ -218,7 +224,7 @@ At the same time, I embrace technology to break boundaries. I use artificial int
 
         {#if formStatus === "error"}
           <p class="error-message">
-            {language.current === "en"
+            {$language === "en"
               ? "Something went wrong. Please try again."
               : "Qualcosa è andato storto. Riprova."}
           </p>

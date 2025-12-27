@@ -13,32 +13,26 @@
 <article class="project-detail">
   <header class="project-header">
     <h1 class="project-title">
-      {language.current === "en"
-        ? project.title
-        : project.title_it || project.title}
+      {$language === "en" ? project.title : project.title_it || project.title}
     </h1>
 
     <div class="project-meta">
       <div class="meta-item">
         <span class="meta-label"
-          >{language.current === "en" ? "Client" : "Cliente"}</span
+          >{$language === "en" ? "Client" : "Cliente"}</span
         >
         <span class="meta-value">{project.client}</span>
       </div>
       <div class="meta-item">
         <span class="meta-label"
-          >{language.current === "en" ? "Category" : "Categoria"}</span
+          >{$language === "en" ? "Category" : "Categoria"}</span
         >
         <span class="meta-value"
-          >{language.current === "en"
-            ? project.category
-            : project.category_it}</span
+          >{$language === "en" ? project.category : project.category_it}</span
         >
       </div>
       <div class="meta-item">
-        <span class="meta-label"
-          >{language.current === "en" ? "Year" : "Anno"}</span
-        >
+        <span class="meta-label">{$language === "en" ? "Year" : "Anno"}</span>
         <span class="meta-value">{project.year}</span>
       </div>
     </div>
@@ -47,9 +41,7 @@
   <div class="project-content">
     <div class="description-container">
       <p class="project-description">
-        {language.current === "en"
-          ? project.description_en
-          : project.description_it}
+        {$language === "en" ? project.description_en : project.description_it}
       </p>
 
       {#if project.gumroadLink}
@@ -59,7 +51,7 @@
           rel="noopener noreferrer"
           class="gumroad-button"
         >
-          {language.current === "en" ? "Get Typeface" : "Ottieni Typeface"}
+          {$language === "en" ? "Get Typeface" : "Ottieni Typeface"}
         </a>
       {/if}
     </div>

@@ -2,26 +2,8 @@
   import "../app.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
-  import { onMount } from "svelte";
-  import Lenis from "lenis";
-  import "lenis/dist/lenis.css";
 
   let { children } = $props();
-
-  onMount(() => {
-    const lenis = new Lenis();
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    return () => {
-      lenis.destroy();
-    };
-  });
 </script>
 
 <div class="container">

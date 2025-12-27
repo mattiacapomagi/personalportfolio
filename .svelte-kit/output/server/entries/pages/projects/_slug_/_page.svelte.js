@@ -1,4 +1,4 @@
-import { Z as ensure_array_like, V as attr_class, $ as attr_style, Y as stringify, U as attr, _ as head } from "../../../../chunks/index2.js";
+import { Z as ensure_array_like, V as attr_class, $ as attr_style, Y as stringify, U as attr, _ as head, W as store_get, X as unsubscribe_stores } from "../../../../chunks/index2.js";
 import { b as base } from "../../../../chunks/server.js";
 import "@sveltejs/kit/internal/server";
 import { l as language } from "../../../../chunks/language.js";
@@ -74,25 +74,25 @@ function ImageCarousel($$renderer, $$props) {
   });
 }
 function _page($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { data } = $$props;
-    const { project } = data;
-    head("gygcht", $$renderer2, ($$renderer3) => {
-      $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>${escape_html(project.title)} — MATTIA CAPOMAGI</title>`);
-      });
+  var $$store_subs;
+  let { data } = $$props;
+  const { project } = data;
+  head("gygcht", $$renderer, ($$renderer2) => {
+    $$renderer2.title(($$renderer3) => {
+      $$renderer3.push(`<title>${escape_html(project.title)} — MATTIA CAPOMAGI</title>`);
     });
-    $$renderer2.push(`<article class="project-detail svelte-gygcht"><header class="project-header svelte-gygcht"><h1 class="project-title svelte-gygcht">${escape_html(language.current === "en" ? project.title : project.title_it || project.title)}</h1> <div class="project-meta svelte-gygcht"><div class="meta-item svelte-gygcht"><span class="meta-label svelte-gygcht">${escape_html(language.current === "en" ? "Client" : "Cliente")}</span> <span class="meta-value svelte-gygcht">${escape_html(project.client)}</span></div> <div class="meta-item svelte-gygcht"><span class="meta-label svelte-gygcht">${escape_html(language.current === "en" ? "Category" : "Categoria")}</span> <span class="meta-value svelte-gygcht">${escape_html(language.current === "en" ? project.category : project.category_it)}</span></div> <div class="meta-item svelte-gygcht"><span class="meta-label svelte-gygcht">${escape_html(language.current === "en" ? "Year" : "Anno")}</span> <span class="meta-value svelte-gygcht">${escape_html(project.year)}</span></div></div></header> <div class="project-content svelte-gygcht"><div class="description-container svelte-gygcht"><p class="project-description svelte-gygcht">${escape_html(language.current === "en" ? project.description_en : project.description_it)}</p> `);
-    if (project.gumroadLink) {
-      $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<a${attr("href", project.gumroadLink)} target="_blank" rel="noopener noreferrer" class="gumroad-button svelte-gygcht">${escape_html(language.current === "en" ? "Get Typeface" : "Ottieni Typeface")}</a>`);
-    } else {
-      $$renderer2.push("<!--[!-->");
-    }
-    $$renderer2.push(`<!--]--></div> <div class="project-gallery svelte-gygcht">`);
-    ImageCarousel($$renderer2, { images: project.images });
-    $$renderer2.push(`<!----></div></div></article>`);
   });
+  $$renderer.push(`<article class="project-detail svelte-gygcht"><header class="project-header svelte-gygcht"><h1 class="project-title svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</h1> <div class="project-meta svelte-gygcht"><div class="meta-item svelte-gygcht"><span class="meta-label svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "Client" : "Cliente")}</span> <span class="meta-value svelte-gygcht">${escape_html(project.client)}</span></div> <div class="meta-item svelte-gygcht"><span class="meta-label svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "Category" : "Categoria")}</span> <span class="meta-value svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.category : project.category_it)}</span></div> <div class="meta-item svelte-gygcht"><span class="meta-label svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "Year" : "Anno")}</span> <span class="meta-value svelte-gygcht">${escape_html(project.year)}</span></div></div></header> <div class="project-content svelte-gygcht"><div class="description-container svelte-gygcht"><p class="project-description svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.description_en : project.description_it)}</p> `);
+  if (project.gumroadLink) {
+    $$renderer.push("<!--[-->");
+    $$renderer.push(`<a${attr("href", project.gumroadLink)} target="_blank" rel="noopener noreferrer" class="gumroad-button svelte-gygcht">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "Get Typeface" : "Ottieni Typeface")}</a>`);
+  } else {
+    $$renderer.push("<!--[!-->");
+  }
+  $$renderer.push(`<!--]--></div> <div class="project-gallery svelte-gygcht">`);
+  ImageCarousel($$renderer, { images: project.images });
+  $$renderer.push(`<!----></div></div></article>`);
+  if ($$store_subs) unsubscribe_stores($$store_subs);
 }
 export {
   _page as default
