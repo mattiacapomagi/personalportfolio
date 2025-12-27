@@ -13,23 +13,23 @@ function ProjectRow($$renderer, $$props) {
     let isVideoPreview = previewSource?.toLowerCase().endsWith(".mp4") || previewSource?.toLowerCase().endsWith(".mov");
     function getAbbreviation(category) {
       const map = {
-        "Editorial Design": "Editorial",
-        "Design Editoriale": "Editorial",
-        "Motion Design": "Motion",
-        "Poster Design": "Poster",
-        "Type Design": "Type",
-        "Packaging Design": "Packaging",
-        "Brand/Editorial Design": "Brand/Edit.",
+        "Editorial Design": "EDI",
+        "Design Editoriale": "EDI",
+        "Motion Design": "MOT",
+        "Poster Design": "POS",
+        "Type Design": "TYP",
+        "Packaging Design": "PKG",
+        "Brand/Editorial Design": "BRA/EDI",
         // Fallback if not split
-        Brand: "Branding",
-        // Normalize brand
-        Branding: "Branding",
+        Brand: "BRA",
+        Branding: "BRA",
         "3D Modeling": "3D",
-        Motion: "Motion",
-        "Brand/Design Editoriale": "Brand/Edit.",
+        Motion: "MOT",
+        "Brand/Design Editoriale": "BRA/EDI",
         "Modellazione 3D": "3D"
       };
-      return map[category] || category.replace(" Design", "").replace("Design ", "");
+      const mapped = map[category] || category.replace(" Design", "").replace("Design ", "");
+      return mapped.length > 3 ? mapped.substring(0, 3).toUpperCase() : mapped.toUpperCase();
     }
     function getCategoryTags(project2) {
       const rawCat = store_get($$store_subs ??= {}, "$language", language) === "en" ? project2.category : project2.category_it || project2.category;

@@ -21,24 +21,26 @@
 
   function getAbbreviation(category) {
     const map = {
-      "Editorial Design": "Editorial",
-      "Design Editoriale": "Editorial",
-      "Motion Design": "Motion",
-      "Poster Design": "Poster",
-      "Type Design": "Type",
-      "Packaging Design": "Packaging",
-      "Brand/Editorial Design": "Brand/Edit.", // Fallback if not split
-      Brand: "Branding", // Normalize brand
-      Branding: "Branding",
+      "Editorial Design": "EDI",
+      "Design Editoriale": "EDI",
+      "Motion Design": "MOT",
+      "Poster Design": "POS",
+      "Type Design": "TYP",
+      "Packaging Design": "PKG",
+      "Brand/Editorial Design": "BRA/EDI", // Fallback if not split
+      Brand: "BRA",
+      Branding: "BRA",
       "3D Modeling": "3D",
-      Motion: "Motion",
-      "Brand/Design Editoriale": "Brand/Edit.",
+      Motion: "MOT",
+      "Brand/Design Editoriale": "BRA/EDI",
       "Modellazione 3D": "3D",
     };
-    // Helper to catch partial matches if exact map fails, or just return trimmed
-    return (
-      map[category] || category.replace(" Design", "").replace("Design ", "")
-    );
+    // Helper to catch partial matches if exact map fails, or just return trimmed 3 chars
+    const mapped =
+      map[category] || category.replace(" Design", "").replace("Design ", "");
+    return mapped.length > 3
+      ? mapped.substring(0, 3).toUpperCase()
+      : mapped.toUpperCase();
   }
 
   function getCategoryTags(project) {
@@ -123,8 +125,10 @@
     border-top: 1px solid rgba(0, 0, 0, 0.2);
   }
 
-  .project-row:hover {
-    color: var(--color-accent);
+  @media (hover: hover) {
+    .project-row:hover {
+      color: var(--color-accent);
+    }
   }
 
   .col {
