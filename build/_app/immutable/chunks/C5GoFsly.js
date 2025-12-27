@@ -1,0 +1,1 @@
+import{j as o,k as _,y as c,X as d,A as y,B as T,D as b,w as p,v as f}from"./DmOxnaRq.js";import{B as v}from"./DDqOO_dS.js";function g(t,i,u=!1){_&&c();var e=new v(t),h=u?d:0;function n(a,r){if(_){const l=y(t)===T;if(a===l){var s=b();p(s),e.anchor=s,f(!1),e.ensure(a,r),f(!0);return}}e.ensure(a,r)}o(()=>{var a=!1;i((r,s=!0)=>{a=!0,n(s,r)}),a||n(!1,null)},h)}export{g as i};
