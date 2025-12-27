@@ -189,6 +189,28 @@
     .category {
       /* Mobile override if needed, or rely on tags flex */
     }
+    .title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      order: 1;
+    }
+
+    .category {
+      order: 2;
+      margin-bottom: 2px; /* Add some spacing after category tags */
+    }
+
+    .client {
+      order: 3;
+    }
+
+    .year {
+      text-align: left;
+      font-size: 0.8rem;
+      opacity: 0.6;
+      order: 4;
+    }
 
     .tags {
       flex-wrap: wrap; /* Wrap tags on mobile if needed */
@@ -197,18 +219,6 @@
     .category-tag {
       font-size: 0.75rem; /* Smaller tags on mobile */
       padding: 2px 6px;
-    }
-
-    .title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-
-    .year {
-      text-align: left;
-      font-size: 0.8rem;
-      opacity: 0.6;
     }
   }
 
