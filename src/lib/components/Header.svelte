@@ -1,5 +1,6 @@
 <script>
   import { page } from "$app/stores";
+  import { base } from "$app/paths";
   import { language } from "$lib/stores/language";
 
   let activePath = $state("");
@@ -15,20 +16,28 @@
 
 <header class="header">
   <div class="logo">
-    <a href="/">MATTIA CAPOMAGI</a>
+    <a href="{base}/">MATTIA CAPOMAGI</a>
   </div>
 
   <nav class="nav">
     <button class="nav-link lang-toggle" onclick={toggleLanguage}>
       {$language === "en" ? "it" : "en"}
     </button>
-    <a href="/" class="nav-link" class:active={activePath === "/"}>
+    <a
+      href="{base}/"
+      class="nav-link"
+      class:active={activePath === "{base}/" || activePath === "/"}
+    >
       <span class="desktop-text"
         >{$language === "en" ? "projects" : "progetti"}</span
       >
       <span class="mobile-text">prj</span>
     </a>
-    <a href="/about" class="nav-link" class:active={activePath === "/about"}>
+    <a
+      href="{base}/about"
+      class="nav-link"
+      class:active={activePath === "{base}/about"}
+    >
       <span class="desktop-text"
         >{$language === "en" ? "about" : "chi sono?"}</span
       >

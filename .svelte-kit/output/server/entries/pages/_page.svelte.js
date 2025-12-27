@@ -1,13 +1,15 @@
-import { X as attr, Y as stringify, V as store_get, W as unsubscribe_stores, Z as ensure_array_like } from "../../chunks/index2.js";
+import { U as attr, Y as stringify, W as store_get, X as unsubscribe_stores, Z as ensure_array_like } from "../../chunks/index2.js";
 import { p as projects } from "../../chunks/projects.js";
 import { l as language } from "../../chunks/language.js";
+import { b as base } from "../../chunks/server.js";
+import "@sveltejs/kit/internal/server";
 import { e as escape_html } from "../../chunks/context.js";
 import "clsx";
 function ProjectRow($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     let { project } = $$props;
-    $$renderer2.push(`<a${attr("href", `/projects/${stringify(project.slug)}`)} class="project-row svelte-1ftngtl"><span class="col title svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</span> <span class="col client svelte-1ftngtl">${escape_html(project.client)}</span> <span class="col category svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.category : project.category_it)}</span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></a>`);
+    $$renderer2.push(`<a${attr("href", `${stringify(base)}/projects/${stringify(project.slug)}`)} class="project-row svelte-1ftngtl"><span class="col title svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</span> <span class="col client svelte-1ftngtl">${escape_html(project.client)}</span> <span class="col category svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.category : project.category_it)}</span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></a>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }

@@ -1,4 +1,6 @@
-import { Z as ensure_array_like, U as attr_class, $ as attr_style, Y as stringify, X as attr, _ as head, V as store_get, W as unsubscribe_stores } from "../../../../chunks/index2.js";
+import { Z as ensure_array_like, V as attr_class, $ as attr_style, Y as stringify, U as attr, _ as head, W as store_get, X as unsubscribe_stores } from "../../../../chunks/index2.js";
+import { b as base } from "../../../../chunks/server.js";
+import "@sveltejs/kit/internal/server";
 import { l as language } from "../../../../chunks/language.js";
 import { e as escape_html } from "../../../../chunks/context.js";
 function ImageCarousel($$renderer, $$props) {
@@ -50,7 +52,7 @@ function ImageCarousel($$renderer, $$props) {
         $$renderer2.push(`<!--]--></button> <input type="range" min="0" max="100"${attr("value", progress[i] || 0)} class="seek-bar svelte-1kl9tqn"/> <div class="volume-container svelte-1kl9tqn"><span class="vol-label svelte-1kl9tqn">VOL</span> <input type="range" min="0" max="1" step="0.1"${attr("value", videoRefs[i] ? videoRefs[i].volume : 0.4)} class="volume-bar svelte-1kl9tqn"/></div> <button class="icon-btn fs-btn svelte-1kl9tqn" aria-label="Fullscreen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path></svg></button></div></div></div>`);
       } else {
         $$renderer2.push("<!--[!-->");
-        $$renderer2.push(`<div class="image-wrapper svelte-1kl9tqn"><div class="blur-bg svelte-1kl9tqn"${attr_style(`background-image: url('${stringify(media)}')`)}></div>  <img${attr("src", media)}${attr("alt", `Project slide ${stringify(i + 1)}`)} class="clickable-image svelte-1kl9tqn"/></div>`);
+        $$renderer2.push(`<div class="image-wrapper svelte-1kl9tqn"><div class="blur-bg svelte-1kl9tqn"${attr_style(`background-image: url('${stringify(base)}${stringify(media)}')`)}></div>  <img${attr("src", media)}${attr("alt", `Project slide ${stringify(i + 1)}`)} class="clickable-image svelte-1kl9tqn"/></div>`);
       }
       $$renderer2.push(`<!--]--></div>`);
     }

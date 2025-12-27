@@ -1,4 +1,5 @@
 <script>
+  import { base } from "$app/paths";
   /** @type {{ imageUrl: string | null, x: number, y: number }} */
   let { imageUrl, x, y } = $props();
 
@@ -15,7 +16,7 @@
   <div class="image-preview" style="left: {x + 20}px; top: {y - 100}px;">
     {#if isVideo(imageUrl)}
       <video
-        src={imageUrl}
+        src="{base}{imageUrl}"
         autoplay
         loop
         muted
@@ -23,7 +24,7 @@
         class="preview-media"
       ></video>
     {:else}
-      <img src={imageUrl} alt="Preview" class="preview-media" />
+      <img src="{base}{imageUrl}" alt="Preview" class="preview-media" />
     {/if}
   </div>
 {/if}

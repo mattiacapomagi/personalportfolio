@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { base } from "$app/paths";
 
   /** @type {{ images: string[] }} */
   let { images } = $props();
@@ -262,7 +263,10 @@
           </div>
         {:else}
           <div class="image-wrapper">
-            <div class="blur-bg" style="background-image: url('{media}')"></div>
+            <div
+              class="blur-bg"
+              style="background-image: url('{base}{media}')"
+            ></div>
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
             <img

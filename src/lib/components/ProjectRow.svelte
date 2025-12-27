@@ -1,5 +1,6 @@
 <script>
   import { language } from "$lib/stores/language";
+  import { base } from "$app/paths";
 
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
   let { project, onhover } = $props();
@@ -14,7 +15,7 @@
 </script>
 
 <a
-  href="/projects/{project.slug}"
+  href="{base}/projects/{project.slug}"
   class="project-row"
   onmouseenter={handleMouseEnter}
   onmouseleave={handleMouseLeave}

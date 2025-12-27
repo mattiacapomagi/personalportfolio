@@ -2,6 +2,7 @@ import { H as HYDRATION_ERROR, C as COMMENT_NODE, a as HYDRATION_END, g as get_n
 import { d as define_property, a as array_from, s as setContext } from "./context.js";
 import "clsx";
 import "./environment.js";
+import "./server.js";
 let public_env = {};
 function set_private_env(environment) {
 }
@@ -878,7 +879,7 @@ const options = {
   service_worker: false,
   service_worker_options: void 0,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <meta\n      name="description"\n      content="Mattia Capomagi - Graphic Designer Portfolio"\n    />\n    <link rel="icon" href="/media/favicon.jpg" />\n    <title>Mattia Capomagi - Visual Designer</title>\n    ' + head + '\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body + "</div>\n  </body>\n</html>\n",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <meta\n      name="description"\n      content="Mattia Capomagi - Graphic Designer Portfolio"\n    />\n    <link rel="icon" href="' + assets + '/media/favicon.jpg" />\n    <title>Mattia Capomagi - Visual Designer</title>\n    ' + head + '\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body + "</div>\n  </body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -950,7 +951,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "kvqkdt"
+  version_hash: "ncxd21"
 };
 async function get_hooks() {
   let handle;

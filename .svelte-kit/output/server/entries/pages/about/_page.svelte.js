@@ -1,4 +1,4 @@
-import { _ as head, X as attr, U as attr_class, V as store_get, W as unsubscribe_stores } from "../../../chunks/index2.js";
+import { _ as head, U as attr, V as attr_class, W as store_get, X as unsubscribe_stores } from "../../../chunks/index2.js";
 import { l as language } from "../../../chunks/language.js";
 import { e as escape_html } from "../../../chunks/context.js";
 function _page($$renderer, $$props) {

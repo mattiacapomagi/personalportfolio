@@ -6,7 +6,8 @@
     "isEntry": true,
     "imports": [
       "_internal.js",
-      "_environment.js"
+      "_environment.js",
+      "_server.js"
     ]
   },
   "_context.js": {
@@ -46,7 +47,8 @@
     "imports": [
       "_index2.js",
       "_context.js",
-      "_environment.js"
+      "_environment.js",
+      "_server.js"
     ]
   },
   "_language.js": {
@@ -59,6 +61,10 @@
   "_projects.js": {
     "file": "chunks/projects.js",
     "name": "projects"
+  },
+  "_server.js": {
+    "file": "chunks/server.js",
+    "name": "server"
   },
   "_shared.js": {
     "file": "chunks/shared.js",
@@ -86,6 +92,7 @@
     "imports": [
       "_shared.js",
       "_false.js",
+      "_server.js",
       "_environment.js"
     ]
   },
@@ -109,7 +116,7 @@
     "isEntry": true,
     "imports": [
       "_false.js",
-      "_environment.js",
+      "_server.js",
       "_shared.js",
       "_exports.js",
       "_utils.js",
@@ -132,9 +139,10 @@
       "_index2.js",
       "_exports.js",
       "_utils.js",
-      "_context.js",
+      "_server.js",
       "_state.svelte.js",
-      "_language.js"
+      "_language.js",
+      "_context.js"
     ],
     "css": [
       "_app/immutable/assets/_layout.BBFeoZLY.css"
@@ -149,6 +157,7 @@
       "_index2.js",
       "_projects.js",
       "_language.js",
+      "_server.js",
       "_context.js"
     ],
     "css": [
@@ -185,6 +194,7 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
+      "_server.js",
       "_language.js",
       "_context.js"
     ],
