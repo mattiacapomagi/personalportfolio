@@ -393,13 +393,13 @@
   /* RESPONSIVE */
   @media (max-width: 768px) {
     .bento-page {
-      padding: 30px; /* Increased border padding */
+      padding: 16px; /* Reduced padding for "full width" feel */
     }
 
     .bento-container {
       grid-template-columns: 1fr;
       grid-template-rows: auto;
-      gap: 20px;
+      gap: 16px;
       padding-bottom: 40px;
     }
 
@@ -442,12 +442,16 @@
 
     /* Portfolio: Wide Horizontal Card */
     .portfolio-card {
-      min-height: 200px;
-      padding: 30px;
+      min-height: 160px; /* Reduced height as requested */
+      padding: 20px;
     }
 
     .portfolio-card h3 {
-      font-size: 2.2rem;
+      font-size: 1.8rem; /* Smaller text as requested */
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     .domain {
       font-size: 1rem;
@@ -470,14 +474,12 @@
     }
 
     .mini-arrow {
-      position: relative;
-      top: auto;
-      right: auto;
+      display: none; /* Removed arrow as requested */
     }
 
     .social-split {
       height: 120px;
-      gap: 20px;
+      gap: 16px;
     }
 
     .social-split svg {
