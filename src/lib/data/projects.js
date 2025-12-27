@@ -150,7 +150,7 @@ export const projects = [
 		images: [
 			'/media/Kinetic Type Tarantino/video.mp4'
 		],
-		previewImage: '/images/placeholder-2.jpg'
+		previewImage: '/media/Kinetic Type Tarantino/video.mp4'
 	},
 	{
 		slug: 'ute-limited-edition',
