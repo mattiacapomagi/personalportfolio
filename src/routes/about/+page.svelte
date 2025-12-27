@@ -1,5 +1,5 @@
 <script>
-  import { language } from "$lib/stores/language.svelte";
+  import { language } from "$lib/stores/language.svelte.js";
 
   const bio_en = `Rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. I don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
 

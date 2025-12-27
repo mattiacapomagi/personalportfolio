@@ -1,5 +1,5 @@
 <script>
-  import { language } from "$lib/stores/language.svelte";
+  import { language } from "$lib/stores/language.svelte.js";
   import { base } from "$app/paths";
 
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */

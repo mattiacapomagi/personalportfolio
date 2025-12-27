@@ -1,6 +1,6 @@
 <script>
   import ImageCarousel from "$lib/components/ImageCarousel.svelte";
-  import { language } from "$lib/stores/language.svelte";
+  import { language } from "$lib/stores/language.svelte.js";
 
   let { data } = $props();
   const { project } = data;

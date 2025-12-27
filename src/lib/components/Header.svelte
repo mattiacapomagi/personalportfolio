@@ -1,7 +1,7 @@
 <script>
   import { page } from "$app/stores";
   import { base } from "$app/paths";
-  import { language } from "$lib/stores/language.svelte";
+  import { language } from "$lib/stores/language.svelte.js";
 
   let activePath = $state("");
 
@@ -28,7 +28,7 @@
   </div>
 
   <nav class="nav">
-    <button class="nav-link lang-toggle" onclick={toggleLanguage}>
+    <button type="button" class="nav-link lang-toggle" onclick={toggleLanguage}>
       {language.current === "en" ? "it" : "en"}
     </button>
     <a

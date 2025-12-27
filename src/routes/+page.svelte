@@ -2,7 +2,7 @@
   import { projects } from "$lib/data/projects.js";
   import ProjectRow from "$lib/components/ProjectRow.svelte";
   import ImagePreview from "$lib/components/ImagePreview.svelte";
-  import { language } from "$lib/stores/language.svelte";
+  import { language } from "$lib/stores/language.svelte.js";
   import { fly } from "svelte/transition";
 
   let previewImage = $state(null);
