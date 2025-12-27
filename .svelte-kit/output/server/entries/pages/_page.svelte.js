@@ -1,4 +1,4 @@
-import { U as attr, Y as stringify, W as store_get, Z as ensure_array_like, X as unsubscribe_stores, V as attr_class } from "../../chunks/index2.js";
+import { U as attr, Y as stringify, W as store_get, _ as ensure_array_like, X as unsubscribe_stores, V as attr_class } from "../../chunks/index2.js";
 import { p as projects } from "../../chunks/projects.js";
 import { l as language } from "../../chunks/language.js";
 import { b as base } from "../../chunks/server.js";

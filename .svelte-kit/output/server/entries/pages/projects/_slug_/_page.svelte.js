@@ -1,4 +1,4 @@
-import { Z as ensure_array_like, V as attr_class, $ as attr_style, Y as stringify, U as attr, _ as head, W as store_get, X as unsubscribe_stores } from "../../../../chunks/index2.js";
+import { _ as ensure_array_like, V as attr_class, a0 as attr_style, Y as stringify, U as attr, $ as head, W as store_get, X as unsubscribe_stores } from "../../../../chunks/index2.js";
 import { b as base } from "../../../../chunks/server.js";
 import "@sveltejs/kit/internal/server";
 import { l as language } from "../../../../chunks/language.js";

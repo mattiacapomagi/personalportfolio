@@ -178,6 +178,15 @@
       "_app/immutable/assets/_page.CaG0OfpD.css"
     ]
   },
+  "src/routes/bento/+layout.svelte": {
+    "file": "entries/pages/bento/_layout.svelte.js",
+    "name": "entries/pages/bento/_layout.svelte",
+    "src": "src/routes/bento/+layout.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index2.js"
+    ]
+  },
   "src/routes/bento/+page.svelte": {
     "file": "entries/pages/bento/_page.svelte.js",
     "name": "entries/pages/bento/_page.svelte",
@@ -189,7 +198,7 @@
       "_context.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.CzTu5jQx.css"
+      "_app/immutable/assets/_page.DIhMnb6M.css"
     ]
   },
   "src/routes/projects/[slug]/+page.js": {

@@ -2648,6 +2648,15 @@ function unsubscribe_stores(store_values) {
     store_values[store_name][1]();
   }
 }
+function slot(renderer, $$props, name, slot_props, fallback_fn) {
+  var slot_fn = $$props.$$slots?.[name];
+  if (slot_fn === true) {
+    slot_fn = $$props["children"];
+  }
+  if (slot_fn !== void 0) {
+    slot_fn(renderer, slot_props);
+  }
+}
 function ensure_array_like(array_like_or_iterator) {
   if (array_like_or_iterator) {
     return array_like_or_iterator.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
@@ -2655,7 +2664,7 @@ function ensure_array_like(array_like_or_iterator) {
   return [];
 }
 export {
-  attr_style as $,
+  head as $,
   svelte_boundary_reset_onerror as A,
   Batch as B,
   COMMENT_NODE as C,
@@ -2681,9 +2690,10 @@ export {
   store_get as W,
   unsubscribe_stores as X,
   stringify as Y,
-  ensure_array_like as Z,
-  head as _,
+  slot as Z,
+  ensure_array_like as _,
   HYDRATION_END as a,
+  attr_style as a0,
   HYDRATION_START as b,
   HYDRATION_START_ELSE as c,
   get as d,
