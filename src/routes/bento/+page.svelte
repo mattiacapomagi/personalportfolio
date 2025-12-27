@@ -5,7 +5,7 @@
 
   // Social Links
   const links = {
-    linkedin: "https://www.linkedin.com/in/mattia-capomagi-461386221/",
+    linkedin: "https://www.linkedin.com/in/mattiacapomagi",
     instagram: "https://www.instagram.com/mattiacapomagi",
     gumroad: "https://mattiacapomagi.gumroad.com/",
     portfolio: base + "/",
