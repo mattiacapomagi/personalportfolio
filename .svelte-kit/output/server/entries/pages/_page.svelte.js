@@ -35,11 +35,15 @@ function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     let selectedCategory = "All";
+    function normalizeCategory(c) {
+      if (c === "Motion") return "Motion Design";
+      return c;
+    }
     let uniqueCategories = [
       "All",
       ...new Set(projects.flatMap((p) => {
         const cat = store_get($$store_subs ??= {}, "$language", language) === "en" ? p.category : p.category_it || p.category;
-        return cat.split(/\/|\+/).map((c) => c.trim());
+        return cat.split(/\/|\+/).map((c) => normalizeCategory(c.trim()));
       }).filter(Boolean))
     ];
     let filteredProjects = projects;

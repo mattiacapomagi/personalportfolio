@@ -9,6 +9,11 @@
   let mouseY = $state(0);
   let selectedCategory = $state("All");
 
+  function normalizeCategory(c) {
+    if (c === "Motion") return "Motion Design";
+    return c;
+  }
+
   let uniqueCategories = $derived([
     "All",
     ...new Set(
@@ -16,8 +21,8 @@
         .flatMap((p) => {
           const cat =
             $language === "en" ? p.category : p.category_it || p.category;
-          // Split by / or +, trim whitespace
-          return cat.split(/\/|\+/).map((c) => c.trim());
+          // Split by / or +, trim whitespace, and normalize
+          return cat.split(/\/|\+/).map((c) => normalizeCategory(c.trim()));
         })
         .filter(Boolean)
     ),
@@ -33,7 +38,7 @@
           // We split the project category similarly to match exact segments
           const projectCategories = currentCat
             .split(/\/|\+/)
-            .map((c) => c.trim());
+            .map((c) => normalizeCategory(c.trim()));
           return projectCategories.includes(selectedCategory);
         })
   );
