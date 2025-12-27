@@ -1,3 +1,4 @@
+<script>
   import { page } from "$app/stores";
   import { base } from "$app/paths";
   import { language } from "$lib/stores/language.svelte";
@@ -49,7 +50,9 @@
       <span class="desktop-text"
         >{language.current === "en" ? "about" : "chi sono?"}</span
       >
-      <span class="mobile-text">{language.current === "en" ? "abt" : "bio"}</span>
+      <span class="mobile-text"
+        >{language.current === "en" ? "abt" : "bio"}</span
+      >
     </a>
   </nav>
 </header>
