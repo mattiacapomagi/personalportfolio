@@ -37,6 +37,7 @@ function _page($$renderer, $$props) {
     let selectedCategory = "All";
     function normalizeCategory(c) {
       if (c === "Motion") return "Motion Design";
+      if (c === "Brand") return "Branding";
       return c;
     }
     let uniqueCategories = [

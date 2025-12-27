@@ -11,6 +11,7 @@
 
   function normalizeCategory(c) {
     if (c === "Motion") return "Motion Design";
+    if (c === "Brand") return "Branding";
     return c;
   }
 
@@ -110,7 +111,7 @@
     border: 1px solid var(--color-text);
     color: var(--color-text);
     padding: 5px 15px;
-    border-radius: 20px;
+    border-radius: 0; /* Square buttons */
     cursor: pointer;
     font-family: inherit;
     font-size: 0.9rem;
