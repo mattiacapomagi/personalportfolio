@@ -4,82 +4,81 @@
 
 /* Font Face Declarations - Keeping existing if they are correct, but ensuring Monospace is primary */
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-Thin.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-Thin.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Thin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-ThinItalic.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-ThinItalic.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Thin-Italic.woff2") format("woff2");
   font-weight: 100;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-Light.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-Light.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Light.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-Regular.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-Regular.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Light-Italic.woff2") format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-RegularItalic.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-RegularItalic.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Italic.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-Book.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-Book.woff") format("woff");
-  font-weight: 450;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-Medium.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-Medium.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-Bold.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-Bold.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "PP Neue Montreal Mono";
-  src: url("/fonts/PPNeueMontrealMono-BoldItalic.woff2") format("woff2"),
-    url("/fonts/PPNeueMontrealMono-BoldItalic.woff") format("woff");
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Bold-Italic.woff2") format("woff2");
   font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Extrabold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Targa Pro Mono";
+  src: url("/fonts/Targa-Pro-Mono-Extrabold-Italic.woff2") format("woff2");
+  font-weight: 800;
   font-style: italic;
   font-display: swap;
 }
@@ -95,7 +94,7 @@
   --color-accent: #f27200; /* Orange highlight */
 
   /* Fonts */
-  --font-mono: "PP Neue Montreal Mono", "Courier New", Courier, monospace;
+  --font-mono: "Targa Pro Mono", "Courier New", Courier, monospace;
 
   /* Layout */
   --page-padding: 30px; /* Increased to 30px per user request */
