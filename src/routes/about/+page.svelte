@@ -1,17 +1,17 @@
 <script>
   import { language } from "$lib/stores/language";
 
-  const bio_en = `rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. i don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
+  const bio_en = `Rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. I don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
 
-typography is a fundamental pillar of my work. i love experimenting with type design and lettering, treating letters as structural elements that give a specific voice to every concept.
+Typography is a fundamental pillar of my work. I love experimenting with type design and lettering, treating letters as structural elements that give a specific voice to every concept.
 
-at the same time, i embrace technology to break boundaries. i use artificial intelligence as a dedicated laboratory for experimentation, a tool that allows me to explore new visual territories and generate ideas that go beyond traditional methods.`;
+At the same time, I embrace technology to break boundaries. I use artificial intelligence as a dedicated laboratory for experimentation, a tool that allows me to explore new visual territories and generate ideas that go beyond traditional methods.`;
 
-  const bio_it = `graphic designer di 23 anni con base a roma, focalizzato sulla costruzione di brand identity forti e adattive. non credo nel limitarmi a un’unica estetica; il mio approccio è fluido e naviga l'ampio spazio tra un minimalismo preciso e un brutalismo crudo, a seconda di ciò che serve davvero al progetto.
+  const bio_it = `Graphic designer di 23 anni con base a Roma, focalizzato sulla costruzione di brand identity forti e adattive. Non credo nel limitarmi a un’unica estetica; il mio approccio è fluido e naviga l'ampio spazio tra un minimalismo preciso e un brutalismo crudo, a seconda di ciò che serve davvero al progetto.
 
-la tipografia è un pilastro fondamentale del mio lavoro. amo sperimentare con il type design e il lettering, trattando le lettere come elementi strutturali che danno una voce specifica a ogni concetto.
+La tipografia è un pilastro fondamentale del mio lavoro. Amo sperimentare con il type design e il lettering, trattando le lettere come elementi strutturali che danno una voce specifica a ogni concetto.
 
-allo stesso tempo, accolgo la tecnologia per superare i confini. uso l'intelligenza artificiale come un laboratorio dedicato alla sperimentazione, uno strumento che mi permette di esplorare nuovi territori visivi e generare idee che vanno oltre i metodi tradizionali.`;
+Allo stesso tempo, accolgo la tecnologia per superare i confini. Uso l'intelligenza artificiale come un laboratorio dedicato alla sperimentazione, uno strumento che mi permette di esplorare nuovi territori visivi e generare idee che vanno oltre i metodi tradizionali.`;
   let formStatus = $state("idle"); // 'idle', 'submitting', 'success', 'error'
   let formErrors = $state({ name: false, email: false, message: false });
 
@@ -93,13 +93,13 @@ allo stesso tempo, accolgo la tecnologia per superare i confini. uso l'intellige
           href="https://www.instagram.com/mattiacapomagi"
           target="_blank"
           rel="noopener noreferrer"
-          class="contact-link">instagram</a
+          class="contact-link">Instagram</a
         >
         <a
           href="https://www.linkedin.com/in/mattia-capomagi-461386221/"
           target="_blank"
           rel="noopener noreferrer"
-          class="contact-link">linkedin</a
+          class="contact-link">Linkedin</a
         >
       </div>
     </div>
