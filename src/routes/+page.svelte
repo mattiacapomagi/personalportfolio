@@ -12,9 +12,14 @@
   let uniqueCategories = $derived([
     "All",
     ...new Set(
-      projects.map((p) =>
-        $language === "en" ? p.category : p.category_it || p.category
-      )
+      projects
+        .flatMap((p) => {
+          const cat =
+            $language === "en" ? p.category : p.category_it || p.category;
+          // Split by / or +, trim whitespace
+          return cat.split(/\/|\+/).map((c) => c.trim());
+        })
+        .filter(Boolean)
     ),
   ]);
 
@@ -24,7 +29,12 @@
       : projects.filter((p) => {
           const currentCat =
             $language === "en" ? p.category : p.category_it || p.category;
-          return currentCat === selectedCategory;
+          // Check if selected category is part of the project's category string
+          // We split the project category similarly to match exact segments
+          const projectCategories = currentCat
+            .split(/\/|\+/)
+            .map((c) => c.trim());
+          return projectCategories.includes(selectedCategory);
         })
   );
 

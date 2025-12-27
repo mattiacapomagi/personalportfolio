@@ -37,7 +37,10 @@ function _page($$renderer, $$props) {
     let selectedCategory = "All";
     let uniqueCategories = [
       "All",
-      ...new Set(projects.map((p) => store_get($$store_subs ??= {}, "$language", language) === "en" ? p.category : p.category_it || p.category))
+      ...new Set(projects.flatMap((p) => {
+        const cat = store_get($$store_subs ??= {}, "$language", language) === "en" ? p.category : p.category_it || p.category;
+        return cat.split(/\/|\+/).map((c) => c.trim());
+      }).filter(Boolean))
     ];
     let filteredProjects = projects;
     $$renderer2.push(`<div class="home svelte-1uha8ag"><div class="filter-container svelte-1uha8ag"><!--[-->`);
