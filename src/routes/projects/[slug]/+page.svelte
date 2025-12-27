@@ -136,7 +136,8 @@
     }
 
     .project-meta {
-      gap: 20px;
+      gap: 10px;
+      flex-direction: column;
     }
 
     .project-description {

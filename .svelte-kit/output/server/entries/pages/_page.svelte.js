@@ -9,7 +9,7 @@ function ProjectRow($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     let { project } = $$props;
-    $$renderer2.push(`<a${attr("href", `${stringify(base)}/projects/${stringify(project.slug)}`)} class="project-row svelte-1ftngtl"><span class="col title svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</span> <span class="col client svelte-1ftngtl">${escape_html(project.client)}</span> <span class="col category svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.category : project.category_it)}</span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></a>`);
+    $$renderer2.push(`<a${attr("href", `${stringify(base)}/projects/${stringify(project.slug)}`)} class="project-row svelte-1ftngtl"><div class="text-content svelte-1ftngtl"><span class="col title svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.title : project.title_it || project.title)}</span> <span class="col client svelte-1ftngtl">${escape_html(project.client)}</span> <span class="col category svelte-1ftngtl">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? project.category : project.category_it)}</span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></div> <div class="mobile-preview svelte-1ftngtl"><img${attr("src", `${stringify(base)}${stringify(project.images[0] || project.previewImage)}`)}${attr("alt", project.title)} loading="lazy" class="svelte-1ftngtl"/></div></a>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
