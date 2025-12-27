@@ -18,10 +18,9 @@ At the same time, I embrace technology to break boundaries. I use artificial int
     {
       name: "Gumroad",
       url: "https://mattiacapomagi.gumroad.com/",
-      viewBox: "90.295 93.404 330.706 320.703",
-      /* Concatenated paths: Shadow + Main Circle + G Logo. 'evenodd' rule makes overlapping parts transparent. */
-      path: "m278.037 414.107c78.957 0 142.964-61.788 142.964-138.008s-64.007-138.009-142.964-138.009-142.965 61.789-142.965 138.009 64.008 138.008 142.965 138.008z m241.141 385.186c83.044 0 150.846-65.055 150.846-145.891 0-80.835-67.802-145.891-150.846-145.891-83.043 0-150.846 65.056-150.846 145.891 0 80.836 67.803 145.891 150.846 145.891z m229.795 312.898c-42.217 0-67.05-34.11-67.05-76.54 0-44.095 27.316-79.869 79.465-79.869 53.806 0 72.016 36.607 72.844 57.405h-38.905c-.827-11.647-10.761-29.118-34.766-29.118-25.66 0-42.216 22.463-42.216 49.918s16.556 49.917 42.216 49.917c23.178 0 33.111-18.303 37.25-36.605h-37.25v-14.976h78.162v76.54h-34.29v-48.254c-2.484 17.472-13.245 51.582-55.46 51.582z",
-      fillRule: "evenodd",
+      viewBox: "0 0 2500 2500",
+      /* Using inner HTML to preserve specific colors (Black & White with strokes) as requested */
+      content: `<path d="M1419.3,2462.2c596.9,0,1080.7-467.1,1080.7-1043.3S2016.1,375.6,1419.3,375.6,338.5,842.7,338.5,1418.9s483.9,1043.3,1080.8,1043.3Z" fill="currentColor"/><path d="M1140.3,2243.6c627.8,0,1140.3-491.8,1140.3-1102.9S1768.1,37.8,1140.3,37.8,0,529.6,0,1140.7s512.6,1102.9,1140.3,1102.9Z" fill="#fff" stroke="#000" stroke-width="11.8" stroke-miterlimit="30.2"/><path d="M1054.6,1697.1c-319.1,0-506.9-257.9-506.9-578.6s206.5-603.8,600.7-603.8,544.4,276.7,550.7,434h-294.1c-6.3-88-81.3-220.1-262.8-220.1s-319.1,169.8-319.1,377.4,125.2,377.4,319.1,377.4,250.3-138.4,281.6-276.7h-281.6v-113.2h590.9v578.6h-259.2v-364.8c-18.8,132.1-100.1,389.9-419.3,389.9h0Z" fill="currentColor"/>`,
     },
     {
       name: "Linkedin",
@@ -126,11 +125,15 @@ At the same time, I embrace technology to break boundaries. I use artificial int
               width="24"
               height="24"
             >
-              <path
-                fill="currentColor"
-                d={social.path}
-                fill-rule={social.fillRule || "nonzero"}
-              />
+              {#if social.content}
+                {@html social.content}
+              {:else}
+                <path
+                  fill="currentColor"
+                  d={social.path}
+                  fill-rule={social.fillRule || "nonzero"}
+                />
+              {/if}
             </svg>
           </a>
         {/each}
