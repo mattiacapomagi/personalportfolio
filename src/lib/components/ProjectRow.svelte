@@ -182,8 +182,9 @@
     .preview-media {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain; /* Show full image without cropping */
       display: block;
+      background: #000; /* Dark background for letterboxing */
     }
 
     .col {
