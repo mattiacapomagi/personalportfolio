@@ -169,7 +169,7 @@
             <!-- Main Video -->
             <!-- svelte-ignore a11y_media_has_caption -->
             <video
-              src={media}
+              src="{base}{media}"
               class="main-video"
               bind:this={videoRefs[i]}
               loop
