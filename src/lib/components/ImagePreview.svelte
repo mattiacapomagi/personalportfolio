@@ -33,20 +33,19 @@
   .image-preview {
     position: fixed;
     width: 300px;
-    height: 200px; /* Force aspect ratio? 16:9 is typical, user didn't specify. 200px fixed height is existing. */
+    height: auto; /* Allow height to adapt */
     pointer-events: none;
     z-index: 1000;
     opacity: 1;
     transition: opacity 0.15s ease;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    background: #000; /* Dark bg for video loading */
+    background: transparent; /* Remove fixed bg */
     overflow: hidden;
   }
 
   .preview-media {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto; /* Maintain aspect ratio */
     display: block;
   }
 
