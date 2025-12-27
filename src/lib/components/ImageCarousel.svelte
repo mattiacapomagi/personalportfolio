@@ -103,6 +103,7 @@
   }
 
   let fullscreenImage = $state(null);
+  let isMobile = $state(false);
 
   $effect(() => {
     if (fullscreenImage) {
@@ -113,6 +114,15 @@
     return () => {
       document.body.style.overflow = "";
     };
+  });
+
+  onMount(() => {
+    const checkMobile = () => {
+      isMobile = window.matchMedia("(max-width: 768px)").matches;
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   });
 
   function openFullscreenImage(src) {
@@ -175,14 +185,17 @@
               loop
               muted
               playsinline
+              controls={isMobile}
               ontimeupdate={(e) => handleTimeUpdate(e, i)}
-              onclick={() => togglePlay(i)}
+              onclick={() => !isMobile && togglePlay(i)}
             ></video>
 
             <!-- Custom Controls -->
             <div
               class="video-controls"
-              class:visible={!isPlaying[i] || i === currentCanonicalIndex}
+              class:visible={!isMobile &&
+                (!isPlaying[i] || i === currentCanonicalIndex)}
+              style:display={isMobile ? "none" : "flex"}
             >
               <div class="control-row">
                 <button
