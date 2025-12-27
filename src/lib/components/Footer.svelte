@@ -3,6 +3,7 @@
 
   let timeStr = $state("");
   let dateStr = $state("");
+  let currentYear = new Date().getFullYear();
   let interval;
 
   function updateTime() {
@@ -23,8 +24,8 @@
 
 <footer class="site-footer">
   <div class="copyright">
-    <span class="desktop-text">COPYRIGHT MATTIA CAPOMAGI 2025</span>
-    <span class="mobile-text">Mattia Capomagi 2025</span>
+    <span class="desktop-text">COPYRIGHT MATTIA CAPOMAGI {currentYear}</span>
+    <span class="mobile-text">Mattia Capomagi {currentYear}</span>
   </div>
   <div class="timestamp">
     <span class="desktop-text">{dateStr} {timeStr}</span>
