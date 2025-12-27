@@ -1,0 +1,1 @@
+import{d as o,f as u,X as g,h as t,g as p,C as _,M as i,o as l,s as d,p as m}from"./BOUigU_t.js";function E(n,r){let s=null,f=t;var a;if(t){s=m;for(var e=p(document.head);e!==null&&(e.nodeType!==_||e.data!==n);)e=i(e);if(e===null)l(!1);else{var y=i(e);e.remove(),d(y)}}t||(a=document.head.appendChild(o()));try{u(()=>r(a),g)}finally{f&&(l(!0),d(s))}}export{E as h};
