@@ -191,6 +191,9 @@
     .project-list-header {
       display: none; /* Often header is hidden on mobile for lists */
     }
-    /* Or just smaller */
+
+    .filter-container {
+      margin-top: 0;
+    }
   }
 </style>
