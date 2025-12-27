@@ -2,7 +2,7 @@
   import { projects } from "$lib/data/projects.js";
   import ProjectRow from "$lib/components/ProjectRow.svelte";
   import ImagePreview from "$lib/components/ImagePreview.svelte";
-  import { language } from "$lib/stores/language.svelte.js";
+  import { language } from "$lib/stores/language.js";
   import { fly } from "svelte/transition";
 
   let previewImage = $state(null);
@@ -22,9 +22,7 @@
       projects
         .flatMap((p) => {
           const cat =
-            language.current === "en"
-              ? p.category
-              : p.category_it || p.category;
+            $language === "en" ? p.category : p.category_it || p.category;
           // Split by / or +, trim whitespace, and normalize
           return cat.split(/\/|\+/).map((c) => normalizeCategory(c.trim()));
         })
@@ -37,9 +35,7 @@
       ? projects
       : projects.filter((p) => {
           const currentCat =
-            language.current === "en"
-              ? p.category
-              : p.category_it || p.category;
+            $language === "en" ? p.category : p.category_it || p.category;
           // Check if selected category is part of the project's category string
           // We split the project category similarly to match exact segments
           const projectCategories = currentCat
@@ -81,13 +77,11 @@
 
   <div class="project-list-header">
     <span class="col"
-      >{language.current === "en" ? "project title" : "titolo progetto"}</span
+      >{$language === "en" ? "project title" : "titolo progetto"}</span
     >
-    <span class="col">{language.current === "en" ? "client" : "cliente"}</span>
-    <span class="col"
-      >{language.current === "en" ? "category" : "categoria"}</span
-    >
-    <span class="col year">{language.current === "en" ? "year" : "anno"}</span>
+    <span class="col">{$language === "en" ? "client" : "cliente"}</span>
+    <span class="col">{$language === "en" ? "category" : "categoria"}</span>
+    <span class="col year">{$language === "en" ? "year" : "anno"}</span>
   </div>
 
   <div class="project-list">

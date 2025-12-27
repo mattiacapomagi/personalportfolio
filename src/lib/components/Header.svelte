@@ -33,7 +33,7 @@
       class:active={normalizePath(activePath) === normalizePath(base)}
     >
       <span class="desktop-text"
-        >{language.current === "en" ? "projects" : "progetti"}</span
+        >{$language === "en" ? "projects" : "progetti"}</span
       >
       <span class="mobile-text">prj</span>
     </a>
@@ -44,11 +44,9 @@
         normalizePath(`${base}/about`)}
     >
       <span class="desktop-text"
-        >{language.current === "en" ? "about" : "chi sono?"}</span
+        >{$language === "en" ? "about" : "chi sono?"}</span
       >
-      <span class="mobile-text"
-        >{language.current === "en" ? "abt" : "bio"}</span
-      >
+      <span class="mobile-text">{$language === "en" ? "abt" : "bio"}</span>
     </a>
   </nav>
 </header>
