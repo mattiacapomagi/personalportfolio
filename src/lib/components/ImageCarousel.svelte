@@ -270,7 +270,7 @@
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
             <img
-              src={media}
+              src="{base}{media}"
               alt="Project slide {i + 1}"
               onclick={() => openFullscreenImage(media)}
               class="clickable-image"
@@ -294,7 +294,7 @@
     <div class="lightbox" onclick={closeFullscreenImage}>
       <button class="close-btn" aria-label="Close">×</button>
       <img
-        src={fullscreenImage}
+        src="{base}{fullscreenImage}"
         alt="Fullscreen preview"
         onclick={(e) => e.stopPropagation()}
       />
