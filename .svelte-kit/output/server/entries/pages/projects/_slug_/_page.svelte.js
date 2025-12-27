@@ -41,7 +41,7 @@ function ImageCarousel($$renderer, $$props) {
       $$renderer2.push(`<div${attr_class("slide svelte-1kl9tqn", void 0, { "active": i === currentCanonicalIndex })}${attr_style(`transform: translateX(${stringify(getPos(i))}%); z-index: ${stringify(getZIndex(i))}`)}>`);
       if (isVideo(media)) {
         $$renderer2.push("<!--[-->");
-        $$renderer2.push(`<div class="video-container svelte-1kl9tqn"><video${attr("src", media)} class="blur-bg-video svelte-1kl9tqn" autoplay loop muted playsinline></video>  <video${attr("src", media)} class="main-video svelte-1kl9tqn" loop muted playsinline></video> <div${attr_class("video-controls svelte-1kl9tqn", void 0, { "visible": !isPlaying[i] || i === currentCanonicalIndex })}><div class="control-row svelte-1kl9tqn"><button class="icon-btn play-btn svelte-1kl9tqn"${attr("aria-label", isPlaying[i] ? "Pause" : "Play")}>`);
+        $$renderer2.push(`<div class="video-container svelte-1kl9tqn"><video${attr("src", `${stringify(base)}${stringify(media)}`)} class="blur-bg-video svelte-1kl9tqn" autoplay loop muted playsinline></video>  <video${attr("src", media)} class="main-video svelte-1kl9tqn" loop muted playsinline></video> <div${attr_class("video-controls svelte-1kl9tqn", void 0, { "visible": !isPlaying[i] || i === currentCanonicalIndex })}><div class="control-row svelte-1kl9tqn"><button class="icon-btn play-btn svelte-1kl9tqn"${attr("aria-label", isPlaying[i] ? "Pause" : "Play")}>`);
         if (isPlaying[i]) {
           $$renderer2.push("<!--[-->");
           $$renderer2.push(`<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"></path></svg>`);
