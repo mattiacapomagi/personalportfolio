@@ -19,8 +19,7 @@ At the same time, I embrace technology to break boundaries. I use artificial int
       name: "Gumroad",
       url: "https://mattiacapomagi.gumroad.com/",
       viewBox: "0 0 24 24",
-      /* Simple shopping bag icon for clear "Store" meaning, or generic link if preferred. User asked for "Gumroad", I'll use a recognized Store icon or the G logo if confident. Let's use a clear "Store/Bag" icon or a G. The Gumroad logo is distinct. I will use the actual Gumroad 'G' logo path found in Simple Icons or similar. */
-      path: "M15.344 3.033c-2.14 0-2.834.02-3.18.067-2.615 1.583-2.61 1.583-2.61 1.583s-4.575 1.776-4.575 7.027c0 4.254 3.654 4.887 4.717 4.887 1.536 0 3.33-.518 3.858-1.58 0 0 0 3.553-2.613 3.553-2.316 0-3.418-1.543-3.92-2.5l-3.323 1.167C5.32 20.373 8.35 21 9.947 21c5.212 0 6.772-4.04 6.772-8.52V5.11s3.71-1.002 3.71-2.076H15.344M9.993 14.507c-1.22 0-2.327-.55-2.327-2.583 0-2.503 1.488-3.085 2.502-3.085 1.353 0 2.223.75 2.223 2.723 0 2.14-1.357 2.945-2.398 2.945",
+      path: "M4.1 3.5C6.11 1 9.8 1.3 12 1.3c2.4 0 5.2.3 7 .6v10c0 4.2-1.6 7.1-4.7 8.7-2.3 1.2-5.7 1.4-8.4.3-3.5-1.5-5.5-3.4-6.8-5.9l3.2-1.7c2.3 3.9 6 4.5 8.2 4.5 1.6 0 3.1-.3 4.7-1.7V13.2c-1.9 1.7-4.3 2-6.3 2-1.9 0-5.8-.2-7.9-3.1-2.1-2.9-2.2-8.9.1-11.7 2-.7 3.5-.9 3.9-.9zM12 6.5c2.1 0 3.7 1.6 3.7 4.3s-1.6 4.3-3.7 4.3-3.7-1.6-3.7-4.3 1.6-4.3 3.7-4.3z",
     },
     {
       name: "Linkedin",
