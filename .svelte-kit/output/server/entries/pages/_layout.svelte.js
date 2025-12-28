@@ -7,11 +7,8 @@ import { b as base } from "../../chunks/server.js";
 import "@sveltejs/kit/internal/server";
 import "../../chunks/state.svelte.js";
 import { l as language } from "../../chunks/language.js";
-import { b as ssr_context, e as escape_html } from "../../chunks/context.js";
-function onDestroy(fn) {
-  /** @type {SSRContext} */
-  ssr_context.r.on_destroy(fn);
-}
+import { e as escape_html } from "../../chunks/context.js";
+import { o as onDestroy } from "../../chunks/index-server.js";
 function Header($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;

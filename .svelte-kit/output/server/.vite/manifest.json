@@ -26,6 +26,13 @@
     "file": "chunks/false.js",
     "name": "false"
   },
+  "_index-server.js": {
+    "file": "chunks/index-server.js",
+    "name": "index-server",
+    "imports": [
+      "_context.js"
+    ]
+  },
   "_index.js": {
     "file": "chunks/index.js",
     "name": "index",
@@ -146,7 +153,8 @@
       "_server.js",
       "_state.svelte.js",
       "_language.js",
-      "_context.js"
+      "_context.js",
+      "_index-server.js"
     ],
     "css": [
       "_app/immutable/assets/_layout.CpWdjzJM.css"
@@ -261,12 +269,12 @@
     "isEntry": true,
     "imports": [
       "_index2.js",
-      "_server.js",
+      "_index-server.js",
       "_language.js",
       "_context.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.8MJh1_8I.css"
+      "_app/immutable/assets/_page.8PD6Phyj.css"
     ]
   }
 }

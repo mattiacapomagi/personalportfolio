@@ -10,9 +10,9 @@ const config = {
     adapter: adapter({
       pages: "build",
       assets: "build",
-      fallback: undefined,
+      fallback: "200.html", // SPA fallback for dynamic routes
       precompress: false,
-      strict: true,
+      strict: false, // Allow dynamic routes
     }),
     paths: {
       base: dev ? "" : "/personalportfolio",
