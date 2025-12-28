@@ -4,17 +4,27 @@
   import { language, toggleLanguage } from "$lib/stores/language.js";
 
   let activePath = $state("");
+  let menuOpen = $state(false);
 
   $effect(() => {
     activePath = $page.url.pathname;
   });
 
+  // Close menu on navigation
+  $effect(() => {
+    if (activePath) {
+      menuOpen = false;
+    }
+  });
+
   function normalizePath(path) {
-    if (!path) return "/"; // Treat empty/undefined as root
-    // Ensure leading slash
+    if (!path) return "/";
     if (!path.startsWith("/")) path = "/" + path;
-    // Remove trailing slash if present, unless it's just "/"
     return path.endsWith("/") && path.length > 1 ? path.slice(0, -1) : path;
+  }
+
+  function toggleMenu() {
+    menuOpen = !menuOpen;
   }
 </script>
 
@@ -23,7 +33,8 @@
     <a href="{base}/">MATTIA CAPOMAGI</a>
   </div>
 
-  <nav class="nav">
+  <!-- Desktop Nav -->
+  <nav class="nav desktop-nav">
     <button type="button" class="nav-link lang-toggle" onclick={toggleLanguage}>
       {$language === "en" ? "it" : "en"}
     </button>
@@ -32,10 +43,7 @@
       class="nav-link"
       class:active={normalizePath(activePath) === normalizePath(base)}
     >
-      <span class="desktop-text"
-        >{$language === "en" ? "projects" : "progetti"}</span
-      >
-      <span class="mobile-text">prj</span>
+      {$language === "en" ? "projects" : "progetti"}
     </a>
     <a
       href="{base}/tools"
@@ -44,8 +52,7 @@
         normalizePath(`${base}/tools`)
       )}
     >
-      <span class="desktop-text">tools</span>
-      <span class="mobile-text">tls</span>
+      tools
     </a>
     <a
       href="{base}/about"
@@ -53,13 +60,62 @@
       class:active={normalizePath(activePath) ===
         normalizePath(`${base}/about`)}
     >
-      <span class="desktop-text"
-        >{$language === "en" ? "about" : "chi sono?"}</span
-      >
-      <span class="mobile-text">{$language === "en" ? "abt" : "bio"}</span>
+      {$language === "en" ? "about" : "chi sono?"}
     </a>
   </nav>
+
+  <!-- Mobile Nav -->
+  <nav class="nav mobile-nav">
+    <button type="button" class="nav-link lang-toggle" onclick={toggleLanguage}>
+      {$language === "en" ? "it" : "en"}
+    </button>
+    <button
+      type="button"
+      class="hamburger"
+      class:open={menuOpen}
+      onclick={toggleMenu}
+      aria-label="Menu"
+    >
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </button>
+  </nav>
 </header>
+
+<!-- Mobile Menu Overlay -->
+{#if menuOpen}
+  <div class="mobile-menu-overlay" onclick={toggleMenu}></div>
+{/if}
+
+<div class="mobile-menu" class:open={menuOpen}>
+  <a
+    href="{base}/"
+    class="menu-link"
+    class:active={normalizePath(activePath) === normalizePath(base)}
+    style="--delay: 0.05s"
+  >
+    {$language === "en" ? "projects" : "progetti"}
+  </a>
+  <a
+    href="{base}/tools"
+    class="menu-link"
+    class:active={normalizePath(activePath).startsWith(
+      normalizePath(`${base}/tools`)
+    )}
+    style="--delay: 0.1s"
+  >
+    tools
+  </a>
+  <a
+    href="{base}/about"
+    class="menu-link"
+    class:active={normalizePath(activePath) === normalizePath(`${base}/about`)}
+    style="--delay: 0.15s"
+  >
+    {$language === "en" ? "about" : "chi sono?"}
+  </a>
+</div>
 
 <style>
   .header {
@@ -69,7 +125,6 @@
     padding: 0;
     margin-top: 8px;
     width: 100%;
-    /* margin-bottom: 2rem; Removed to let page handle spacing */
   }
 
   .logo a {
@@ -85,14 +140,15 @@
   .nav {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
   }
 
   .nav-link {
-    font-family: inherit; /* Ensure button inherits font */
+    font-family: inherit;
     font-size: 1.5rem;
     font-weight: 700;
     text-decoration: none;
-    color: #b0b0b0; /* Light gray for inactive state */
+    color: #b0b0b0;
     cursor: pointer;
     background: none;
     border: none;
@@ -106,50 +162,163 @@
     color: var(--color-accent);
   }
 
-  /* Text Display Logic */
-  .mobile-text {
+  /* Desktop/Mobile Nav Toggle */
+  .mobile-nav {
     display: none;
   }
 
-  .desktop-text {
-    display: inline;
+  .desktop-nav {
+    display: flex;
+  }
+
+  /* Hamburger Button */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    gap: 5px;
+  }
+
+  .hamburger .line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transform-origin: center;
+  }
+
+  .hamburger.open .line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .hamburger.open .line:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  .hamburger.open .line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Mobile Menu Overlay */
+  .mobile-menu-overlay {
+    display: none;
+  }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--color-bg);
+    padding: 0 var(--page-padding);
+    flex-direction: column;
+    gap: 0;
+    z-index: 999;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition:
+      max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      opacity 0.3s ease;
+  }
+
+  .mobile-menu.open {
+    max-height: 300px;
+    opacity: 1;
+    padding-bottom: 20px;
+  }
+
+  .menu-link {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--color-text);
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease,
+      color 0.2s ease;
+    transition-delay: var(--delay);
+  }
+
+  .mobile-menu.open .menu-link {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .menu-link:hover,
+  .menu-link.active {
+    color: var(--color-accent);
+  }
+
+  .menu-link:last-child {
+    border-bottom: none;
   }
 
   @media (max-width: 768px) {
     .logo a,
     .nav-link {
-      font-size: 0.9rem; /* Much smaller for tablet */
+      font-size: 0.9rem;
     }
   }
 
   @media (max-width: 480px) {
     .header {
-      /* Keep row layout */
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
       gap: 0;
-      margin-bottom: 20px; /* Separation from content */
+      margin-bottom: 20px;
     }
 
     .logo a {
-      font-size: 1rem; /* Reduced by ~15% */
+      font-size: 1.3rem;
     }
 
-    .nav-link {
-      font-size: 1rem; /* Reduced by ~15% */
-    }
-
-    .nav {
-      gap: 0.8rem;
-    }
-
-    /* Toggle Text */
-    .desktop-text {
+    .desktop-nav {
       display: none;
     }
-    .mobile-text {
-      display: inline;
+
+    .mobile-nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .hamburger {
+      display: flex;
+    }
+
+    .mobile-menu {
+      display: flex;
+    }
+
+    .mobile-menu-overlay {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: transparent;
+      z-index: 998;
+    }
+
+    .nav-link.lang-toggle {
+      font-size: 1.3rem;
     }
   }
 </style>
