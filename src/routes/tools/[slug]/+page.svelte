@@ -443,9 +443,9 @@
   .canvas-container {
     flex: 1;
     border: 2px solid var(--color-text);
-    border-radius: 0; /* Zero radius */
+    border-radius: 0;
     padding: 16px;
-    background: #f5f5f5;
+    background: rgba(128, 128, 128, 0.1); /* Subtle contrast from bg */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -527,6 +527,7 @@
     font-size: 0.7rem;
     font-weight: 700;
     font-family: var(--font-mono);
+    color: var(--color-text);
     cursor: pointer;
     transition: all 0.2s ease;
   }
