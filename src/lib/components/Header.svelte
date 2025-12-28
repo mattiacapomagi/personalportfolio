@@ -38,6 +38,16 @@
       <span class="mobile-text">prj</span>
     </a>
     <a
+      href="{base}/tools"
+      class="nav-link"
+      class:active={normalizePath(activePath).startsWith(
+        normalizePath(`${base}/tools`)
+      )}
+    >
+      <span class="desktop-text">tools</span>
+      <span class="mobile-text">tls</span>
+    </a>
+    <a
       href="{base}/about"
       class="nav-link"
       class:active={normalizePath(activePath) ===
