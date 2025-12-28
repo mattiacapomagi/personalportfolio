@@ -367,11 +367,13 @@
 
 <style>
   .bricklab-tool {
-    flex: 1;
+    height: calc(
+      100vh - 140px
+    ); /* Fit within viewport accounting for header/footer */
+    min-height: 0;
     display: flex;
     flex-direction: column;
     padding: 0 var(--page-padding);
-    min-height: 0; /* Crucial for nested flex scrolling/shrinking */
   }
 
   /* Upload Zone */

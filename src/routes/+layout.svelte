@@ -73,8 +73,7 @@
   .tool-layout {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
   }
 
   .constrained-wrapper {
