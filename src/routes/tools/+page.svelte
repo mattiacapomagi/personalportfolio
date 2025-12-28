@@ -26,7 +26,7 @@
 
 <style>
   .tools-page {
-    padding: 0;
+    padding: 0 30px;
   }
 
   /* Header Grid */
