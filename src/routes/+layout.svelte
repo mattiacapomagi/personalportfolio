@@ -86,6 +86,8 @@
 
   .tool-main {
     flex: 1;
+    display: flex; /* Necessary for child to flex-grow */
+    flex-direction: column;
     width: 100%;
     /* No max-width constraint here -> Full Width */
   }
