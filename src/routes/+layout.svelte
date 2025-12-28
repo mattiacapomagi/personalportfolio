@@ -84,14 +84,14 @@
   .container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Full viewport height */
+    min-height: 100vh;
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 0 var(--page-padding);
+    padding: 70px var(--page-padding) 0; /* Top padding for fixed navbar */
   }
 
   .main {
-    flex: 1; /* Takes up remaining space, pushing footer down */
+    flex: 1;
     padding-bottom: 0;
   }
 
@@ -100,6 +100,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding-top: 70px; /* Top padding for fixed navbar */
   }
 
   .constrained-wrapper {
@@ -111,9 +112,17 @@
 
   .tool-main {
     flex: 1;
-    display: flex; /* Necessary for child to flex-grow */
+    display: flex;
     flex-direction: column;
     width: 100%;
-    /* No max-width constraint here -> Full Width */
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding-top: 60px; /* Smaller padding for mobile navbar */
+    }
+    .tool-layout {
+      padding-top: 60px;
+    }
   }
 </style>
