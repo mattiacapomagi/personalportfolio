@@ -65,23 +65,6 @@
       "_index.js"
     ]
   },
-  "_lenis.js": {
-    "file": "chunks/lenis.js",
-    "name": "lenis",
-    "imports": [
-      "_index2.js",
-      "_exports.js",
-      "_utils.js",
-      "_server.js",
-      "_state.svelte.js",
-      "_language.js",
-      "_context.js",
-      "_index-server.js"
-    ],
-    "css": [
-      "_app/immutable/assets/lenis.DV1HM0k4.css"
-    ]
-  },
   "_projects.js": {
     "file": "chunks/projects.js",
     "name": "projects"
@@ -164,10 +147,17 @@
     "src": "src/routes/+layout.svelte",
     "isEntry": true,
     "imports": [
-      "_lenis.js"
+      "_index2.js",
+      "_exports.js",
+      "_utils.js",
+      "_server.js",
+      "_state.svelte.js",
+      "_language.js",
+      "_context.js",
+      "_index-server.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.D8PuSnqs.css"
+      "_app/immutable/assets/_layout.3D7TKmMK.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -261,18 +251,6 @@
     ],
     "css": [
       "_app/immutable/assets/_page.BYk5R0L7.css"
-    ]
-  },
-  "src/routes/tools/[slug]/+layout@.svelte": {
-    "file": "entries/pages/tools/_slug_/_layout@.svelte.js",
-    "name": "entries/pages/tools/_slug_/_layout@.svelte",
-    "src": "src/routes/tools/[slug]/+layout@.svelte",
-    "isEntry": true,
-    "imports": [
-      "_lenis.js"
-    ],
-    "css": [
-      "_app/immutable/assets/_layout@._8z9YDae.css"
     ]
   },
   "src/routes/tools/[slug]/+page.js": {

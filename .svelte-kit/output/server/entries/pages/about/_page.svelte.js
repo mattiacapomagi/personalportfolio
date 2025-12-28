@@ -1,4 +1,4 @@
-import { $ as head, X as store_get, _ as ensure_array_like, V as attr, W as attr_class, Y as unsubscribe_stores } from "../../../chunks/index2.js";
+import { $ as head, W as store_get, _ as ensure_array_like, U as attr, V as attr_class, X as unsubscribe_stores } from "../../../chunks/index2.js";
 import { l as language } from "../../../chunks/language.js";
 import { e as escape_html } from "../../../chunks/context.js";
 function html(value) {

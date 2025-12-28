@@ -1,1 +1,0 @@
-import{L,M,N as T,D as c,S as q}from"./b55XWWnR.js";function k(i,r){return i===r||(i==null?void 0:i[q])===r}function A(i={},r,S,h){return L(()=>{var s,f;return M(()=>{s=f,f=(h==null?void 0:h())||[],T(()=>{i!==S(...f)&&(r(i,...f),s&&k(S(...s),i)&&r(null,...s))})}),()=>{c(()=>{f&&k(S(...f),i)&&r(null,...f)})}}),i}export{A as b};
