@@ -19,13 +19,11 @@
   <div class="tools-list">
     {#each tools as tool}
       <a href="{base}/tools/{tool.slug}" class="tool-row">
-        <div class="text-content">
-          <span class="col tool-title">{tool.title}</span>
-          <span class="col tool-year">{tool.year}</span>
-        </div>
+        <span class="col tool-title">{tool.title}</span>
         <span class="col tool-desc"
           >{$language === "en" ? tool.description : tool.description_it}</span
         >
+        <span class="col tool-year">{tool.year}</span>
       </a>
     {/each}
   </div>
@@ -123,41 +121,41 @@
     }
 
     .tool-row {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* Two equal columns */
+      grid-template-rows: auto auto;
+      gap: 4px 20px;
       padding: 16px 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    /* Left column: title + year stacked */
-    .text-content {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      flex-shrink: 0;
-    }
-
+    /* Left column: title on first row */
     .tool-title {
+      grid-column: 1;
+      grid-row: 1;
       font-size: 1rem;
       font-weight: 700;
+      text-align: left;
     }
 
+    /* Left column: year on second row */
     .tool-year {
+      grid-column: 1;
+      grid-row: 2;
       font-size: 0.8rem;
       opacity: 0.6;
       text-align: left;
     }
 
-    /* Right column: description left-aligned */
+    /* Right column: description spans both rows */
     .tool-desc {
-      display: block;
+      grid-column: 2;
+      grid-row: 1 / 3;
+      display: flex;
+      align-items: flex-start;
       text-align: left;
       font-size: 0.85rem;
       opacity: 0.7;
-      flex: 1;
     }
   }
 </style>
