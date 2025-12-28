@@ -360,7 +360,7 @@
 
     .mobile-nav {
       display: flex;
-      gap: 1rem;
+      gap: 1.5rem; /* More space for lang selector */
     }
 
     .more-btn {
@@ -376,7 +376,7 @@
     }
 
     .menu-container {
-      top: 50px;
+      top: 12px;
     }
 
     .menu-link {

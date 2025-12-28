@@ -52,12 +52,20 @@
   });
 
   // Check if we are on a specific tool page (e.g. /tools/bricklab)
-  // This logic assumes tools are nested under /tools/ and NOT just the list page (/tools)
-  // Check if we are on a specific tool page OR the tools list
   let isToolPage = $derived($page.url.pathname.startsWith("/tools/"));
+
+  // Check if we are on bento page (no header/footer)
+  let isBentoPage = $derived(
+    $page.url.pathname === "/bento" || $page.url.pathname === "/bento/"
+  );
 </script>
 
-{#if isToolPage}
+{#if isBentoPage}
+  <!-- Bento page has no header/footer -->
+  <div class="bento-layout">
+    {@render children()}
+  </div>
+{:else if isToolPage}
   <div class="tool-layout">
     <div class="constrained-wrapper">
       <Header />
@@ -124,5 +132,11 @@
     .tool-layout {
       padding-top: 60px;
     }
+  }
+
+  /* Bento Layout - fullscreen, no header/footer */
+  .bento-layout {
+    min-height: 100vh;
+    width: 100%;
   }
 </style>
