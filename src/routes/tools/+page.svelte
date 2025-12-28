@@ -137,6 +137,7 @@
       font-size: 1rem;
       font-weight: 700;
       text-align: left;
+      margin-bottom: 2px;
     }
 
     .tool-year {
