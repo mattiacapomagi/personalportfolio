@@ -1,10 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-  import {
-    themePreference,
-    cycleTheme,
-    getResolvedTheme,
-  } from "$lib/stores/theme.js";
+  import { themePreference, cycleTheme } from "$lib/stores/theme.js";
+  import { language } from "$lib/stores/language.js";
 
   let timeStr = $state("");
   let dateStr = $state("");
@@ -13,8 +10,8 @@
 
   function updateTime() {
     const now = new Date();
-    dateStr = now.toLocaleDateString("en-GB"); // DD/MM/YYYY
-    timeStr = now.toLocaleTimeString("en-GB"); // HH:MM:SS
+    dateStr = now.toLocaleDateString("en-GB");
+    timeStr = now.toLocaleTimeString("en-GB");
   }
 
   onMount(() => {
@@ -30,17 +27,22 @@
     themePreference.update((current) => cycleTheme(current));
   }
 
-  // Get icon based on current preference
-  let themeIcon = $derived(() => {
-    if ($themePreference === "light") return "☀️";
-    if ($themePreference === "dark") return "🌙";
-    return "🔄"; // system
+  // Get label based on current preference and language
+  let themeLabel = $derived(() => {
+    if ($themePreference === "light") {
+      return $language === "en" ? "LIGHT MODE" : "MODALITÀ CHIARA";
+    }
+    if ($themePreference === "dark") {
+      return $language === "en" ? "DARK MODE" : "MODALITÀ SCURA";
+    }
+    return $language === "en" ? "SYSTEM MODE" : "MODALITÀ SISTEMA";
   });
 
-  let themeLabel = $derived(() => {
-    if ($themePreference === "light") return "Light";
-    if ($themePreference === "dark") return "Dark";
-    return "Auto";
+  // Mobile icons (no emoji, just text symbols)
+  let mobileLabel = $derived(() => {
+    if ($themePreference === "light") return "☀";
+    if ($themePreference === "dark") return "☾";
+    return "SYS";
   });
 </script>
 
@@ -50,14 +52,16 @@
     <span class="mobile-text">Mattia Capomagi {currentYear}</span>
   </div>
 
-  <button
+  <span
     class="theme-toggle"
     onclick={handleThemeToggle}
-    aria-label="Toggle theme"
+    role="button"
+    tabindex="0"
+    onkeydown={(e) => e.key === "Enter" && handleThemeToggle()}
   >
-    <span class="theme-icon">{themeIcon()}</span>
-    <span class="theme-label">{themeLabel()}</span>
-  </button>
+    <span class="desktop-text">{themeLabel()}</span>
+    <span class="mobile-text">{mobileLabel()}</span>
+  </span>
 
   <div class="timestamp">
     <span class="desktop-text">{dateStr} {timeStr}</span>
@@ -84,28 +88,12 @@
   }
 
   .theme-toggle {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: none;
-    border: 1px solid var(--color-text);
-    padding: 4px 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    font-family: var(--font-mono);
-    color: var(--color-text);
     cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
+    transition: color 0.2s ease;
   }
 
   .theme-toggle:hover {
-    background: var(--color-text);
-    color: var(--color-bg);
-  }
-
-  .theme-icon {
-    font-size: 1rem;
+    color: var(--color-accent);
   }
 
   /* Text Display Logic */
@@ -121,15 +109,6 @@
     .site-footer {
       font-size: 1rem;
       margin-top: 10px;
-    }
-
-    .theme-toggle {
-      padding: 4px 8px;
-      font-size: 0.75rem;
-    }
-
-    .theme-label {
-      display: none;
     }
 
     /* Toggle Text */
