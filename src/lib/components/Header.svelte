@@ -92,41 +92,42 @@
   </div>
 </header>
 
-<!-- Blur Overlay -->
-<div class="blur-overlay" class:open={menuOpen} onclick={toggleMenu}></div>
-
-<!-- Radial Menu -->
-<div class="radial-menu" class:open={menuOpen}>
-  <a
-    href="{base}/"
-    class="radial-link"
-    class:active={normalizePath(activePath) === normalizePath(base)}
-    style="--angle: -60deg; --distance: 100px"
-  >
-    {$language === "en" ? "projects" : "progetti"}
-  </a>
-  <a
-    href="{base}/tools"
-    class="radial-link"
-    class:active={normalizePath(activePath).startsWith(
-      normalizePath(`${base}/tools`)
-    )}
-    style="--angle: 0deg; --distance: 120px"
-  >
-    tools
-  </a>
-  <a
-    href="{base}/about"
-    class="radial-link"
-    class:active={normalizePath(activePath) === normalizePath(`${base}/about`)}
-    style="--angle: 60deg; --distance: 100px"
-  >
-    {$language === "en" ? "about" : "chi sono?"}
-  </a>
+<!-- Fullscreen Blur Overlay with Menu -->
+<div class="menu-overlay" class:open={menuOpen}>
+  <div class="blur-bg" onclick={toggleMenu}></div>
+  <div class="menu-container">
+    <a
+      href="{base}/"
+      class="menu-link"
+      class:active={normalizePath(activePath) === normalizePath(base)}
+      style="--i: 0"
+    >
+      {$language === "en" ? "projects" : "progetti"}
+    </a>
+    <a
+      href="{base}/tools"
+      class="menu-link"
+      class:active={normalizePath(activePath).startsWith(
+        normalizePath(`${base}/tools`)
+      )}
+      style="--i: 1"
+    >
+      tools
+    </a>
+    <a
+      href="{base}/about"
+      class="menu-link"
+      class:active={normalizePath(activePath) ===
+        normalizePath(`${base}/about`)}
+      style="--i: 2"
+    >
+      {$language === "en" ? "about" : "chi sono?"}
+    </a>
+  </div>
 </div>
 
 <style>
-  /* Sticky Glassmorphic Header */
+  /* Header - no blur on itself, blur comes from overlay */
   .header {
     position: fixed;
     top: 0;
@@ -212,6 +213,7 @@
     width: 50px;
     height: 24px;
     overflow: hidden;
+    z-index: 1002;
   }
 
   .more-text,
@@ -239,96 +241,73 @@
     transform: translate(-50%, -50%) scale(1) rotate(0deg);
   }
 
-  /* Blur Overlay */
-  .blur-overlay {
+  /* Fullscreen Menu Overlay */
+  .menu-overlay {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 998;
+    z-index: 1001;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.3s ease;
   }
 
-  .blur-overlay.open {
+  .menu-overlay.open {
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Radial Menu */
-  .radial-menu {
-    display: none;
-    position: fixed;
-    top: 45px;
-    right: var(--page-padding);
-    z-index: 999;
-    pointer-events: none;
+  .blur-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
   }
 
-  .radial-link {
+  :global([data-theme="dark"]) .blur-bg {
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  /* Menu Container - positioned under MORE button */
+  .menu-container {
     position: absolute;
-    right: 25px;
-    top: 12px;
-    font-size: 1.2rem;
+    top: 55px;
+    right: var(--page-padding);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+
+  .menu-link {
+    font-size: 1.8rem;
     font-weight: 700;
     text-decoration: none;
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 10px 16px;
-    border-radius: 20px;
-    border: 1px solid rgba(128, 128, 128, 0.2);
-    white-space: nowrap;
     opacity: 0;
-    transform: translate(0, 0) scale(0.5);
+    transform: translateY(-20px);
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    pointer-events: none;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition-delay: calc(var(--i) * 0.06s);
   }
 
-  :global([data-theme="dark"]) .radial-link {
-    background: rgba(40, 40, 40, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .radial-menu.open .radial-link {
+  .menu-overlay.open .menu-link {
     opacity: 1;
-    transform: translateX(calc(cos(var(--angle)) * var(--distance) * -1))
-      translateY(calc(sin(var(--angle)) * var(--distance))) scale(1);
-    pointer-events: auto;
+    transform: translateY(0);
   }
 
-  .radial-link:nth-child(1) {
-    transition-delay: 0.05s;
-  }
-  .radial-link:nth-child(2) {
-    transition-delay: 0.1s;
-  }
-  .radial-link:nth-child(3) {
-    transition-delay: 0.15s;
-  }
-
-  .radial-link:hover {
-    background: var(--color-accent);
-    color: white;
-    transform: translateX(calc(cos(var(--angle)) * var(--distance) * -1))
-      translateY(calc(sin(var(--angle)) * var(--distance))) scale(1.05);
-  }
-
-  .radial-link.active {
+  .menu-link:hover {
     color: var(--color-accent);
-    border-color: var(--color-accent);
   }
 
-  .radial-link.active:hover {
-    color: white;
+  .menu-link.active {
+    color: var(--color-accent);
   }
 
   @media (max-width: 768px) {
@@ -360,16 +339,20 @@
       display: block;
     }
 
-    .radial-menu {
-      display: block;
-    }
-
-    .blur-overlay {
+    .menu-overlay {
       display: block;
     }
 
     .nav-link.lang-toggle {
       font-size: 1.3rem;
+    }
+
+    .menu-container {
+      top: 50px;
+    }
+
+    .menu-link {
+      font-size: 1.5rem;
     }
   }
 </style>
