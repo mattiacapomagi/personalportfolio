@@ -85,7 +85,7 @@
         onclick={toggleMenu}
         aria-label="Menu"
       >
-        <span class="more-text">MORE</span>
+        <span class="more-text">{$language === "en" ? "MORE" : "ALTRO"}</span>
         <span class="close-text">×</span>
       </button>
     </nav>
@@ -96,6 +96,12 @@
 <div class="menu-overlay" class:open={menuOpen}>
   <div class="blur-bg" onclick={toggleMenu}></div>
   <div class="menu-container">
+    <button
+      type="button"
+      class="close-btn"
+      onclick={toggleMenu}
+      aria-label="Close menu">×</button
+    >
     <a
       href="{base}/"
       class="menu-link"
@@ -283,7 +289,31 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 8px;
+    gap: 12px;
+  }
+
+  .close-btn {
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: var(--color-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    opacity: 0;
+    transform: scale(0) rotate(-180deg);
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    margin-bottom: 8px;
+  }
+
+  .menu-overlay.open .close-btn {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  .close-btn:hover {
+    color: var(--color-accent);
   }
 
   .menu-link {
