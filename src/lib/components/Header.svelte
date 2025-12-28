@@ -28,7 +28,7 @@
   }
 </script>
 
-<header class="header">
+<header class="header" class:menu-open={menuOpen}>
   <div class="header-content">
     <div class="logo">
       <a href="{base}/">MATTIA CAPOMAGI</a>
@@ -81,27 +81,31 @@
       <button
         type="button"
         class="more-btn"
-        class:open={menuOpen}
         onclick={toggleMenu}
         aria-label="Menu"
       >
-        <span class="more-text">{$language === "en" ? "MORE" : "ALTRO"}</span>
-        <span class="close-text">×</span>
+        {$language === "en" ? "MORE" : "ALTRO"}
       </button>
     </nav>
   </div>
 </header>
 
-<!-- Fullscreen Blur Overlay with Menu -->
+<!-- Fullscreen Menu Overlay -->
 <div class="menu-overlay" class:open={menuOpen}>
   <div class="blur-bg" onclick={toggleMenu}></div>
-  <div class="menu-container">
+
+  <div class="menu-header">
     <button
       type="button"
       class="close-btn"
       onclick={toggleMenu}
-      aria-label="Close menu">×</button
+      aria-label="Close"
     >
+      ×
+    </button>
+  </div>
+
+  <div class="menu-content">
     <a
       href="{base}/"
       class="menu-link"
@@ -133,7 +137,7 @@
 </div>
 
 <style>
-  /* Header - no blur on itself, blur comes from overlay */
+  /* Header - slides up when menu opens */
   .header {
     position: fixed;
     top: 0;
@@ -144,10 +148,16 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(128, 128, 128, 0.15);
+    transform: translateY(0);
+    transition: transform 0.4s ease;
   }
 
   :global([data-theme="dark"]) .header {
     background: rgba(0, 0, 0, 0.85);
+  }
+
+  .header.menu-open {
+    transform: translateY(-100%);
   }
 
   .header-content {
@@ -204,9 +214,9 @@
     display: flex;
   }
 
+  /* MORE Button */
   .more-btn {
     display: none;
-    position: relative;
     font-family: inherit;
     font-size: 1.3rem;
     font-weight: 700;
@@ -215,34 +225,6 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    min-width: 50px;
-    height: 24px;
-    z-index: 1002;
-  }
-
-  .more-text,
-  .close-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  }
-
-  .close-text {
-    font-size: 2rem;
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0) rotate(-180deg);
-  }
-
-  .more-btn.open .more-text {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0) rotate(180deg);
-  }
-
-  .more-btn.open .close-text {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1) rotate(0deg);
   }
 
   /* Fullscreen Menu Overlay */
@@ -253,10 +235,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1001;
+    z-index: 999;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
   }
 
   .menu-overlay.open {
@@ -279,50 +261,62 @@
     background: rgba(0, 0, 0, 0.5);
   }
 
-  /* Menu Container - positioned just under MORE button */
-  .menu-container {
+  /* Menu Header with Close Button */
+  .menu-header {
     position: absolute;
-    top: 12px;
-    right: var(--page-padding);
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 12px var(--page-padding);
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
+    justify-content: flex-end;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s ease 0.1s;
+  }
+
+  .menu-overlay.open .menu-header {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .close-btn {
-    font-size: 1.6rem;
-    font-weight: 300;
+    font-size: 2.5rem;
+    font-weight: 700;
     color: var(--color-text);
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    line-height: 1;
-    opacity: 0;
-    transform: scale(0) rotate(-180deg);
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    margin-bottom: 4px;
-  }
-
-  .menu-overlay.open .close-btn {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
+    line-height: 0.7;
+    transition: color 0.2s ease;
   }
 
   .close-btn:hover {
     color: var(--color-accent);
   }
 
+  /* Menu Content */
+  .menu-content {
+    position: absolute;
+    top: 60px;
+    right: var(--page-padding);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
   .menu-link {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-decoration: none;
     color: var(--color-text);
     opacity: 0;
-    transform: translateY(-20px);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transition-delay: calc(var(--i) * 0.06s);
+    transform: translateY(-15px);
+    transition: all 0.4s ease;
+    transition-delay: calc(0.15s + var(--i) * 0.05s);
   }
 
   .menu-overlay.open .menu-link {
@@ -360,7 +354,7 @@
 
     .mobile-nav {
       display: flex;
-      gap: 1.5rem; /* More space for lang selector */
+      gap: 1.5rem;
     }
 
     .more-btn {
@@ -375,12 +369,12 @@
       font-size: 1.3rem;
     }
 
-    .menu-container {
-      top: 12px;
+    .menu-header {
+      padding: 12px var(--page-padding);
     }
 
-    .menu-link {
-      font-size: 1.5rem;
+    .menu-content {
+      top: 55px;
     }
   }
 </style>
