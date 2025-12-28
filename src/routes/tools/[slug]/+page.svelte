@@ -252,8 +252,13 @@
     const timeStr = now.toTimeString().split(" ")[0].replace(/:/g, ".");
     const link = document.createElement("a");
     link.download = `BRICKLAB ${dateStr} ${timeStr}.png`;
-    link.href = exportCanvas.toDataURL("image/png");
-    link.click();
+    exportCanvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    }, "image/png");
   }
 
   function downloadSVG() {
@@ -290,8 +295,10 @@
     const timeStr = now.toTimeString().split(" ")[0].replace(/:/g, ".");
     const link = document.createElement("a");
     link.download = `BRICKLAB ${dateStr} ${timeStr}.svg`;
-    link.href = URL.createObjectURL(blob);
+    const url = URL.createObjectURL(blob);
+    link.href = url;
     link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 100);
   }
 </script>
 
@@ -571,17 +578,24 @@
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 28px;
-    height: 28px;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    border: 12px solid transparent;
     background: var(--color-text);
+    background-clip: content-box;
+    border-radius: 50%;
     border-radius: 50%;
     cursor: pointer;
   }
 
   input[type="range"]::-moz-range-thumb {
-    width: 28px;
-    height: 28px;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    border: 12px solid transparent;
     background: var(--color-text);
+    background-clip: content-box;
     border-radius: 50%;
     cursor: pointer;
     border: none;

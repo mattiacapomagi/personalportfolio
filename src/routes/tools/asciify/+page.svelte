@@ -142,10 +142,15 @@
 
   function handleExport() {
     if (!canvasRef) return;
-    const link = document.createElement("a");
-    link.download = `asciify-${Date.now()}.png`;
-    link.href = canvasRef.toDataURL("image/png");
-    link.click();
+    canvasRef.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = `asciify-${Date.now()}.png`;
+      link.href = url;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+    }, "image/png");
   }
 
   function reset() {
@@ -539,11 +544,27 @@
 
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
+    box-sizing: border-box; /* Fixes total size to 40px (16px content + 24px border) */
+    width: 40px;
+    height: 40px;
+    border: 12px solid transparent;
     background: var(--color-text);
+    background-clip: content-box;
+    border-radius: 50%;
     border-radius: 50%;
     cursor: pointer;
+  }
+
+  .slider::-moz-range-thumb {
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    border: 12px solid transparent;
+    background: var(--color-text);
+    background-clip: content-box;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
   }
 
   /* Toggles */
