@@ -25,7 +25,8 @@
   });
 
   // Derived UI value (inverted scale: 0 = low density, 100 = high density)
-  let uiValue = $derived(Math.round((50 - blockSize) / 0.35));
+  // Scale adjusted for max density (min block size 5px): (50 - 5) = 45 delta. Factor 0.45
+  let uiValue = $derived(Math.round((50 - blockSize) / 0.45));
 
   // Process Image Effect
   $effect(() => {
@@ -127,7 +128,7 @@
   async function handleFile(file: File) {
     let processFile = file;
 
-    // HEIC Conversion (simplified - in production you'd use heic2any library)
+    // HEIC Conversion (simplified)
     if (
       file.type === "image/heic" ||
       file.type === "image/heif" ||
@@ -171,8 +172,9 @@
   }
 
   function handleSliderChange(val: number) {
-    const internal = 50 - val * 0.35;
-    blockSize = Math.max(15, Math.min(50, internal));
+    // New density logic: 0..100 maps to 50..5
+    const internal = 50 - val * 0.45;
+    blockSize = Math.max(5, Math.min(50, internal));
     history = { ...history, present: blockSize };
   }
 
@@ -367,10 +369,7 @@
 
 <style>
   .bricklab-tool {
-    height: calc(
-      100vh - 140px
-    ); /* Fit within viewport accounting for header/footer */
-    min-height: 0;
+    flex: 1;
     display: flex;
     flex-direction: column;
     padding: 0 var(--page-padding);
@@ -386,7 +385,7 @@
     cursor: pointer;
     transition: background 0.2s ease;
     border: 3px dashed rgba(0, 0, 0, 0.2);
-    border-radius: 0;
+    border-radius: 0; /* Zero radius */
     margin: 20px 0 10px 0;
   }
 
@@ -419,15 +418,12 @@
     display: none;
   }
 
+  /* Workspace */
   .workspace {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
     padding: 20px 0;
   }
 
   .workspace-content {
-    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -436,10 +432,7 @@
   @media (min-width: 900px) {
     .workspace-content {
       flex-direction: row;
-      align-items: stretch;
-      height: 100%;
-      gap: 24px;
-      min-height: 0; /* Crucial */
+      align-items: flex-start;
     }
   }
 
@@ -447,7 +440,7 @@
   .canvas-container {
     flex: 1;
     border: 2px solid var(--color-text);
-    border-radius: 0;
+    border-radius: 0; /* Zero radius */
     padding: 16px;
     background: #f5f5f5;
     display: flex;
@@ -455,15 +448,11 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-    min-height: 0; /* Allow shrinking */
   }
 
   canvas {
     max-width: 100%;
-    max-height: 100%; /* Must be constrained by parent */
-    width: auto;
-    height: auto;
-    object-fit: contain;
+    max-height: 70vh;
     display: block;
   }
 
@@ -482,7 +471,6 @@
     height: 40px;
     border: 4px solid var(--color-accent);
     border-top-color: transparent;
-    border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
@@ -497,7 +485,7 @@
   .controls-panel {
     width: 100%;
     border: 2px solid var(--color-text);
-    border-radius: 0;
+    border-radius: 0; /* Zero radius */
     padding: 24px;
     background: var(--color-bg);
   }
@@ -506,10 +494,8 @@
     .controls-panel {
       width: 320px;
       flex-shrink: 0;
-      align-self: flex-start;
-      height: auto;
-      max-height: 100%;
-      overflow-y: auto;
+      position: sticky;
+      top: 100px;
     }
   }
 
@@ -553,7 +539,7 @@
     -webkit-appearance: none;
     appearance: none;
     background: #ddd;
-    border-radius: 0;
+    border-radius: 4px;
     cursor: pointer;
   }
 
@@ -563,7 +549,7 @@
     width: 20px;
     height: 20px;
     background: var(--color-text);
-    border-radius: 0;
+    border-radius: 50%;
     cursor: pointer;
   }
 
@@ -571,7 +557,7 @@
     width: 20px;
     height: 20px;
     background: var(--color-text);
-    border-radius: 0;
+    border-radius: 50%;
     cursor: pointer;
     border: none;
   }
@@ -591,7 +577,7 @@
     font-family: var(--font-mono);
     cursor: pointer;
     border: 2px solid var(--color-text);
-    border-radius: 0;
+    border-radius: 0; /* Zero radius */
     transition: all 0.2s ease;
   }
 
