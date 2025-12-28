@@ -11,7 +11,7 @@ function _page($$renderer) {
       $$renderer3.push(`<title>Tools — MATTIA CAPOMAGI</title>`);
     });
   });
-  $$renderer.push(`<main class="tools-page svelte-171l7w4"><h1 class="page-title svelte-171l7w4">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "Tools" : "Strumenti")}</h1> <div class="tools-list svelte-171l7w4"><!--[-->`);
+  $$renderer.push(`<main class="tools-page svelte-171l7w4"><div class="tools-list-header svelte-171l7w4"><span class="col svelte-171l7w4">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "tool" : "strumento")}</span> <span class="col year svelte-171l7w4">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "year" : "anno")}</span></div> <div class="tools-list svelte-171l7w4"><!--[-->`);
   const each_array = ensure_array_like(tools);
   for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
     let tool = each_array[$$index];

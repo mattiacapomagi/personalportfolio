@@ -9,7 +9,11 @@
 </svelte:head>
 
 <main class="tools-page">
-  <h1 class="page-title">{$language === "en" ? "Tools" : "Strumenti"}</h1>
+  <!-- Simulating the Project List Header -->
+  <div class="tools-list-header">
+    <span class="col">{$language === "en" ? "tool" : "strumento"}</span>
+    <span class="col year">{$language === "en" ? "year" : "anno"}</span>
+  </div>
 
   <div class="tools-list">
     {#each tools as tool}
@@ -23,14 +27,29 @@
 
 <style>
   .tools-page {
-    padding-top: 40px;
+    padding-top: 0;
   }
 
-  .page-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: var(--color-text);
+  /* Header Grid matches row grid */
+  .tools-list-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 0;
+    margin-top: 40px;
+  }
+
+  .col {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    font-weight: 400;
+    text-transform: lowercase;
+    opacity: 0.5;
+  }
+
+  .col.year {
+    text-align: right;
   }
 
   .tools-list {
@@ -40,18 +59,15 @@
   }
 
   .tool-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 20px 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    padding: 15px 0; /* Aligning with ProjectRow comfortably */
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     text-decoration: none;
     color: var(--color-text);
     transition: color 0.2s ease;
-  }
-
-  .tool-row:first-child {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    align-items: center;
   }
 
   .tool-row:hover {
@@ -60,23 +76,18 @@
 
   .tool-title {
     font-size: 1.8rem;
-    font-weight: 700;
+    font-weight: 400; /* Matching ProjectRow title weight */
     font-family: var(--font-mono);
   }
 
   .tool-year {
-    font-size: 1.2rem;
-    font-weight: 500;
-    opacity: 0.6;
+    font-size: 1.1rem; /* Matching header size roughly */
+    font-weight: 400;
+    text-align: right;
     font-family: var(--font-mono);
   }
 
   @media (max-width: 768px) {
-    .page-title {
-      font-size: 2rem;
-      margin-bottom: 30px;
-    }
-
     .tool-title {
       font-size: 1.4rem;
     }
@@ -87,6 +98,17 @@
 
     .tool-row {
       padding: 16px 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .tools-list-header {
+      display: none; /* Often hidden on mobile projects too, or we can keep it */
+    }
+
+    .tool-row {
+      display: flex; /* Switch to flex on very small screens if needed, though grid works fine for 2 cols */
+      justify-content: space-between;
     }
   }
 </style>
