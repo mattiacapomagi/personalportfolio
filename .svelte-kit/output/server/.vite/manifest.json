@@ -154,10 +154,11 @@
       "_state.svelte.js",
       "_language.js",
       "_context.js",
-      "_index-server.js"
+      "_index-server.js",
+      "_index.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.Jx6H19AU.css"
+      "_app/immutable/assets/_layout.TaKma8tz.css"
     ]
   },
   "src/routes/+page.svelte": {
@@ -274,7 +275,7 @@
       "_context.js"
     ],
     "css": [
-      "_app/immutable/assets/_page.BJxp2F79.css"
+      "_app/immutable/assets/_page.C5qMQVLN.css"
     ]
   }
 }

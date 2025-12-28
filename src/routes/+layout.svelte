@@ -7,8 +7,34 @@
   import "lenis/dist/lenis.css";
 
   import { page } from "$app/stores";
+  import { themePreference, getResolvedTheme } from "$lib/stores/theme.js";
 
   let { children } = $props();
+
+  // Apply theme to document
+  $effect(() => {
+    if (typeof document === "undefined") return;
+    const resolved = getResolvedTheme($themePreference);
+    document.documentElement.setAttribute("data-theme", resolved);
+  });
+
+  // Listen for system preference changes
+  $effect(() => {
+    if (typeof window === "undefined") return;
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+    function handleChange() {
+      // Re-trigger the theme application
+      if ($themePreference === "system") {
+        const resolved = getResolvedTheme("system");
+        document.documentElement.setAttribute("data-theme", resolved);
+      }
+    }
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  });
 
   onMount(() => {
     const lenis = new Lenis();

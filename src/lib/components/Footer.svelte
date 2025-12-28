@@ -1,5 +1,10 @@
 <script>
   import { onMount, onDestroy } from "svelte";
+  import {
+    themePreference,
+    cycleTheme,
+    getResolvedTheme,
+  } from "$lib/stores/theme.js";
 
   let timeStr = $state("");
   let dateStr = $state("");
@@ -20,6 +25,23 @@
   onDestroy(() => {
     if (interval) clearInterval(interval);
   });
+
+  function handleThemeToggle() {
+    themePreference.update((current) => cycleTheme(current));
+  }
+
+  // Get icon based on current preference
+  let themeIcon = $derived(() => {
+    if ($themePreference === "light") return "☀️";
+    if ($themePreference === "dark") return "🌙";
+    return "🔄"; // system
+  });
+
+  let themeLabel = $derived(() => {
+    if ($themePreference === "light") return "Light";
+    if ($themePreference === "dark") return "Dark";
+    return "Auto";
+  });
 </script>
 
 <footer class="site-footer">
@@ -27,6 +49,16 @@
     <span class="desktop-text">COPYRIGHT MATTIA CAPOMAGI {currentYear}</span>
     <span class="mobile-text">Mattia Capomagi {currentYear}</span>
   </div>
+
+  <button
+    class="theme-toggle"
+    onclick={handleThemeToggle}
+    aria-label="Toggle theme"
+  >
+    <span class="theme-icon">{themeIcon()}</span>
+    <span class="theme-label">{themeLabel()}</span>
+  </button>
+
   <div class="timestamp">
     <span class="desktop-text">{dateStr} {timeStr}</span>
     <span class="mobile-text">{timeStr}</span>
@@ -40,16 +72,40 @@
     align-items: center;
     padding: 0;
     margin-bottom: 8px;
-    margin-top: 10px; /* Reduced from 40px */
+    margin-top: 10px;
     font-size: 1.1rem;
-    font-weight: 400; /* Normal weight */
+    font-weight: 400;
     text-transform: uppercase;
     color: var(--color-text);
   }
 
   .timestamp {
-    /* Ensure monospace alignment */
     font-variant-numeric: tabular-nums;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid var(--color-text);
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+  }
+
+  .theme-toggle:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+  }
+
+  .theme-icon {
+    font-size: 1rem;
   }
 
   /* Text Display Logic */
@@ -63,8 +119,17 @@
 
   @media (max-width: 480px) {
     .site-footer {
-      font-size: 1.2rem; /* Increased slightly */
+      font-size: 1rem;
       margin-top: 10px;
+    }
+
+    .theme-toggle {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+    }
+
+    .theme-label {
+      display: none;
     }
 
     /* Toggle Text */

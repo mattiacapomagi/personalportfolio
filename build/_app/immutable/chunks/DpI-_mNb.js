@@ -1,1 +1,0 @@
-import{w as t}from"./J-hZdcAB.js";const l="en",n=window.localStorage.getItem("language")||l,e=t(n);e.subscribe(a=>{window.localStorage.setItem("language",a)});const g=()=>{e.update(a=>a==="en"?"it":"en")};export{e as l,g as t};

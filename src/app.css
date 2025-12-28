@@ -117,6 +117,14 @@
   --vignette-color: rgba(60, 100, 180, 0.08); /* Very subtle vignette */
 }
 
+/* Dark Mode */
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;
+  --color-text: #f0f0f0;
+  --color-accent: #f27200; /* Keep accent same */
+  --vignette-color: rgba(0, 0, 0, 0.3);
+}
+
 /* ============================================
    CSS Reset & Base Styles
    ============================================ */

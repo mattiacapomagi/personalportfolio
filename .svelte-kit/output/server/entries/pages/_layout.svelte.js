@@ -7,8 +7,9 @@ import "@sveltejs/kit/internal/server";
 import "../../chunks/state.svelte.js";
 import { l as language } from "../../chunks/language.js";
 import { g as getContext, e as escape_html } from "../../chunks/context.js";
-import "clsx";
 import { o as onDestroy } from "../../chunks/index-server.js";
+import { w as writable } from "../../chunks/index.js";
+import "clsx";
 const getStores = () => {
   const stores$1 = getContext("__svelte__");
   return {
@@ -47,14 +48,30 @@ function Header($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
+function getInitialTheme() {
+  return "system";
+}
+const themePreference = writable(getInitialTheme());
 function Footer($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
+    var $$store_subs;
     let timeStr = "";
     let dateStr = "";
     let currentYear = (/* @__PURE__ */ new Date()).getFullYear();
     onDestroy(() => {
     });
-    $$renderer2.push(`<footer class="site-footer svelte-jz8lnl"><div class="copyright"><span class="desktop-text svelte-jz8lnl">COPYRIGHT MATTIA CAPOMAGI ${escape_html(currentYear)}</span> <span class="mobile-text svelte-jz8lnl">Mattia Capomagi ${escape_html(currentYear)}</span></div> <div class="timestamp svelte-jz8lnl"><span class="desktop-text svelte-jz8lnl">${escape_html(dateStr)} ${escape_html(timeStr)}</span> <span class="mobile-text svelte-jz8lnl">${escape_html(timeStr)}</span></div></footer>`);
+    let themeIcon = () => {
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "light") return "☀️";
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "dark") return "🌙";
+      return "🔄";
+    };
+    let themeLabel = () => {
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "light") return "Light";
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "dark") return "Dark";
+      return "Auto";
+    };
+    $$renderer2.push(`<footer class="site-footer svelte-jz8lnl"><div class="copyright"><span class="desktop-text svelte-jz8lnl">COPYRIGHT MATTIA CAPOMAGI ${escape_html(currentYear)}</span> <span class="mobile-text svelte-jz8lnl">Mattia Capomagi ${escape_html(currentYear)}</span></div> <button class="theme-toggle svelte-jz8lnl" aria-label="Toggle theme"><span class="theme-icon svelte-jz8lnl">${escape_html(themeIcon())}</span> <span class="theme-label svelte-jz8lnl">${escape_html(themeLabel())}</span></button> <div class="timestamp svelte-jz8lnl"><span class="desktop-text svelte-jz8lnl">${escape_html(dateStr)} ${escape_html(timeStr)}</span> <span class="mobile-text svelte-jz8lnl">${escape_html(timeStr)}</span></div></footer>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
 function _layout($$renderer, $$props) {
