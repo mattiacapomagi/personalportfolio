@@ -10,14 +10,19 @@
 
 <main class="tools-page">
   <div class="tools-list-header">
-    <span class="col">{$language === "en" ? "tool" : "strumento"}</span>
-    <span class="col year">{$language === "en" ? "year" : "anno"}</span>
+    <span class="col">tool</span>
+    <span class="col">{$language === "en" ? "description" : "descrizione"}</span
+    >
+    <span class="col">{$language === "en" ? "year" : "anno"}</span>
   </div>
 
   <div class="tools-list">
     {#each tools as tool}
       <a href="{base}/tools/{tool.slug}" class="tool-row">
         <span class="col tool-title">{tool.title}</span>
+        <span class="col tool-desc"
+          >{$language === "en" ? tool.description : tool.description_it}</span
+        >
         <span class="col tool-year">{tool.year}</span>
       </a>
     {/each}
@@ -32,17 +37,17 @@
   /* Header Grid */
   .tools-list-header {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 50% - 50% split */
+    grid-template-columns: 1fr 2fr 0.5fr; /* Tool narrow, Desc wide, Year narrow */
     gap: 20px;
-    padding: 0 0 6px; /* Precise padding from Projects page */
-    margin-top: 20px; /* Matching projects page margin */
+    padding: 0 0 6px;
+    margin-top: 20px;
     margin-bottom: 0;
 
     font-family: var(--font-mono);
     font-size: 1.1rem;
-    font-weight: 700; /* Bold headers as requested */
+    font-weight: 700;
     color: var(--color-text);
-    text-transform: lowercase; /* Matches project list header style */
+    text-transform: lowercase;
   }
 
   /* Column Styles */
@@ -51,8 +56,8 @@
     font-family: var(--font-mono);
   }
 
-  .col.year {
-    text-align: left; /* Left aligned as requested */
+  .col:last-child {
+    text-align: right;
   }
 
   .tools-list {
@@ -63,9 +68,9 @@
   /* Row Grid */
   .tool-row {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 50% - 50% split */
+    grid-template-columns: 1fr 2fr 0.5fr; /* Match header */
     gap: 20px;
-    padding: 6px 0; /* Strictly matching ProjectRow */
+    padding: 6px 0;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     align-items: center;
     text-decoration: none;
@@ -86,11 +91,16 @@
     font-weight: 400;
   }
 
+  .tool-desc {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.7;
+  }
+
   .tool-year {
     font-size: 1.1rem;
     font-weight: 400;
-    text-align: left; /* Left aligned as requested */
-    opacity: 1; /* Remove opacity to be distinct like title? Or keep it? Projects has year right aligned and no opacity change mentioned in styles for .col.year except in mobile. Let's keep it clean. */
+    text-align: right;
   }
 
   @media (max-width: 768px) {
@@ -107,18 +117,25 @@
 
   @media (max-width: 480px) {
     .tools-list-header {
-      display: none;
+      grid-template-columns: 1fr 1fr; /* 2 cols on mobile */
+      font-size: 0.9rem;
+    }
+
+    .tools-list-header .col:nth-child(2) {
+      display: none; /* Hide description header on mobile */
     }
 
     .tool-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 16px 0;
+      grid-template-columns: 1fr 1fr;
+      padding: 12px 0;
+    }
+
+    .tool-desc {
+      display: none; /* Hide description on mobile */
     }
 
     .tool-year {
-      text-align: right; /* Revert to right on mobile for better spacing? Or keep left? User said "year left aligned". I'll keep it left unless mobile needs space */
-      text-align: left;
+      text-align: right;
     }
   }
 </style>
