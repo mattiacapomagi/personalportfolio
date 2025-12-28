@@ -22,7 +22,27 @@ export const tools = [
     externalUrl: null, // Will be embedded
     embedPath: '/tools/bricklab', // Internal embed route
     previewImage: '/media/tools/bricklab-preview.webp'
-  }
+  },
+  {
+    slug: "asciify",
+    title: "ASCII-fy",
+    year: "2025",
+    description: "Image to ASCII Art Converter",
+    description_it: "Convertitore Immagini in Arte ASCII",
+    externalUrl: null,
+    embedPath: "/tools/asciify",
+    previewImage: "/images/tools/asciify-preview.png",
+  },
+  {
+    slug: "dithering",
+    title: "DITHERING",
+    year: "2025",
+    description: "Multi-algorithm Dithering Studio",
+    description_it: "Studio di Dithering Multi-algoritmo",
+    externalUrl: null,
+    embedPath: "/tools/dithering",
+    previewImage: "/media/tools/bricklab-preview.webp", // Placeholder
+  },
 ];
 
 /**

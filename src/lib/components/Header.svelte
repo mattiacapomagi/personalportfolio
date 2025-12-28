@@ -147,7 +147,6 @@
     background: rgba(253, 251, 247, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(128, 128, 128, 0.15);
     transform: translateY(0);
     transition: transform 0.4s ease;
   }

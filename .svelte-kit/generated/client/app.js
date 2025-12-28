@@ -9,7 +9,9 @@ export const nodes = [
 	() => import('./nodes/5'),
 	() => import('./nodes/6'),
 	() => import('./nodes/7'),
-	() => import('./nodes/8')
+	() => import('./nodes/8'),
+	() => import('./nodes/9'),
+	() => import('./nodes/10')
 ];
 
 export const server_loads = [];
@@ -20,6 +22,8 @@ export const dictionary = {
 		"/bento": [5,[2]],
 		"/projects/[slug]": [6],
 		"/tools": [7],
+		"/tools/asciify": [9],
+		"/tools/dithering": [10],
 		"/tools/[slug]": [8]
 	};
 

@@ -95,7 +95,7 @@
     min-height: 100vh;
     max-width: var(--max-width);
     margin: 0 auto;
-    padding: 70px var(--page-padding) 0; /* Top padding for fixed navbar */
+    padding: 40px var(--page-padding) 0; /* Top padding for fixed navbar */
   }
 
   .main {
@@ -108,7 +108,7 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding-top: 70px; /* Top padding for fixed navbar */
+    padding-top: 40px; /* Top padding for fixed navbar */
   }
 
   .constrained-wrapper {
