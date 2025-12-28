@@ -27,9 +27,8 @@
 
   // Check if we are on a specific tool page (e.g. /tools/bricklab)
   // This logic assumes tools are nested under /tools/ and NOT just the list page (/tools)
-  let isToolPage = $derived(
-    $page.url.pathname.startsWith("/tools/") && $page.url.pathname !== "/tools"
-  );
+  // Check if we are on a specific tool page OR the tools list
+  let isToolPage = $derived($page.url.pathname.startsWith("/tools/"));
 </script>
 
 {#if isToolPage}

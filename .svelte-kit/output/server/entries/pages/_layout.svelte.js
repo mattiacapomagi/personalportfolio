@@ -61,7 +61,7 @@ function _layout($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
     let { children } = $$props;
-    let isToolPage = store_get($$store_subs ??= {}, "$page", page).url.pathname.startsWith("/tools/") && store_get($$store_subs ??= {}, "$page", page).url.pathname !== "/tools";
+    let isToolPage = store_get($$store_subs ??= {}, "$page", page).url.pathname.startsWith("/tools/");
     if (isToolPage) {
       $$renderer2.push("<!--[-->");
       $$renderer2.push(`<div class="tool-layout svelte-12qhfyh"><div class="constrained-wrapper svelte-12qhfyh">`);
