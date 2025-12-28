@@ -62,8 +62,9 @@
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 20px;
-    padding: 15px 0; /* Aligning with ProjectRow comfortably */
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 6px 0; /* Strictly matching ProjectRow */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* ProjectRow uses 0.2 but this file had 0.1, matching ProjectRow 0.2 now for consistency? ProjectRow has 0.2. Let's match 0.2 */
+    /* text-decoration, color, transition handled by base styles or explicit */
     text-decoration: none;
     color: var(--color-text);
     transition: color 0.2s ease;
@@ -75,16 +76,16 @@
   }
 
   .tool-title {
-    font-size: 1.8rem;
-    font-weight: 400; /* Matching ProjectRow title weight */
-    font-family: var(--font-mono);
+    font-size: 1.1rem; /* Strictly matching ProjectRow .col */
+    font-weight: 400;
+    /* font-family inherited from body (mono) */
   }
 
   .tool-year {
-    font-size: 1.1rem; /* Matching header size roughly */
+    font-size: 1.1rem; /* Strictly matching ProjectRow .col */
     font-weight: 400;
     text-align: right;
-    font-family: var(--font-mono);
+    /* font-family inherited */
   }
 
   @media (max-width: 768px) {
