@@ -367,7 +367,7 @@
 
 <style>
   .bricklab-tool {
-    min-height: calc(100vh - 120px);
+    flex: 1; /* Riempi tutto lo spazio disponibile nel padre (che è flex-grow) */
     display: flex;
     flex-direction: column;
     padding: 0 var(--page-padding); /* Ri-aggiungo padding laterale per allineare il contenuto interno */
