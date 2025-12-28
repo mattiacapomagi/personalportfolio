@@ -15,7 +15,7 @@ function _page($$renderer) {
   const each_array = ensure_array_like(tools);
   for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
     let tool = each_array[$$index];
-    $$renderer.push(`<a${attr("href", `${stringify(base)}/tools/${stringify(tool.slug)}`)} class="tool-row svelte-171l7w4"><span class="tool-title svelte-171l7w4">${escape_html(tool.title)}</span> <span class="tool-year svelte-171l7w4">${escape_html(tool.year)}</span></a>`);
+    $$renderer.push(`<a${attr("href", `${stringify(base)}/tools/${stringify(tool.slug)}`)} class="tool-row svelte-171l7w4"><span class="col tool-title svelte-171l7w4">${escape_html(tool.title)}</span> <span class="col tool-year svelte-171l7w4">${escape_html(tool.year)}</span></a>`);
   }
   $$renderer.push(`<!--]--></div></main>`);
   if ($$store_subs) unsubscribe_stores($$store_subs);
