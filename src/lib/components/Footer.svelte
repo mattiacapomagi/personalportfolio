@@ -38,11 +38,11 @@
     return $language === "en" ? "SYSTEM MODE" : "MODALITÀ SISTEMA";
   });
 
-  // Mobile labels - clean text abbreviations
+  // Mobile labels - universal short words
   let mobileLabel = $derived(() => {
-    if ($themePreference === "light") return "LT";
-    if ($themePreference === "dark") return "DK";
-    return "SYS";
+    if ($themePreference === "light") return "LIGHT";
+    if ($themePreference === "dark") return "DARK";
+    return "AUTO";
   });
 </script>
 
