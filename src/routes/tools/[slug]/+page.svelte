@@ -383,9 +383,11 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s ease;
-    border: 3px dashed rgba(0, 0, 0, 0.2);
-    border-radius: 0; /* Zero radius */
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+    border: 3px dashed rgba(128, 128, 128, 0.5); /* Gray visible in both modes */
+    border-radius: 0;
     margin: 20px 0 10px 0;
   }
 
