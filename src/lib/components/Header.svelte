@@ -204,7 +204,6 @@
     display: flex;
   }
 
-  /* MORE Button */
   .more-btn {
     display: none;
     position: relative;
@@ -216,9 +215,8 @@
     border: none;
     cursor: pointer;
     padding: 0;
-    width: 50px;
+    min-width: 50px;
     height: 24px;
-    overflow: hidden;
     z-index: 1002;
   }
 
@@ -281,19 +279,19 @@
     background: rgba(0, 0, 0, 0.5);
   }
 
-  /* Menu Container - positioned under MORE button */
+  /* Menu Container - positioned just under MORE button */
   .menu-container {
     position: absolute;
-    top: 55px;
+    top: 12px;
     right: var(--page-padding);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 12px;
+    gap: 10px;
   }
 
   .close-btn {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     font-weight: 300;
     color: var(--color-text);
     background: none;
@@ -304,7 +302,7 @@
     opacity: 0;
     transform: scale(0) rotate(-180deg);
     transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .menu-overlay.open .close-btn {
