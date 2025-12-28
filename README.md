@@ -21,6 +21,16 @@ All projects showcased are intellectual property of their respective authors and
 
 &copy; **Mattia Capomagi** & **RUFA (Rome University of Fine Arts)** where applicable. All rights reserved.
 
+## 🧰 Creative Coding Tools
+
+A suite of browser-based graphic processing tools built with **Canvas API** and **WebGL**.
+
+| Tool          | Status                                                      | Description                                                                                                                                                       |
+| :------------ | :---------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **BRICKLAB**  | ![Status](https://img.shields.io/badge/v1.0-Active-success) | Brutalist mosaic generator. Transforms images into vector-ready brick layouts with custom density and colors.                                                     |
+| **ASCII-fy**  | ![Status](https://img.shields.io/badge/v1.1-Active-success) | High-performance Image-to-ASCII converter. Features high-density charsets, Sobel edge detection, transparency, and color modes.                                   |
+| **DITHERING** | ![Status](https://img.shields.io/badge/v1.2-Active-success) | Professional Dithering Studio. Includes 16+ algorithms (Floyd-Steinberg, Atkinson, Bayer, etc.), custom palette management, and retro presets (C64, NES, Pico-8). |
+
 ---
 
 ## 🛠️ Tech Stack & Layout
