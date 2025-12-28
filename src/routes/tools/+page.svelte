@@ -19,11 +19,13 @@
   <div class="tools-list">
     {#each tools as tool}
       <a href="{base}/tools/{tool.slug}" class="tool-row">
-        <span class="col tool-title">{tool.title}</span>
+        <div class="text-content">
+          <span class="col tool-title">{tool.title}</span>
+          <span class="col tool-year">{tool.year}</span>
+        </div>
         <span class="col tool-desc"
           >{$language === "en" ? tool.description : tool.description_it}</span
         >
-        <span class="col tool-year">{tool.year}</span>
       </a>
     {/each}
   </div>
@@ -117,45 +119,46 @@
 
   @media (max-width: 480px) {
     .tools-list-header {
-      display: none; /* Hide header on mobile like projects */
+      display: none;
     }
 
     .tool-row {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      padding: 20px 0;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 16px 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    .tool-row .col {
-      font-size: 0.9rem;
+    /* Left column: title + year stacked */
+    .text-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex-shrink: 0;
     }
 
-    /* Left side: title + year stacked */
     .tool-title {
       font-size: 1rem;
       font-weight: 700;
-      order: 1;
     }
 
     .tool-year {
       font-size: 0.8rem;
       opacity: 0.6;
       text-align: left;
-      order: 2;
     }
 
-    /* Right side: description */
+    /* Right column: description left-aligned and justified */
     .tool-desc {
       display: block;
-      text-align: right;
+      text-align: justify;
+      text-align-last: left;
       font-size: 0.85rem;
       opacity: 0.7;
-      order: 3;
-      max-width: 50%;
+      flex: 1;
     }
   }
 </style>
