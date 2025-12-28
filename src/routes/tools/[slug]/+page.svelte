@@ -315,11 +315,6 @@
   {:else}
     <!-- Workspace -->
     <div class="workspace">
-      <!-- Reset Button -->
-      <button class="reset-image-btn" onclick={resetImage}>
-        ← {$language === "en" ? "NEW IMAGE" : "NUOVA IMMAGINE"}
-      </button>
-
       <div class="workspace-content">
         <!-- Canvas Area -->
         <div class="canvas-container">
@@ -360,6 +355,9 @@
             <button class="export-btn secondary" onclick={downloadSVG}>
               {$language === "en" ? "EXPORT SVG" : "ESPORTA SVG"}
             </button>
+            <button class="export-btn new-image" onclick={resetImage}>
+              {$language === "en" ? "NEW IMAGE" : "NUOVA IMMAGINE"}
+            </button>
           </div>
         </div>
       </div>
@@ -369,7 +367,7 @@
 
 <style>
   .bricklab-tool {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
   }
@@ -420,23 +418,6 @@
   /* Workspace */
   .workspace {
     padding: 20px 0;
-  }
-
-  .reset-image-btn {
-    background: var(--color-text);
-    color: var(--color-bg);
-    border: none;
-    padding: 8px 16px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    font-family: var(--font-mono);
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background 0.2s ease;
-  }
-
-  .reset-image-btn:hover {
-    background: var(--color-accent);
   }
 
   .workspace-content {
@@ -615,6 +596,20 @@
   .export-btn.secondary:hover {
     background: var(--color-text);
     color: var(--color-bg);
+  }
+
+  .export-btn.new-image {
+    background: transparent;
+    color: var(--color-text);
+    border-style: dashed;
+    opacity: 0.6;
+    margin-top: 8px;
+  }
+
+  .export-btn.new-image:hover {
+    opacity: 1;
+    border-style: solid;
+    background: rgba(0, 0, 0, 0.05);
   }
 
   /* Mobile */
