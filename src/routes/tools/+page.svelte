@@ -117,25 +117,45 @@
 
   @media (max-width: 480px) {
     .tools-list-header {
-      grid-template-columns: 1fr 1fr; /* 2 cols on mobile */
-      font-size: 0.9rem;
-    }
-
-    .tools-list-header .col:nth-child(2) {
-      display: none; /* Hide description header on mobile */
+      display: none; /* Hide header on mobile like projects */
     }
 
     .tool-row {
-      grid-template-columns: 1fr 1fr;
-      padding: 12px 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    .tool-desc {
-      display: none; /* Hide description on mobile */
+    .tool-row .col {
+      font-size: 0.9rem;
+    }
+
+    /* Left side: title + year stacked */
+    .tool-title {
+      font-size: 1rem;
+      font-weight: 700;
+      order: 1;
     }
 
     .tool-year {
+      font-size: 0.8rem;
+      opacity: 0.6;
+      text-align: left;
+      order: 2;
+    }
+
+    /* Right side: description */
+    .tool-desc {
+      display: block;
       text-align: right;
+      font-size: 0.85rem;
+      opacity: 0.7;
+      order: 3;
+      max-width: 50%;
     }
   }
 </style>
