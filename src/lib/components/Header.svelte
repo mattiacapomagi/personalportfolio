@@ -80,62 +80,49 @@
       </button>
       <button
         type="button"
-        class="hamburger"
+        class="more-btn"
         class:open={menuOpen}
         onclick={toggleMenu}
         aria-label="Menu"
       >
-        <span class="line"></span>
-        <span class="line"></span>
+        <span class="more-text">MORE</span>
+        <span class="close-text">×</span>
       </button>
     </nav>
   </div>
 </header>
 
-<!-- Mobile Menu Overlay -->
-<div
-  class="mobile-menu-overlay"
-  class:open={menuOpen}
-  onclick={toggleMenu}
-></div>
+<!-- Blur Overlay -->
+<div class="blur-overlay" class:open={menuOpen} onclick={toggleMenu}></div>
 
-<!-- Mobile Menu -->
-<div class="mobile-menu" class:open={menuOpen}>
-  <div class="menu-content">
-    <a
-      href="{base}/"
-      class="menu-link"
-      class:active={normalizePath(activePath) === normalizePath(base)}
-      style="--i: 0"
-    >
-      <span class="link-text"
-        >{$language === "en" ? "projects" : "progetti"}</span
-      >
-      <span class="link-arrow">→</span>
-    </a>
-    <a
-      href="{base}/tools"
-      class="menu-link"
-      class:active={normalizePath(activePath).startsWith(
-        normalizePath(`${base}/tools`)
-      )}
-      style="--i: 1"
-    >
-      <span class="link-text">tools</span>
-      <span class="link-arrow">→</span>
-    </a>
-    <a
-      href="{base}/about"
-      class="menu-link"
-      class:active={normalizePath(activePath) ===
-        normalizePath(`${base}/about`)}
-      style="--i: 2"
-    >
-      <span class="link-text">{$language === "en" ? "about" : "chi sono?"}</span
-      >
-      <span class="link-arrow">→</span>
-    </a>
-  </div>
+<!-- Radial Menu -->
+<div class="radial-menu" class:open={menuOpen}>
+  <a
+    href="{base}/"
+    class="radial-link"
+    class:active={normalizePath(activePath) === normalizePath(base)}
+    style="--angle: -60deg; --distance: 100px"
+  >
+    {$language === "en" ? "projects" : "progetti"}
+  </a>
+  <a
+    href="{base}/tools"
+    class="radial-link"
+    class:active={normalizePath(activePath).startsWith(
+      normalizePath(`${base}/tools`)
+    )}
+    style="--angle: 0deg; --distance: 120px"
+  >
+    tools
+  </a>
+  <a
+    href="{base}/about"
+    class="radial-link"
+    class:active={normalizePath(activePath) === normalizePath(`${base}/about`)}
+    style="--angle: 60deg; --distance: 100px"
+  >
+    {$language === "en" ? "about" : "chi sono?"}
+  </a>
 </div>
 
 <style>
@@ -146,7 +133,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(var(--color-bg-rgb, 253, 251, 247), 0.85);
+    background: rgba(253, 251, 247, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(128, 128, 128, 0.15);
@@ -210,145 +197,138 @@
     display: flex;
   }
 
-  /* Minimal Hamburger - 2 lines */
-  .hamburger {
+  /* MORE Button */
+  .more-btn {
     display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 24px;
-    height: 20px;
+    position: relative;
+    font-family: inherit;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    gap: 6px;
+    width: 50px;
+    height: 24px;
+    overflow: hidden;
   }
 
-  .hamburger .line {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background: var(--color-text);
-    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    transform-origin: center;
+  .more-text,
+  .close-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
-  .hamburger.open .line:nth-child(1) {
-    transform: translateY(4px) rotate(45deg);
+  .close-text {
+    font-size: 2rem;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(-180deg);
   }
 
-  .hamburger.open .line:nth-child(2) {
-    transform: translateY(-4px) rotate(-45deg);
+  .more-btn.open .more-text {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0) rotate(180deg);
   }
 
-  /* Frosted Glass Overlay */
-  .mobile-menu-overlay {
+  .more-btn.open .close-text {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+
+  /* Blur Overlay */
+  .blur-overlay {
     display: none;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     z-index: 998;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s ease;
   }
 
-  .mobile-menu-overlay.open {
+  .blur-overlay.open {
     opacity: 1;
     pointer-events: auto;
   }
 
-  /* Fullscreen Glassmorphic Menu */
-  .mobile-menu {
+  /* Radial Menu */
+  .radial-menu {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 45px;
+    right: var(--page-padding);
     z-index: 999;
     pointer-events: none;
-    opacity: 0;
   }
 
-  .mobile-menu.open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .menu-content {
+  .radial-link {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-    max-width: 400px;
-    padding: 0 var(--page-padding);
-  }
-
-  .menu-link {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 2.5rem;
+    right: 25px;
+    top: 12px;
+    font-size: 1.2rem;
     font-weight: 700;
     text-decoration: none;
     color: var(--color-text);
-    padding: 20px 24px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    white-space: nowrap;
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
-    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transition-delay: calc(var(--i) * 0.08s);
+    transform: translate(0, 0) scale(0.5);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
-  :global([data-theme="dark"]) .menu-link {
-    background: rgba(255, 255, 255, 0.05);
+  :global([data-theme="dark"]) .radial-link {
+    background: rgba(40, 40, 40, 0.95);
     border-color: rgba(255, 255, 255, 0.1);
   }
 
-  .mobile-menu.open .menu-link {
+  .radial-menu.open .radial-link {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(calc(cos(var(--angle)) * var(--distance) * -1))
+      translateY(calc(sin(var(--angle)) * var(--distance))) scale(1);
+    pointer-events: auto;
   }
 
-  .menu-link:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(0) scale(1.02);
+  .radial-link:nth-child(1) {
+    transition-delay: 0.05s;
+  }
+  .radial-link:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+  .radial-link:nth-child(3) {
+    transition-delay: 0.15s;
   }
 
-  :global([data-theme="dark"]) .menu-link:hover {
-    background: rgba(255, 255, 255, 0.1);
+  .radial-link:hover {
+    background: var(--color-accent);
+    color: white;
+    transform: translateX(calc(cos(var(--angle)) * var(--distance) * -1))
+      translateY(calc(sin(var(--angle)) * var(--distance))) scale(1.05);
   }
 
-  .menu-link.active {
+  .radial-link.active {
     color: var(--color-accent);
     border-color: var(--color-accent);
   }
 
-  .link-arrow {
-    opacity: 0;
-    transform: translateX(-10px);
-    transition: all 0.3s ease;
-  }
-
-  .menu-link:hover .link-arrow,
-  .menu-link.active .link-arrow {
-    opacity: 1;
-    transform: translateX(0);
+  .radial-link.active:hover {
+    color: white;
   }
 
   @media (max-width: 768px) {
@@ -376,26 +356,20 @@
       gap: 1rem;
     }
 
-    .hamburger {
-      display: flex;
+    .more-btn {
+      display: block;
     }
 
-    .mobile-menu {
-      display: flex;
+    .radial-menu {
+      display: block;
     }
 
-    .mobile-menu-overlay {
+    .blur-overlay {
       display: block;
     }
 
     .nav-link.lang-toggle {
       font-size: 1.3rem;
-    }
-
-    .menu-link {
-      font-size: 1.8rem;
-      padding: 16px 20px;
-      border-radius: 12px;
     }
   }
 </style>
