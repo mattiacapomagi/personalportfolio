@@ -367,10 +367,12 @@
 
 <style>
   .bricklab-tool {
-    flex: 1; /* Riempi tutto lo spazio disponibile nel padre (che è flex-grow) */
     display: flex;
     flex-direction: column;
-    padding: 0 var(--page-padding); /* Ri-aggiungo padding laterale per allineare il contenuto interno */
+    padding: 0 var(--page-padding); 
+    height: calc(100vh - 80px); /* Constrain explicit height minus estimated header/padding to prevent scroll */
+    max-height: 100vh;
+    overflow: hidden; /* Main container prevents scroll */
   }
 
   /* Upload Zone */
@@ -433,7 +435,10 @@
   @media (min-width: 900px) {
     .workspace-content {
       flex-direction: row;
-      align-items: stretch; /* Stretch to fill height */
+      align-items: stretch; 
+      height: 100%; /* Ensure full height usage */
+      gap: 24px;
+      overflow: hidden; /* Prevent overflow */
     }
   }
 
@@ -453,7 +458,8 @@
 
   canvas {
     max-width: 100%;
-    max-height: 100%; /* Allow filling container */
+    max-height: 100%;
+    object-fit: contain; /* Preserve aspect ratio within container */
     display: block;
   }
 
@@ -492,14 +498,16 @@
     background: var(--color-bg);
   }
 
-  @media (min-width: 900px) {
-    .controls-panel {
       width: 320px;
       flex-shrink: 0;
-      position: sticky;
-      top: 100px;
+      /* align-self: flex-start would allow it to shrink, 
+         but we are inside stretch. Using margin-bottom: auto 
+         or align-self on the item explicitly. */
+      align-self: flex-start;
+      height: auto;
+      max-height: 100%;
+      overflow-y: auto; /* Scroll if controls somehow exceed viewport */
     }
-  }
 
   .slider-section {
     margin-bottom: 24px;
