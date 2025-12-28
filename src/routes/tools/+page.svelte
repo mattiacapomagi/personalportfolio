@@ -126,7 +126,7 @@
         "title desc"
         "year desc";
       grid-template-columns: auto 1fr;
-      gap: 2px 20px;
+      gap: 0 20px; /* 0px row gap */
       padding: 16px 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
       align-items: start;
@@ -137,7 +137,8 @@
       font-size: 1rem;
       font-weight: 700;
       text-align: left;
-      margin-bottom: 2px;
+      margin-bottom: 0px; /* Remove margin */
+      line-height: 1.1; /* Tighter line height */
     }
 
     .tool-year {
@@ -145,6 +146,7 @@
       font-size: 0.8rem;
       opacity: 0.6;
       text-align: left;
+      line-height: 1.1;
     }
 
     .tool-desc {
