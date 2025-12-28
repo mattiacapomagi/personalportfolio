@@ -71,7 +71,7 @@
     grid-template-columns: 1fr 2fr 0.5fr; /* Match header */
     gap: 20px;
     padding: 6px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
     align-items: center;
     text-decoration: none;
     color: var(--color-text);
@@ -128,7 +128,7 @@
       grid-template-columns: auto 1fr;
       gap: 0 20px; /* 0px row gap */
       padding: 16px 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(128, 128, 128, 0.2);
       align-items: start;
     }
 

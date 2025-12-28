@@ -108,7 +108,7 @@
     grid-template-columns: 2fr 1.5fr 1fr 0.5fr;
     gap: 20px;
     padding: 6px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.3);
     align-items: center;
     text-decoration: none;
     color: inherit; /* Ensure color inherits */
@@ -163,7 +163,7 @@
       gap: 15px;
       height: 250px; /* Fixed height as requested */
       padding: 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
 
     .text-content {
