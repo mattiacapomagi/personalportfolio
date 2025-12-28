@@ -107,7 +107,7 @@
 
   @media (max-width: 480px) {
     .site-footer {
-      font-size: 1rem;
+      font-size: 0.85rem;
       margin-top: 10px;
     }
 

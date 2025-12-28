@@ -133,11 +133,11 @@
     }
 
     .logo a {
-      font-size: 1.2rem; /* Increased slightly */
+      font-size: 1rem; /* Reduced by ~15% */
     }
 
     .nav-link {
-      font-size: 1.2rem; /* Increased slightly */
+      font-size: 1rem; /* Reduced by ~15% */
     }
 
     .nav {
