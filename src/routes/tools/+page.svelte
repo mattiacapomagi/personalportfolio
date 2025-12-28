@@ -151,11 +151,10 @@
       text-align: left;
     }
 
-    /* Right column: description left-aligned and justified */
+    /* Right column: description left-aligned */
     .tool-desc {
       display: block;
-      text-align: justify;
-      text-align-last: left;
+      text-align: left;
       font-size: 0.85rem;
       opacity: 0.7;
       flex: 1;
