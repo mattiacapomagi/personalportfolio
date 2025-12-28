@@ -383,7 +383,7 @@
     cursor: pointer;
     transition: background 0.2s ease;
     border: 3px dashed rgba(0, 0, 0, 0.2);
-    border-radius: 16px;
+    border-radius: 0;
     margin: 20px 0 10px 0;
   }
 
@@ -416,12 +416,15 @@
     display: none;
   }
 
-  /* Workspace */
   .workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     padding: 20px 0;
   }
 
   .workspace-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -430,7 +433,7 @@
   @media (min-width: 900px) {
     .workspace-content {
       flex-direction: row;
-      align-items: flex-start;
+      align-items: stretch; /* Stretch to fill height */
     }
   }
 
@@ -438,7 +441,7 @@
   .canvas-container {
     flex: 1;
     border: 2px solid var(--color-text);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 16px;
     background: #f5f5f5;
     display: flex;
@@ -450,7 +453,7 @@
 
   canvas {
     max-width: 100%;
-    max-height: 70vh;
+    max-height: 100%; /* Allow filling container */
     display: block;
   }
 
@@ -469,6 +472,7 @@
     height: 40px;
     border: 4px solid var(--color-accent);
     border-top-color: transparent;
+    border-top-color: transparent;
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
@@ -483,7 +487,7 @@
   .controls-panel {
     width: 100%;
     border: 2px solid var(--color-text);
-    border-radius: 12px;
+    border-radius: 0;
     padding: 24px;
     background: var(--color-bg);
   }
@@ -537,7 +541,7 @@
     -webkit-appearance: none;
     appearance: none;
     background: #ddd;
-    border-radius: 4px;
+    border-radius: 0;
     cursor: pointer;
   }
 
@@ -547,7 +551,7 @@
     width: 20px;
     height: 20px;
     background: var(--color-text);
-    border-radius: 50%;
+    border-radius: 0;
     cursor: pointer;
   }
 
@@ -555,7 +559,7 @@
     width: 20px;
     height: 20px;
     background: var(--color-text);
-    border-radius: 50%;
+    border-radius: 0;
     cursor: pointer;
     border: none;
   }
@@ -575,7 +579,7 @@
     font-family: var(--font-mono);
     cursor: pointer;
     border: 2px solid var(--color-text);
-    border-radius: 8px;
+    border-radius: 0;
     transition: all 0.2s ease;
   }
 
