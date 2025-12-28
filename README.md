@@ -2,24 +2,19 @@
 
 A multidisciplinary design portfolio showcasing work in Editorial Design, Typography, Motion Graphics, and 3D Modeling. Built with **SvelteKit** and **Vite**, featuring smooth scrolling and a minimalist aesthetic.
 
-## 📂 Project Index & Credits
+## ⚖️ Legal & Copyright
 
-All projects showcased are intellectual property of their respective authors and clients.
+**&copy; 2025 Mattia Capomagi. All Rights Reserved.**
 
-| Project                          | Client / Context            | Category               | Year    |
-| :------------------------------- | :-------------------------- | :--------------------- | :------ |
-| **INTO Mag**                     | RUFA x Mag to Mag           | Editorial Design       | 2024    |
-| **Italian Excellence Posters**   | Treccani Emporium x RUFA    | Poster Design          | 2025    |
-| **Coppedè: Enciclopedia Urbana** | RUFA                        | Editorial Design       | 2025    |
-| **Naturamatic**                  | RUFA                        | Editorial Design       | 2024/25 |
-| **DOTTIE**                       | RUFA                        | Type Design            | 2025    |
-| **What a MAG! Zine**             | Mag to Mag                  | Editorial Design       | 2024    |
-| **UTOPIA Cover Redesign**        | RUFA                        | Brand/Editorial Design | 2024/25 |
-| **Kinetic Type Tarantino**       | RUFA                        | Motion Design          | 2024/25 |
-| **UTE Limited Edition**          | RUFA x Jungle Juice Brewing | Packaging Design       | 2024/25 |
-| **Inception Intro Sequence**     | RUFA                        | 3D Modeling + Motion   | 2025    |
+This software, source code, designs, and all accompanying content are the exclusive intellectual property of **Mattia Capomagi**.
 
-&copy; **Mattia Capomagi** & **RUFA (Rome University of Fine Arts)** where applicable. All rights reserved.
+**STRICTLY PROHIBITED:**
+
+- Unauthorized copying, modification, distribution, or use of this code, in whole or in part.
+- Using any part of this repository for commercial or non-commercial projects without explicit written permission.
+- Claiming this work as your own.
+
+This repository is for **portfolio demonstration purposes only**. No open-source license is granted.
 
 ## 🧰 Creative Coding Tools
 
