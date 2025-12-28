@@ -367,12 +367,11 @@
 
 <style>
   .bricklab-tool {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 0 var(--page-padding); 
-    height: calc(100vh - 80px); /* Constrain explicit height minus estimated header/padding to prevent scroll */
-    max-height: 100vh;
-    overflow: hidden; /* Main container prevents scroll */
+    padding: 0 var(--page-padding);
+    min-height: 0; /* Crucial for nested flex scrolling/shrinking */
   }
 
   /* Upload Zone */
@@ -435,10 +434,10 @@
   @media (min-width: 900px) {
     .workspace-content {
       flex-direction: row;
-      align-items: stretch; 
-      height: 100%; /* Ensure full height usage */
+      align-items: stretch;
+      height: 100%;
       gap: 24px;
-      overflow: hidden; /* Prevent overflow */
+      min-height: 0; /* Crucial */
     }
   }
 
@@ -454,12 +453,15 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
+    min-height: 0; /* Allow shrinking */
   }
 
   canvas {
     max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Preserve aspect ratio within container */
+    max-height: 100%; /* Must be constrained by parent */
+    width: auto;
+    height: auto;
+    object-fit: contain;
     display: block;
   }
 
@@ -498,16 +500,16 @@
     background: var(--color-bg);
   }
 
+  @media (min-width: 900px) {
+    .controls-panel {
       width: 320px;
       flex-shrink: 0;
-      /* align-self: flex-start would allow it to shrink, 
-         but we are inside stretch. Using margin-bottom: auto 
-         or align-self on the item explicitly. */
       align-self: flex-start;
       height: auto;
       max-height: 100%;
-      overflow-y: auto; /* Scroll if controls somehow exceed viewport */
+      overflow-y: auto;
     }
+  }
 
   .slider-section {
     margin-bottom: 24px;
