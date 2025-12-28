@@ -8,7 +8,7 @@
     renderGridToCanvas,
     renderGridToSVG,
     type Grid,
-  } from "$lib/tools/bricklab-engine";
+  } from "$lib/engines/bricklab-engine";
 
   // State
   let sourceImage: HTMLImageElement | null = $state(null);

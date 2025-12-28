@@ -10,7 +10,7 @@
     PALETTES,
     type DitherAlgorithm,
     type Color,
-  } from "$lib/tools/dithering-engine";
+  } from "$lib/engines/dithering-engine";
 
   // State
   let sourceImage: HTMLImageElement | null = $state(null);

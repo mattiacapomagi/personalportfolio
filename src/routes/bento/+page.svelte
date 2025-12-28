@@ -39,7 +39,7 @@
     >
       <div class="avatar-container">
         <img
-          src="{base}/media/favicon.jpg"
+          src="{base}/media/brand/favicon.jpg"
           alt="Mattia Capomagi"
           class="avatar"
         />

@@ -23,13 +23,13 @@ export const projects = [
 		description_en: 'A deep dive into the unconscious. INTO is a magazine that visualizes mental landscapes, moving through the layers of human nature. By mixing visual storytelling with abstract typography and experimental layouts, the publication builds an immersive experience where the reader gets lost in the narrative.',
 		description_it: 'Un’immersione nell’inconscio. INTO è un magazine che visualizza paesaggi mentali, attraversando i livelli della natura umana. Unendo storytelling visivo, tipografia astratta e layout sperimentali, la pubblicazione costruisce un’esperienza immersiva in cui il lettore si perde nella narrazione.',
 		images: [
-			'/media/INTO/animazioneINTO.mp4', 
-			'/media/INTO/DSC3620.webp', 
-			'/media/INTO/DSC3762.webp', 
-			'/media/INTO/DSC3768.webp',
-			'/media/INTO/IMG_9599.webp'
+			'/media/projects/INTO/animazioneINTO.mp4', 
+			'/media/projects/INTO/DSC3620.webp', 
+			'/media/projects/INTO/DSC3762.webp', 
+			'/media/projects/INTO/DSC3768.webp',
+			'/media/projects/INTO/IMG_9599.webp'
 		],
-		previewImage: '/media/INTO/animazioneINTO.mp4'
+		previewImage: '/media/projects/INTO/animazioneINTO.mp4'
 	},
 	{
 		slug: 'poster-treccani',
@@ -42,10 +42,10 @@ export const projects = [
 		description_en: 'A visual tribute to the craft of gelato, celebrating it as a global icon of Italian artisanship. The design captures the ephemeral nature of the subject through a saturated vintage aesthetic and a highly chromatic palette that evokes immediate sensory pleasure. The custom type “bollente” modifies the Neon NBL typeface to create a deliberate contrast offering an irreverent, contemporary reading of a traditional subject.',
 		description_it: 'Un tributo visivo all’arte del gelato, celebrato come icona globale dell’artigianato italiano. Il design cattura la natura effimera del soggetto attraverso un’estetica vintage satura e una palette cromatica accesa che evoca un piacere sensoriale immediato. Il lettering custom “bollente”, modifica della typeface Neon NBL, crea un contrasto deliberato offrendo una lettura irriverente e contemporanea di un soggetto tradizionale.',
 		images: [
-			'/media/Treccani/poster gelato.webp', 
-			'/media/Treccani/mockup gelato 16_9.webp'
+			'/media/projects/Treccani/poster gelato.webp', 
+			'/media/projects/Treccani/mockup gelato 16_9.webp'
 		],
-		previewImage: '/media/Treccani/poster gelato.webp'
+		previewImage: '/media/projects/Treccani/poster gelato.webp'
 	},
 	{
 		slug: 'coppede',
@@ -57,13 +57,13 @@ export const projects = [
 		description_en: 'An alternative guide to Rome’s Coppedè district, decoding its dense symbolic language. Beyond the striking aesthetics, this publication identifies and explains the architectural symbols embedded in the district’s fabric. Paired with a functional minimap, the layout serves as a compact tool for navigating and understanding the visual complexity of Gino Coppedè’s vision.',
 		description_it: 'Una guida alternativa al quartiere Coppedè di Roma, volta a decodificare il suo denso linguaggio simbolico. Oltre l’estetica impattante, la pubblicazione identifica e spiega i simboli architettonici intessuti nel tessuto del quartiere. Accompagnato da una minimappa funzionale, il layout funge da strumento compatto per navigare e comprendere la complessità visiva della visione di Gino Coppedè.',
 		images: [
-			'/media/coppedè/video_mockup_coppede.mp4', 
-			'/media/coppedè/fotocoppedè_01 - dimensioni grandi.webp', 
-			'/media/coppedè/fotocoppedè_02 - dimensioni grandi(1).webp',
-			'/media/coppedè/borse.webp',
-			'/media/coppedè/maglietta mockup.webp'
+			'/media/projects/coppedè/video_mockup_coppede.mp4', 
+			'/media/projects/coppedè/fotocoppedè_01 - dimensioni grandi.webp', 
+			'/media/projects/coppedè/fotocoppedè_02 - dimensioni grandi(1).webp',
+			'/media/projects/coppedè/borse.webp',
+			'/media/projects/coppedè/maglietta mockup.webp'
 		],
-		previewImage: '/media/coppedè/fotocoppedè_01 - dimensioni grandi.webp'
+		previewImage: '/media/projects/coppedè/fotocoppedè_01 - dimensioni grandi.webp'
 	},
 	{
 		slug: 'naturamatic',
@@ -75,12 +75,12 @@ export const projects = [
 		description_en: 'A collective editorial project that blends deconstructed artworks and lyrics into a continuous visual narrative. The layout mirrors a rising tide, gradually flooding the pages until the final spread is submerged in a dynamic, calibrated chaos.',
 		description_it: 'Un progetto editoriale collettivo che fonde opere d’arte decostruite e testi musicali in una narrazione visiva continua. Il layout rispecchia una marea montante, inondando gradualmente le pagine fino a sommergere l’ultima doppia pagina in un caos dinamico e calibrato.',
 		images: [
-			'/media/Naturamatic/libricino.mp4', 
-			'/media/Naturamatic/RISON5.mp4', 
-			'/media/Naturamatic/coverpic.webp',
-			'/media/Naturamatic/foto magtomag 2025 naturamatic.webp'
+			'/media/projects/Naturamatic/libricino.mp4', 
+			'/media/projects/Naturamatic/RISON5.mp4', 
+			'/media/projects/Naturamatic/coverpic.webp',
+			'/media/projects/Naturamatic/foto magtomag 2025 naturamatic.webp'
 		],
-		previewImage: '/media/Naturamatic/libricino.mp4'
+		previewImage: '/media/projects/Naturamatic/libricino.mp4'
 	},
 	{
 		slug: 'dottie',
@@ -92,13 +92,13 @@ export const projects = [
 		description_en: 'A modular variable font constructed entirely from circular dots and rounded rectangles. Assembled within a strict grid, Dottie explores the tension between geometric purity and typographic readability.',
 		description_it: 'Una font variabile modulare costruita interamente da punti circolari e rettangoli arrotondati. Assemblata all’interno di una griglia rigorosa, Dottie esplora la tensione tra purezza geometrica e leggibilità tipografica.',
 		images: [
-			'/media/DOTTIE/16-9 video DOTTIE.mp4', 
-			'/media/DOTTIE/mockup specimen.webp', 
-			'/media/DOTTIE/specimen16-9.webp',
-			'/media/DOTTIE/mockup1.webp'
+			'/media/projects/DOTTIE/16-9 video DOTTIE.mp4', 
+			'/media/projects/DOTTIE/mockup specimen.webp', 
+			'/media/projects/DOTTIE/specimen16-9.webp',
+			'/media/projects/DOTTIE/mockup1.webp'
 		],
 		gumroadLink: 'https://mattiacapomagi.gumroad.com/l/dottievf',
-		previewImage: '/media/DOTTIE/16-9 video DOTTIE.mp4'
+		previewImage: '/media/projects/DOTTIE/16-9 video DOTTIE.mp4'
 	},
 	{
 		slug: 'what-a-mag',
@@ -110,12 +110,12 @@ export const projects = [
 		description_en: 'An instant-zine created live during the Mag to Mag festival in Milan. Produced in just over 10 hours, the design captures the festival’s raw energy in a folded A4 format, prioritizing speed, impact, and the immediacy of independent publishing.',
 		description_it: 'Una instant-zine creata dal vivo durante il festival Mag to Mag a Milano. Prodotta in poco più di 10 ore, il design cattura l’energia grezza del festival in un formato A4 pieghevole, dando priorità a velocità, impatto e immediatezza dell’editoria indipendente.',
 		images: [
-			'/media/What a MAG/animazione.mp4', 
-			'/media/What a MAG/1.webp', 
-			'/media/What a MAG/4-5.webp',
-			'/media/What a MAG/6-7.webp'
+			'/media/projects/What a MAG/animazione.mp4', 
+			'/media/projects/What a MAG/1.webp', 
+			'/media/projects/What a MAG/4-5.webp',
+			'/media/projects/What a MAG/6-7.webp'
 		],
-		previewImage: '/media/What a MAG/1.webp'
+		previewImage: '/media/projects/What a MAG/1.webp'
 	},
 	{
 		slug: 'utopia-cover',
@@ -127,17 +127,17 @@ export const projects = [
 		description_en: 'Translating the sonic complexity of Utopia into a visual system. The cover acts as an extension of the album, using spectrograms to visualize frequencies. A clash of handwritten text and sharp sans-serif typography underscores the contrast between organic sound and structural experimentation.',
 		description_it: 'Tradurre la complessità sonora di Utopia in un sistema visivo. La cover agisce come estensione dell’album, utilizzando spettrogrammi per visualizzare le frequenze. Lo scontro tra testo manoscritto e tipografia sans-serif affilata sottolinea il contrasto tra suono organico e sperimentazione strutturale.',
 		images: [
-			'/media/UTOPIA/video.mp4', 
-			'/media/UTOPIA/cover.webp', 
-			'/media/UTOPIA/cover alt.webp',
-			'/media/UTOPIA/back.webp',
-			'/media/UTOPIA/back alt.webp',
-			'/media/UTOPIA/fronte vinile.webp',
-			'/media/UTOPIA/fronte vinile alt.webp',
-			'/media/UTOPIA/mockup cd fronte retro.webp',
-			'/media/UTOPIA/mockup cd alt fronte retro.webp'
+			'/media/projects/UTOPIA/video.mp4', 
+			'/media/projects/UTOPIA/cover.webp', 
+			'/media/projects/UTOPIA/cover alt.webp',
+			'/media/projects/UTOPIA/back.webp',
+			'/media/projects/UTOPIA/back alt.webp',
+			'/media/projects/UTOPIA/fronte vinile.webp',
+			'/media/projects/UTOPIA/fronte vinile alt.webp',
+			'/media/projects/UTOPIA/mockup cd fronte retro.webp',
+			'/media/projects/UTOPIA/mockup cd alt fronte retro.webp'
 		],
-		previewImage: '/media/UTOPIA/cover.webp'
+		previewImage: '/media/projects/UTOPIA/cover.webp'
 	},
 	{
 		slug: 'kinetic-type-tarantino',
@@ -149,9 +149,9 @@ export const projects = [
 		description_en: 'Kinetic typography exploration based on Tarantino’s ‘Once Upon a Time in Hollywood’. The animation mirrors the film’s distinctive mood, treating text as a narrative actor to enhance storytelling through motion and rhythm.',
 		description_it: 'Esplorazione di tipografia cinetica basata su "C’era una volta a... Hollywood" di Tarantino. L’animazione rispecchia il mood distintivo del film, trattando il testo come attore narrativo per potenziare lo storytelling attraverso movimento e ritmo.',
 		images: [
-			'/media/Kinetic Type Tarantino/video.mp4'
+			'/media/projects/Kinetic Type Tarantino/video.mp4'
 		],
-		previewImage: '/media/Kinetic Type Tarantino/video.mp4'
+		previewImage: '/media/projects/Kinetic Type Tarantino/video.mp4'
 	},
 	{
 		slug: 'ute-limited-edition',
@@ -163,13 +163,13 @@ export const projects = [
 		description_en: 'Packaging design for UTE, a Keller Pils by Jungle Juice. The concept captures summery, easygoing vibes through a playful mix of vector art and photography. The can features a back-view figure with branding integrated into the swimwear, while the box references classic ice cooler aesthetics.',
 		description_it: 'Packaging design per UTE, una Keller Pils di Jungle Juice. Il concept cattura le vibrazioni estive e spensierate attraverso un mix giocoso di vettoriale e fotografia. La lattina presenta una figura di spalle con il branding integrato nel costume, mentre la scatola cita l’estetica delle classiche borse frigo.',
 		images: [
-			'/media/UTE/render.webp', 
-			'/media/UTE/mockup lato1.webp', 
-			'/media/UTE/mockup lato2.webp',
-			'/media/UTE/mockup lattina.webp',
-			'/media/UTE/mockup4.webp'
+			'/media/projects/UTE/render.webp', 
+			'/media/projects/UTE/mockup lato1.webp', 
+			'/media/projects/UTE/mockup lato2.webp',
+			'/media/projects/UTE/mockup lattina.webp',
+			'/media/projects/UTE/mockup4.webp'
 		],
-		previewImage: '/media/UTE/render.webp'
+		previewImage: '/media/projects/UTE/render.webp'
 	},
 	{
 		slug: 'inception-intro',
@@ -181,12 +181,12 @@ export const projects = [
 		description_en: 'A conceptual intro sequence for Christopher Nolan’s Inception. Iconic character totems were modeled with precise attention to form and scale, then animated to evoke the film’s suspended, dreamlike tone. A study in combining 3D precision with atmospheric visual rhythm.',
 		description_it: 'Una sequenza intro concettuale per Inception di Christopher Nolan. I totem iconici dei personaggi sono stati modellati con precisa attenzione a forma e scala, poi animati per evocare il tono sospeso e onirico del film. Uno studio nel combinare precisione 3D con ritmo visivo atmosferico.',
 		images: [
-			'/media/Inception/inception titoli di testa.mp4', 
-			'/media/Inception/poster inception.webp', 
-			'/media/Inception/dettaglio alfiere.webp',
-			'/media/Inception/billboard1.webp'
+			'/media/projects/Inception/inception titoli di testa.mp4', 
+			'/media/projects/Inception/poster inception.webp', 
+			'/media/projects/Inception/dettaglio alfiere.webp',
+			'/media/projects/Inception/billboard1.webp'
 		],
-		previewImage: '/media/Inception/poster inception.webp'
+		previewImage: '/media/projects/Inception/poster inception.webp'
 	}
 ];
 

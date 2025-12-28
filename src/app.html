@@ -7,9 +7,20 @@
       name="description"
       content="Mattia Capomagi - Graphic Designer Portfolio"
     />
-    <link rel="icon" href="%sveltekit.assets%/media/favicon.jpg" />
+    <link rel="icon" href="%sveltekit.assets%/media/brand/favicon.jpg" />
     <link rel="stylesheet" href="https://use.typekit.net/wgo1skk.css">
     <title>Mattia Capomagi - Visual Designer</title>
+    <script>
+      (function() {
+        const key = 'theme-preference';
+        const pref = localStorage.getItem(key);
+        let theme = pref;
+        if (!theme || theme === 'system') {
+          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover">

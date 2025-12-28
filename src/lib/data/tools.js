@@ -31,7 +31,7 @@ export const tools = [
     description_it: "Convertitore Immagini in Arte ASCII",
     externalUrl: null,
     embedPath: "/tools/asciify",
-    previewImage: "/images/tools/asciify-preview.png",
+    previewImage: "/media/tools/asciify-preview.png",
   },
   {
     slug: "dithering",

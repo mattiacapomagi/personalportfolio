@@ -8,7 +8,7 @@
     pixelsToAsciiGrid,
     renderAsciiToCanvas,
     getPresetChars,
-  } from "$lib/tools/asciify-engine";
+  } from "$lib/engines/asciify-engine";
 
   // State
   let sourceImage: HTMLImageElement | null = $state(null);
