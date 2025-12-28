@@ -565,21 +565,22 @@
     background: #ddd;
     border-radius: 4px;
     cursor: pointer;
+    touch-action: pan-y;
   }
 
   input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background: var(--color-text);
     border-radius: 50%;
     cursor: pointer;
   }
 
   input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background: var(--color-text);
     border-radius: 50%;
     cursor: pointer;

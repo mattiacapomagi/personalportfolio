@@ -534,12 +534,13 @@
     border-radius: 4px;
     outline: none;
     cursor: pointer;
+    touch-action: pan-y; /* Prevent page scroll when dragging slider */
   }
 
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background: var(--color-text);
     border-radius: 50%;
     cursor: pointer;

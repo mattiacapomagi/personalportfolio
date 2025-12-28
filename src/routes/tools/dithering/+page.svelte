@@ -541,11 +541,12 @@
     background: #ddd;
     outline: none;
     cursor: pointer;
+    touch-action: pan-y;
   }
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background: var(--color-text);
     border-radius: 50%;
     cursor: pointer;
