@@ -122,37 +122,32 @@
 
     .tool-row {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* Two equal columns */
-      grid-template-rows: auto auto;
-      gap: 4px 20px;
+      grid-template-areas:
+        "title desc"
+        "year desc";
+      grid-template-columns: auto 1fr;
+      gap: 2px 20px;
       padding: 16px 0;
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      align-items: start;
     }
 
-    /* Left column: title on first row */
     .tool-title {
-      grid-column: 1;
-      grid-row: 1;
+      grid-area: title;
       font-size: 1rem;
       font-weight: 700;
       text-align: left;
     }
 
-    /* Left column: year on second row */
     .tool-year {
-      grid-column: 1;
-      grid-row: 2;
+      grid-area: year;
       font-size: 0.8rem;
       opacity: 0.6;
       text-align: left;
     }
 
-    /* Right column: description spans both rows */
     .tool-desc {
-      grid-column: 2;
-      grid-row: 1 / 3;
-      display: flex;
-      align-items: flex-start;
+      grid-area: desc;
       text-align: left;
       font-size: 0.85rem;
       opacity: 0.7;
