@@ -1,4 +1,4 @@
-import { $ as head, U as attr, Y as stringify } from "../../../chunks/index2.js";
+import { $ as head, V as attr, Z as stringify } from "../../../chunks/index2.js";
 import { b as base } from "../../../chunks/server.js";
 import "@sveltejs/kit/internal/server";
 import { e as escape_html } from "../../../chunks/context.js";

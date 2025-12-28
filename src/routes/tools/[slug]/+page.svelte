@@ -370,6 +370,7 @@
     min-height: calc(100vh - 120px);
     display: flex;
     flex-direction: column;
+    padding: 0 var(--page-padding); /* Ri-aggiungo padding laterale per allineare il contenuto interno */
   }
 
   /* Upload Zone */
