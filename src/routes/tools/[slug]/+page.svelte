@@ -2,6 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import { base } from "$app/paths";
   import { language } from "$lib/stores/language.js";
+  import heic2any from "heic2any";
   import {
     computeMosaicGrid,
     renderGridToCanvas,
@@ -126,25 +127,41 @@
   }
 
   async function handleFile(file: File) {
-    let processFile = file;
+    let processFile: File | Blob = file;
 
-    // HEIC Conversion (simplified)
+    // HEIC Conversion
     if (
       file.type === "image/heic" ||
       file.type === "image/heif" ||
-      file.name.toLowerCase().endsWith(".heic")
+      file.name.toLowerCase().endsWith(".heic") ||
+      file.name.toLowerCase().endsWith(".heif")
     ) {
-      alert(
-        $language === "en"
-          ? "HEIC files are not supported. Please use JPG/PNG."
-          : "I file HEIC non sono supportati. Usa JPG/PNG."
-      );
-      return;
+      try {
+        isProcessing = true;
+        const convertedBlob = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.9,
+        });
+        processFile = Array.isArray(convertedBlob)
+          ? convertedBlob[0]
+          : convertedBlob;
+      } catch (error) {
+        console.error("HEIC conversion failed:", error);
+        alert(
+          $language === "en"
+            ? "Failed to convert HEIC file. Please try a different image."
+            : "Conversione HEIC fallita. Prova un'altra immagine."
+        );
+        isProcessing = false;
+        return;
+      }
     }
 
     const img = new Image();
     img.onload = () => {
       sourceImage = img;
+      isProcessing = false;
     };
     img.onerror = () => {
       alert(
@@ -152,6 +169,7 @@
           ? "Invalid image format"
           : "Formato immagine non valido"
       );
+      isProcessing = false;
     };
     img.src = URL.createObjectURL(processFile);
   }
@@ -306,12 +324,12 @@
         bind:this={fileInput}
         type="file"
         class="hidden"
-        accept="image/*,.tiff,.tif,.webp"
+        accept="image/*,.tiff,.tif,.webp,.heic,.heif"
         onchange={handleFileChange}
       />
       <div class="upload-content">
         <h2>{$language === "en" ? "DROP / CLICK" : "TRASCINA / CLICCA"}</h2>
-        <p>JPG / PNG / GIF / WEBP / TIFF</p>
+        <p>JPG / PNG / GIF / WEBP / TIFF / HEIC</p>
       </div>
     </div>
   {:else}

@@ -60,17 +60,21 @@ function Footer($$renderer, $$props) {
     let currentYear = (/* @__PURE__ */ new Date()).getFullYear();
     onDestroy(() => {
     });
-    let themeIcon = () => {
-      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "light") return "☀️";
-      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "dark") return "🌙";
-      return "🔄";
-    };
     let themeLabel = () => {
-      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "light") return "Light";
-      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "dark") return "Dark";
-      return "Auto";
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "light") {
+        return store_get($$store_subs ??= {}, "$language", language) === "en" ? "LIGHT MODE" : "MODALITÀ CHIARA";
+      }
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "dark") {
+        return store_get($$store_subs ??= {}, "$language", language) === "en" ? "DARK MODE" : "MODALITÀ SCURA";
+      }
+      return store_get($$store_subs ??= {}, "$language", language) === "en" ? "SYSTEM MODE" : "MODALITÀ SISTEMA";
     };
-    $$renderer2.push(`<footer class="site-footer svelte-jz8lnl"><div class="copyright"><span class="desktop-text svelte-jz8lnl">COPYRIGHT MATTIA CAPOMAGI ${escape_html(currentYear)}</span> <span class="mobile-text svelte-jz8lnl">Mattia Capomagi ${escape_html(currentYear)}</span></div> <button class="theme-toggle svelte-jz8lnl" aria-label="Toggle theme"><span class="theme-icon svelte-jz8lnl">${escape_html(themeIcon())}</span> <span class="theme-label svelte-jz8lnl">${escape_html(themeLabel())}</span></button> <div class="timestamp svelte-jz8lnl"><span class="desktop-text svelte-jz8lnl">${escape_html(dateStr)} ${escape_html(timeStr)}</span> <span class="mobile-text svelte-jz8lnl">${escape_html(timeStr)}</span></div></footer>`);
+    let mobileLabel = () => {
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "light") return "LIGHT";
+      if (store_get($$store_subs ??= {}, "$themePreference", themePreference) === "dark") return "DARK";
+      return "AUTO";
+    };
+    $$renderer2.push(`<footer class="site-footer svelte-jz8lnl"><div class="copyright"><span class="desktop-text svelte-jz8lnl">COPYRIGHT MATTIA CAPOMAGI ${escape_html(currentYear)}</span> <span class="mobile-text svelte-jz8lnl">Mattia Capomagi ${escape_html(currentYear)}</span></div> <span class="theme-toggle svelte-jz8lnl" role="button" tabindex="0"><span class="desktop-text svelte-jz8lnl">${escape_html(themeLabel())}</span> <span class="mobile-text svelte-jz8lnl">${escape_html(mobileLabel())}</span></span> <div class="timestamp svelte-jz8lnl"><span class="desktop-text svelte-jz8lnl">${escape_html(dateStr)} ${escape_html(timeStr)}</span> <span class="mobile-text svelte-jz8lnl">${escape_html(timeStr)}</span></div></footer>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }

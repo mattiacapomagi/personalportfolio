@@ -2,6 +2,7 @@ import { $ as head, V as attr_class, W as store_get, X as unsubscribe_stores } f
 import { o as onDestroy } from "../../../../chunks/index-server.js";
 import "@sveltejs/kit/internal/server";
 import { l as language } from "../../../../chunks/language.js";
+import "heic2any";
 import { e as escape_html } from "../../../../chunks/context.js";
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
@@ -47,7 +48,7 @@ function _page($$renderer, $$props) {
     $$renderer2.push(`<main class="bricklab-tool svelte-1otn1vq">`);
     {
       $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<div${attr_class("upload-zone svelte-1otn1vq", void 0, { "active": isDragActive })} role="button" tabindex="0"><input type="file" class="hidden svelte-1otn1vq" accept="image/*,.tiff,.tif,.webp"/> <div class="upload-content svelte-1otn1vq"><h2 class="svelte-1otn1vq">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "DROP / CLICK" : "TRASCINA / CLICCA")}</h2> <p class="svelte-1otn1vq">JPG / PNG / GIF / WEBP / TIFF</p></div></div>`);
+      $$renderer2.push(`<div${attr_class("upload-zone svelte-1otn1vq", void 0, { "active": isDragActive })} role="button" tabindex="0"><input type="file" class="hidden svelte-1otn1vq" accept="image/*,.tiff,.tif,.webp,.heic,.heif"/> <div class="upload-content svelte-1otn1vq"><h2 class="svelte-1otn1vq">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "DROP / CLICK" : "TRASCINA / CLICCA")}</h2> <p class="svelte-1otn1vq">JPG / PNG / GIF / WEBP / TIFF / HEIC</p></div></div>`);
     }
     $$renderer2.push(`<!--]--></main>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
