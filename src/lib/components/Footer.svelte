@@ -38,10 +38,10 @@
     return $language === "en" ? "SYSTEM MODE" : "MODALITÀ SISTEMA";
   });
 
-  // Mobile icons (no emoji, just text symbols)
+  // Mobile labels - clean text abbreviations
   let mobileLabel = $derived(() => {
-    if ($themePreference === "light") return "☀";
-    if ($themePreference === "dark") return "☾";
+    if ($themePreference === "light") return "LT";
+    if ($themePreference === "dark") return "DK";
     return "SYS";
   });
 </script>
