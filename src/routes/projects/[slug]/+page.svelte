@@ -3,7 +3,7 @@
   import { language } from "$lib/stores/language.js";
 
   let { data } = $props();
-  const { project } = data;
+  let project = $derived(data.project);
 </script>
 
 <svelte:head>

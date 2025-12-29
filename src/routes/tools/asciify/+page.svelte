@@ -22,21 +22,24 @@
 
   let isDragActive = $state(false);
   let isProcessing = $state(false);
-  let fileInput: HTMLInputElement;
-  let canvasRef: HTMLCanvasElement;
+  let fileInput = $state() as HTMLInputElement;
+  let canvasRef = $state() as HTMLCanvasElement;
 
   // Reactive processing
   $effect(() => {
-    if (sourceImage && canvasRef) {
-      processImage();
-    }
-  });
-
-  // Also re-process when params change
-  $effect(() => {
     // Touching these reactive variables triggers this effect
     // sourceImage, densitySlider, useLetters, bgColor, textColor, useColor, useEdge, useTransparentBg, canvasRef
-    // We call processImage inside
+    if (sourceImage && canvasRef) {
+      // Accessing reactive dependencies to register them
+      const _d = densitySlider;
+      const _l = useLetters;
+      const _c = useColor;
+      const _e = useEdge;
+      const _t = useTransparentBg;
+      const _bg = bgColor;
+      const _tx = textColor;
+      processImage();
+    }
   });
 
   function processImage() {

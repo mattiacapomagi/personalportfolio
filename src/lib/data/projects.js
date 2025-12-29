@@ -27,50 +27,49 @@ const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,p
 });
 
 /**
- * Get all images for a specific project slug
+ * Get sorted keys for a project
+ * @param {string} slug 
+ * @returns {string[]}
+ */
+function getProjectKeys(slug) {
+	const projectKeys = Object.keys(globbedImages).filter(key => key.includes(`/projects/${slug}/`));
+	projectKeys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+	return projectKeys;
+}
+
+/**
+ * Get all images (URLs) for a specific project slug
  * @param {string} slug 
  * @returns {string[]}
  */
 function getProjectImages(slug) {
-	// Filter the globbed keys for this project's folder
-	const projectKeys = Object.keys(globbedImages).filter(key => key.includes(`/projects/${slug}/`));
-	
-	// Sort using natural numeric order (1, 2, 10 instead of 1, 10, 2)
-	projectKeys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
-
-	return projectKeys.map(key => globbedImages[key]);
+	const keys = getProjectKeys(slug);
+	return keys.map(key => globbedImages[key]);
 }
 
 /**
- * Get the best available thumbnail for a project
+ * Get the thumbnail corresponding strictly to the first asset (preview image)
  * @param {string} slug
  * @returns {string|null}
  */
 function getProjectThumbnail(slug) {
-	const thumbKeys = Object.keys(globbedThumbnails).filter(key => key.includes(`/projects/${slug}/`));
-	if (thumbKeys.length === 0) return null;
-
-  // Sort to find the "first" image (e.g. 1.jpg or 2.jpg if 1 is mp4)
-	thumbKeys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
-  
-  return globbedThumbnails[thumbKeys[0]];
+	const keys = getProjectKeys(slug);
+	if (keys.length === 0) return null;
+	
+	// The first item in the carousel/list
+	const firstKey = keys[0];
+	
+	// Check if this exact key exists in our thumbnail glob
+	// (It will exist if it's an image, it won't if it's a video)
+	if (globbedThumbnails[firstKey]) {
+		return globbedThumbnails[firstKey];
+	}
+	
+	return null;
 }
 
 // ... rawProjects definition ...
 
-// Hydrate projects with their images
-export const projects = rawProjects.map(p => {
-	const images = getProjectImages(p.slug);
-  const thumbnail = getProjectThumbnail(p.slug);
-	
-	return {
-		...p,
-		images,
-    thumbnail,
-		// If explicit previewImage is set in data, use it, otherwise use first image/video
-		previewImage: p.previewImage || images[0]
-	};
-});
 
 /** @type {Project[]} */
 const rawProjects = [
@@ -177,6 +176,20 @@ const rawProjects = [
 		description_it: 'Una sequenza intro concettuale per Inception di Christopher Nolan. I totem iconici dei personaggi sono stati modellati con precisa attenzione a forma e scala, poi animati per evocare il tono sospeso e onirico del film. Uno studio nel combinare precisione 3D con ritmo visivo atmosferico.',
 	},
 ];
+
+// Hydrate projects with their images
+export const projects = rawProjects.map(p => {
+	const images = getProjectImages(p.slug);
+  const thumbnail = getProjectThumbnail(p.slug);
+	
+	return {
+		...p,
+		images,
+    thumbnail,
+		// If explicit previewImage is set in data, use it, otherwise use first image/video
+		previewImage: p.previewImage || images[0]
+	};
+});
 
 
 
