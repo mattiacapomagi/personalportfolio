@@ -19,6 +19,13 @@ const globbedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,w
 	import: 'default'
 });
 
+// Thumbnails for mobile/previews (Images only, resized)
+const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
+	eager: true,
+	query: { w: 400, format: 'webp' },
+	import: 'default'
+});
+
 /**
  * Get all images for a specific project slug
  * @param {string} slug 
@@ -26,7 +33,6 @@ const globbedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,w
  */
 function getProjectImages(slug) {
 	// Filter the globbed keys for this project's folder
-	// Keys are like: "/src/lib/assets/projects/into-mag/image.webp"
 	const projectKeys = Object.keys(globbedImages).filter(key => key.includes(`/projects/${slug}/`));
 	
 	// Sort using natural numeric order (1, 2, 10 instead of 1, 10, 2)
@@ -36,18 +42,35 @@ function getProjectImages(slug) {
 }
 
 /**
- * Helper to find a specific image for preview (e.g. "cover.webp")
- * If not found, returns the first image.
- * @param {string[]} images 
- * @param {string} filenamePart 
+ * Get the best available thumbnail for a project
+ * @param {string} slug
+ * @returns {string|null}
  */
-function getPreview(images, filenamePart) {
-	if (!images || images.length === 0) return '';
-	if (!filenamePart) return images[0];
-	
-	const found = images.find(img => img.includes(filenamePart));
-	return found || images[0];
+function getProjectThumbnail(slug) {
+	const thumbKeys = Object.keys(globbedThumbnails).filter(key => key.includes(`/projects/${slug}/`));
+	if (thumbKeys.length === 0) return null;
+
+  // Sort to find the "first" image (e.g. 1.jpg or 2.jpg if 1 is mp4)
+	thumbKeys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+  
+  return globbedThumbnails[thumbKeys[0]];
 }
+
+// ... rawProjects definition ...
+
+// Hydrate projects with their images
+export const projects = rawProjects.map(p => {
+	const images = getProjectImages(p.slug);
+  const thumbnail = getProjectThumbnail(p.slug);
+	
+	return {
+		...p,
+		images,
+    thumbnail,
+		// If explicit previewImage is set in data, use it, otherwise use first image/video
+		previewImage: p.previewImage || images[0]
+	};
+});
 
 /** @type {Project[]} */
 const rawProjects = [
@@ -155,16 +178,7 @@ const rawProjects = [
 	},
 ];
 
-// Hydrate projects with their images
-export const projects = rawProjects.map(p => {
-	const images = getProjectImages(p.slug);
-	const previewImage = getPreview(images, p._previewName);
-	return {
-		...p,
-		images,
-		previewImage
-	};
-});
+
 
 /**
  * Find a project by its slug

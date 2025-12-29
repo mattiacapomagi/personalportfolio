@@ -6,9 +6,19 @@
   let { project, onhover } = $props();
 
   let previewSource = $derived(project.previewImage || project.images[0]);
+
+  // Mobile Optimization: Use generated thumbnail if available
+  let mobilePreviewSource = $derived(project.thumbnail || previewSource);
+
   let isVideoPreview = $derived(
     previewSource?.toLowerCase().endsWith(".mp4") ||
       previewSource?.toLowerCase().endsWith(".mov")
+  );
+
+  // Check if the *mobile* source is a video (only if no thumbnail was found)
+  let isMobileVideo = $derived(
+    mobilePreviewSource?.toLowerCase().endsWith(".mp4") ||
+      mobilePreviewSource?.toLowerCase().endsWith(".mov")
   );
 
   function handleMouseEnter() {
@@ -82,9 +92,9 @@
 
   <!-- Mobile Only Preview -->
   <div class="mobile-preview">
-    {#if isVideoPreview}
+    {#if isMobileVideo}
       <video
-        src={previewSource}
+        src={mobilePreviewSource}
         autoplay
         loop
         muted
@@ -93,9 +103,11 @@
       ></video>
     {:else}
       <img
-        src={previewSource}
+        src={mobilePreviewSource}
         alt={project.title}
         loading="lazy"
+        width="400"
+        height="400"
         class="preview-media"
       />
     {/if}
