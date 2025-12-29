@@ -535,11 +535,29 @@
     width: 100%;
     height: 8px;
     -webkit-appearance: none;
+    appearance: none;
+    background: transparent; /* Move color to track */
+    cursor: pointer;
+    touch-action: pan-y;
+  }
+
+  /* Explicit Track Styling to remove iOS default shadows */
+  .slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
     background: #ddd;
     border-radius: 4px;
-    outline: none;
-    cursor: pointer;
-    touch-action: pan-y; /* Prevent page scroll when dragging slider */
+    border: none;
+    box-shadow: none;
+  }
+
+  .slider::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    border: none;
+    box-shadow: none;
   }
 
   .slider::-webkit-slider-thumb {

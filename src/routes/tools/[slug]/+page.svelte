@@ -569,10 +569,28 @@
     height: 8px;
     -webkit-appearance: none;
     appearance: none;
-    background: #ddd;
+    background: transparent;
     border-radius: 4px;
     cursor: pointer;
     touch-action: pan-y;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    border: none;
+    box-shadow: none;
+  }
+
+  input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    border: none;
+    box-shadow: none;
   }
 
   input[type="range"]::-webkit-slider-thumb {
@@ -586,7 +604,7 @@
     background-clip: content-box;
     border-radius: 50%;
     border-radius: 50%;
-    cursor: pointer;
+    margin-top: -16px;
   }
 
   input[type="range"]::-moz-range-thumb {
