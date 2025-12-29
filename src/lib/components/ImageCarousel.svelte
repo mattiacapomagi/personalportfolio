@@ -117,6 +117,8 @@
     });
 
     // 2. Play current
+    if (isMobile) return;
+
     const currentVideo = videoRefs[currentCanonicalIndex];
     if (currentVideo) {
       // Ensure muted if not already set (autoplay usually requires mute)
