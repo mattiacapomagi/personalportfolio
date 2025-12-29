@@ -35,14 +35,14 @@
     if ($themePreference === "dark") {
       return $language === "en" ? "DARK MODE" : "MODALITÀ SCURA";
     }
-    return $language === "en" ? "SYSTEM MODE" : "MODALITÀ SISTEMA";
+    return $language === "en" ? "SYSTEM" : "SISTEMA";
   });
 
   // Mobile labels - universal short words
   let mobileLabel = $derived(() => {
     if ($themePreference === "light") return "LIGHT";
     if ($themePreference === "dark") return "DARK";
-    return "AUTO";
+    return "SYS";
   });
 </script>
 

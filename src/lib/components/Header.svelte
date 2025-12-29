@@ -197,6 +197,7 @@
     margin: 0;
     line-height: 1;
     transition: color 0.2s ease;
+    text-transform: uppercase;
   }
 
   .nav-link:hover,
@@ -316,6 +317,7 @@
     transform: translateY(-15px);
     transition: all 0.4s ease;
     transition-delay: calc(0.15s + var(--i) * 0.05s);
+    text-transform: uppercase;
   }
 
   .menu-overlay.open .menu-link {

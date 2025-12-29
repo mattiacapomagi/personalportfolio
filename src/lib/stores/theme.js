@@ -11,8 +11,8 @@ const STORAGE_KEY = 'theme-preference';
 
 // Get initial value from localStorage or default to 'system'
 function getInitialTheme() {
-  if (!browser) return 'system';
-  return localStorage.getItem(STORAGE_KEY) || 'system';
+  // Always default to 'system' on load as requested ("SEMPRE in modalità auto")
+  return 'system';
 }
 
 // Create the store

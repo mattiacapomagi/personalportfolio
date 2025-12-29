@@ -12,12 +12,8 @@
     <title>Mattia Capomagi - Visual Designer</title>
     <script>
       (function() {
-        const key = 'theme-preference';
-        const pref = localStorage.getItem(key);
-        let theme = pref;
-        if (!theme || theme === 'system') {
-          theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        // Always load in system/auto mode
+        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
         document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
