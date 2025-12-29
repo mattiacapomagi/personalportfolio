@@ -576,8 +576,9 @@
     background: var(--color-text);
     background-clip: content-box;
     border-radius: 50%;
-    border-radius: 50%;
+    cursor: pointer;
     margin-top: -16px;
+    box-shadow: none;
   }
 
   .slider::-moz-range-thumb {
@@ -590,6 +591,7 @@
     border-radius: 50%;
     cursor: pointer;
     border: none;
+    box-shadow: none;
   }
 
   .slider-row {

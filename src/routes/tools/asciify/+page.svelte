@@ -571,6 +571,8 @@
     border-radius: 50%;
     border-radius: 50%;
     cursor: pointer;
+    margin-top: -16px; /* Restore centering for WebKit */
+    box-shadow: none; /* Remove iOS drop shadow from transparency */
   }
 
   .slider::-moz-range-thumb {
@@ -583,6 +585,7 @@
     border-radius: 50%;
     cursor: pointer;
     border: none;
+    box-shadow: none;
   }
 
   /* Toggles */
