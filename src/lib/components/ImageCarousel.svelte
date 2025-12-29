@@ -35,6 +35,7 @@
   let animationFrame;
 
   function triggerBlur() {
+    if (isMobile) return; // Disable motion blur on mobile for performance
     isMoving = true;
     const duration = 600; // Match CSS transition duration
     const start = performance.now();
