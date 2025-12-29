@@ -84,7 +84,7 @@
   <div class="mobile-preview">
     {#if isVideoPreview}
       <video
-        src="{base}{previewSource}"
+        src={previewSource}
         autoplay
         loop
         muted
@@ -93,7 +93,7 @@
       ></video>
     {:else}
       <img
-        src="{base}{previewSource}"
+        src={previewSource}
         alt={project.title}
         loading="lazy"
         class="preview-media"

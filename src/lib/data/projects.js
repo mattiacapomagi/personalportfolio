@@ -13,7 +13,7 @@
 
 // Dynamic asset loading
 // We look for all media files in the projects folder
-const globbedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,mp4,svg}', {
+const globbedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,mp4,mov,svg,gif,tiff,tif,heic}', {
 	eager: true,
 	query: '?url',
 	import: 'default'
@@ -29,8 +29,8 @@ function getProjectImages(slug) {
 	// Keys are like: "/src/lib/assets/projects/into-mag/image.webp"
 	const projectKeys = Object.keys(globbedImages).filter(key => key.includes(`/projects/${slug}/`));
 	
-	// Sort alphabetical to ensure consistency (user can use 01_name, 02_name to order)
-	projectKeys.sort();
+	// Sort using natural numeric order (1, 2, 10 instead of 1, 10, 2)
+	projectKeys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 
 	return projectKeys.map(key => globbedImages[key]);
 }
@@ -60,7 +60,6 @@ const rawProjects = [
 		year: '2024',
 		description_en: 'A deep dive into the unconscious. INTO is a magazine that visualizes mental landscapes, moving through the layers of human nature. By mixing visual storytelling with abstract typography and experimental layouts, the publication builds an immersive experience where the reader gets lost in the narrative.',
 		description_it: 'Un’immersione nell’inconscio. INTO è un magazine che visualizza paesaggi mentali, attraversando i livelli della natura umana. Unendo storytelling visivo, tipografia astratta e layout sperimentali, la pubblicazione costruisce un’esperienza immersiva in cui il lettore si perde nella narrazione.',
-		_previewName: 'animazioneINTO'
 	},
 	{
 		slug: 'poster-treccani',
@@ -72,7 +71,6 @@ const rawProjects = [
 		year: '2025',
 		description_en: 'A visual tribute to the craft of gelato, celebrating it as a global icon of Italian artisanship. The design captures the ephemeral nature of the subject through a saturated vintage aesthetic and a highly chromatic palette that evokes immediate sensory pleasure. The custom type “bollente” modifies the Neon NBL typeface to create a deliberate contrast offering an irreverent, contemporary reading of a traditional subject.',
 		description_it: 'Un tributo visivo all’arte del gelato, celebrato come icona globale dell’artigianato italiano. Il design cattura la natura effimera del soggetto attraverso un’estetica vintage satura e una palette cromatica accesa che evoca un piacere sensoriale immediato. Il lettering custom “bollente”, modifica della typeface Neon NBL, crea un contrasto deliberato offrendo una lettura irriverente e contemporanea di un soggetto tradizionale.',
-		_previewName: 'poster gelato'
 	},
 	{
 		slug: 'coppede',
@@ -83,7 +81,6 @@ const rawProjects = [
 		year: '2025',
 		description_en: 'An alternative guide to Rome’s Coppedè district, decoding its dense symbolic language. Beyond the striking aesthetics, this publication identifies and explains the architectural symbols embedded in the district’s fabric. Paired with a functional minimap, the layout serves as a compact tool for navigating and understanding the visual complexity of Gino Coppedè’s vision.',
 		description_it: 'Una guida alternativa al quartiere Coppedè di Roma, volta a decodificare il suo denso linguaggio simbolico. Oltre l’estetica impattante, la pubblicazione identifica e spiega i simboli architettonici intessuti nel tessuto del quartiere. Accompagnato da una minimappa funzionale, il layout funge da strumento compatto per navigare e comprendere la complessità visiva della visione di Gino Coppedè.',
-		_previewName: 'fotocoppedè_01'
 	},
 	{
 		slug: 'naturamatic',
@@ -94,7 +91,6 @@ const rawProjects = [
 		year: '2024/25',
 		description_en: 'A collective editorial project that blends deconstructed artworks and lyrics into a continuous visual narrative. The layout mirrors a rising tide, gradually flooding the pages until the final spread is submerged in a dynamic, calibrated chaos.',
 		description_it: 'Un progetto editoriale collettivo che fonde opere d’arte decostruite e testi musicali in una narrazione visiva continua. Il layout rispecchia una marea montante, inondando gradualmente le pagine fino a sommergere l’ultima doppia pagina in un caos dinamico e calibrato.',
-		_previewName: 'libricino'
 	},
 	{
 		slug: 'dottie',
@@ -106,7 +102,6 @@ const rawProjects = [
 		description_en: 'A modular variable font constructed entirely from circular dots and rounded rectangles. Assembled within a strict grid, Dottie explores the tension between geometric purity and typographic readability.',
 		description_it: 'Una font variabile modulare costruita interamente da punti circolari e rettangoli arrotondati. Assemblata all’interno di una griglia rigorosa, Dottie esplora la tensione tra purezza geometrica e leggibilità tipografica.',
 		gumroadLink: 'https://mattiacapomagi.gumroad.com/l/dottievf',
-		_previewName: '16-9 video DOTTIE'
 	},
 	{
 		slug: 'what-a-mag',
@@ -117,7 +112,6 @@ const rawProjects = [
 		year: '2024',
 		description_en: 'An instant-zine created live during the Mag to Mag festival in Milan. Produced in just over 10 hours, the design captures the festival’s raw energy in a folded A4 format, prioritizing speed, impact, and the immediacy of independent publishing.',
 		description_it: 'Una instant-zine creata dal vivo durante il festival Mag to Mag a Milano. Prodotta in poco più di 10 ore, il design cattura l’energia grezza del festival in un formato A4 pieghevole, dando priorità a velocità, impatto e immediatezza dell’editoria indipendente.',
-		_previewName: '1.webp' // Assuming '1.webp' from previous list for preview
 	},
 	{
 		slug: 'utopia-cover',
@@ -128,7 +122,6 @@ const rawProjects = [
 		year: '2024/25',
 		description_en: 'Translating the sonic complexity of Utopia into a visual system. The cover acts as an extension of the album, using spectrograms to visualize frequencies. A clash of handwritten text and sharp sans-serif typography underscores the contrast between organic sound and structural experimentation.',
 		description_it: 'Tradurre la complessità sonora di Utopia in un sistema visivo. La cover agisce come estensione dell’album, utilizzando spettrogrammi per visualizzare le frequenze. Lo scontro tra testo manoscritto e tipografia sans-serif affilata sottolinea il contrasto tra suono organico e sperimentazione strutturale.',
-		_previewName: 'cover.webp'
 	},
 	{
 		slug: 'kinetic-type-tarantino',
@@ -139,7 +132,6 @@ const rawProjects = [
 		year: '2024/25',
 		description_en: 'Kinetic typography exploration based on Tarantino’s ‘Once Upon a Time in Hollywood’. The animation mirrors the film’s distinctive mood, treating text as a narrative actor to enhance storytelling through motion and rhythm.',
 		description_it: 'Esplorazione di tipografia cinetica basata su "C’era una volta a... Hollywood" di Tarantino. L’animazione rispecchia il mood distintivo del film, trattando il testo come attore narrativo per potenziare lo storytelling attraverso movimento e ritmo.',
-		_previewName: 'video.mp4'
 	},
 	{
 		slug: 'ute-limited-edition',
@@ -150,7 +142,6 @@ const rawProjects = [
 		year: '2024/25',
 		description_en: 'Packaging design for UTE, a Keller Pils by Jungle Juice. The concept captures summery, easygoing vibes through a playful mix of vector art and photography. The can features a back-view figure with branding integrated into the swimwear, while the box references classic ice cooler aesthetics.',
 		description_it: 'Packaging design per UTE, una Keller Pils di Jungle Juice. Il concept cattura le vibrazioni estive e spensierate attraverso un mix giocoso di vettoriale e fotografia. La lattina presenta una figura di spalle con il branding integrato nel costume, mentre la scatola cita l’estetica delle classiche borse frigo.',
-		_previewName: 'render.webp'
 	},
 	{
 		slug: 'inception-intro',
@@ -161,8 +152,7 @@ const rawProjects = [
 		year: '2025',
 		description_en: 'A conceptual intro sequence for Christopher Nolan’s Inception. Iconic character totems were modeled with precise attention to form and scale, then animated to evoke the film’s suspended, dreamlike tone. A study in combining 3D precision with atmospheric visual rhythm.',
 		description_it: 'Una sequenza intro concettuale per Inception di Christopher Nolan. I totem iconici dei personaggi sono stati modellati con precisa attenzione a forma e scala, poi animati per evocare il tono sospeso e onirico del film. Uno studio nel combinare precisione 3D con ritmo visivo atmosferico.',
-		_previewName: 'poster inception'
-	}
+	},
 ];
 
 // Hydrate projects with their images

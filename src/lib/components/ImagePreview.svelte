@@ -16,7 +16,7 @@
   <div class="image-preview" style="left: {x + 20}px; top: {y - 100}px;">
     {#if isVideo(imageUrl)}
       <video
-        src="{base}{imageUrl}"
+        src={imageUrl}
         autoplay
         loop
         muted
@@ -24,7 +24,7 @@
         class="preview-media"
       ></video>
     {:else}
-      <img src="{base}{imageUrl}" alt="Preview" class="preview-media" />
+      <img src={imageUrl} alt="Preview" class="preview-media" />
     {/if}
   </div>
 {/if}

@@ -30,14 +30,49 @@
     );
   }
 
+  let isMoving = $state(false);
+  let blurNode; // Bound to the SVG filter element
+  let animationFrame;
+
+  function triggerBlur() {
+    isMoving = true;
+    const duration = 600; // Match CSS transition duration
+    const start = performance.now();
+    const maxBlur = 30; // Max horizontal spread (Reduced slightly from 40 to help perf)
+
+    function animate() {
+      const now = performance.now();
+      const progress = Math.min((now - start) / duration, 1);
+
+      // Calculate blur intensity using a bell curve (Sine ease-in-out ish)
+      // 0 at start, 1 at 0.5, 0 at end
+      const intensity = Math.sin(progress * Math.PI);
+
+      // Apply directional blur
+      if (blurNode) {
+        blurNode.setAttribute("stdDeviation", `${intensity * maxBlur} 0`);
+      }
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        isMoving = false;
+        if (blurNode) blurNode.setAttribute("stdDeviation", "0 0");
+      }
+    }
+
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+    animationFrame = requestAnimationFrame(animate);
+  }
+
   function next() {
     currentIndex += 1;
-    pauseAllVideos();
+    triggerBlur();
   }
 
   function prev() {
     currentIndex -= 1;
-    pauseAllVideos();
+    triggerBlur();
   }
 
   function getPos(i) {
@@ -67,6 +102,38 @@
       }
     });
   }
+
+  // Autoplay management
+  $effect(() => {
+    // This effect runs whenever currentCanonicalIndex changes (navigation)
+    // or when videoRefs updates (initial load)
+
+    // 1. Pause everyone else
+    videoRefs.forEach((video, i) => {
+      if (i !== currentCanonicalIndex && video) {
+        video.pause();
+        isPlaying[i] = false;
+      }
+    });
+
+    // 2. Play current
+    const currentVideo = videoRefs[currentCanonicalIndex];
+    if (currentVideo) {
+      // Ensure muted if not already set (autoplay usually requires mute)
+      // We rely on the <video muted> attribute initially.
+      const playPromise = currentVideo.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            isPlaying[currentCanonicalIndex] = true;
+          })
+          .catch((error) => {
+            console.log("Autoplay prevented:", error);
+            isPlaying[currentCanonicalIndex] = false;
+          });
+      }
+    }
+  });
 
   // Video Controls
   function togglePlay(index) {
@@ -100,6 +167,14 @@
     if (video.duration) {
       progress[index] = (video.currentTime / video.duration) * 100;
     }
+  }
+
+  function handleSeek(e, index) {
+    const video = videoRefs[index];
+    if (!video || !video.duration) return;
+    const seekTime = (e.currentTarget.value / 100) * video.duration;
+    video.currentTime = seekTime;
+    progress[index] = e.currentTarget.value;
   }
 
   let fullscreenImage = $state(null);
@@ -156,6 +231,18 @@
     </button>
   {/if}
 
+  <!-- Directional Motion Blur Filter -->
+  <svg style="position: absolute; width: 0; height: 0;">
+    <filter id="motion-blur-filter">
+      <!-- Controlled via JS -->
+      <feGaussianBlur
+        in="SourceGraphic"
+        stdDeviation="0 0"
+        bind:this={blurNode}
+      />
+    </filter>
+  </svg>
+
   <div class="carousel-track">
     {#each images as media, i}
       <div
@@ -168,7 +255,7 @@
             <!-- Blurred Background Video -->
             <!-- svelte-ignore a11y_media_has_caption -->
             <video
-              src="{base}{media}"
+              src={media}
               class="blur-bg-video"
               autoplay
               loop
@@ -179,7 +266,7 @@
             <!-- Main Video -->
             <!-- svelte-ignore a11y_media_has_caption -->
             <video
-              src="{base}{media}"
+              src={media}
               class="main-video"
               bind:this={videoRefs[i]}
               loop
@@ -276,14 +363,11 @@
           </div>
         {:else}
           <div class="image-wrapper">
-            <div
-              class="blur-bg"
-              style="background-image: url('{base}{media}')"
-            ></div>
+            <div class="blur-bg" style="background-image: url('{media}')"></div>
             <!-- svelte-ignore a11y_click_events_have_key_events -->
             <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
             <img
-              src="{base}{media}"
+              src={media}
               alt="Project slide {i + 1}"
               onclick={() => openFullscreenImage(media)}
               class="clickable-image"
@@ -307,7 +391,7 @@
     <div class="lightbox" onclick={closeFullscreenImage}>
       <button class="close-btn" aria-label="Close">×</button>
       <img
-        src="{base}{fullscreenImage}"
+        src={fullscreenImage}
         alt="Fullscreen preview"
         onclick={(e) => e.stopPropagation()}
       />
@@ -333,12 +417,26 @@
   .slide {
     position: absolute;
     inset: 0;
-    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Smoother, no bounce */
+    transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Removed background: #000 to avoid black edges showing through blur */
-    will-change: transform; /* Performance hint */
+    will-change: transform;
+    /* Apply filter here but controlled mostly by JS attribute, CSS transition just supports it if needed */
+    filter: url(#motion-blur-filter);
+  }
+
+  /* No explicit .moving class needed for filter since JS updates the SVG directly,
+     but we keep the structure clean */
+
+  .motion-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease-out;
+    will-change: transform;
   }
 
   img {
@@ -378,6 +476,7 @@
     filter: blur(80px) brightness(0.7);
     transform: scale(1.5);
     z-index: 0;
+    opacity: 0.1;
   }
 
   /* Video Styles */
@@ -398,7 +497,7 @@
     filter: blur(80px) brightness(0.7);
     transform: scale(1.5);
     z-index: 0;
-    opacity: 0.9;
+    opacity: 0.1;
   }
 
   .main-video {
