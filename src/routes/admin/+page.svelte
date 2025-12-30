@@ -1,24 +1,114 @@
 <script>
-  /* --- Admin Auth Logic (same pattern as Maintenance Mode) --- */
-  let checking = $state(true); // Prevents flash while checking session
+  import { base } from "$app/paths";
+  import { onMount } from "svelte";
+
+  /* --- Admin Auth Logic --- */
+  let checking = $state(true);
   let isUnlocked = $state(false);
   let passwordInput = $state("");
   let unlockError = $state(false);
 
-  // Use the same password as maintenance mode
   const ADMIN_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
   const SESSION_KEY = "admin_session_timestamp";
-  const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+  const SESSION_TIMEOUT = 30 * 60 * 1000;
 
-  // Check session on mount
-  $effect(() => {
+  /* --- Analytics Logic --- */
+  let tokenClient;
+  let accessToken = $state(null);
+  let analyticsData = $state(null);
+  let isLoadingData = $state(false);
+  let gaError = $state(null);
+
+  // CONFIGURATION
+  const CLIENT_ID =
+    "927763286022-7hqkq16cgqterrgcv08eabcf5bg03bq1.apps.googleusercontent.com"; // Your new Client ID
+  const PROPERTY_ID = "7843855770"; // From your screenshot
+
+  onMount(() => {
+    checkSession();
+    loadGoogleScripts();
+  });
+
+  function checkSession() {
     if (typeof window === "undefined") return;
     const timestamp = localStorage.getItem(SESSION_KEY);
     if (timestamp && Date.now() - parseInt(timestamp) < SESSION_TIMEOUT) {
       isUnlocked = true;
     }
-    checking = false; // Done checking, show UI
-  });
+    checking = false;
+  }
+
+  function loadGoogleScripts() {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.onload = () => {
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: "https://www.googleapis.com/auth/analytics.readonly",
+        callback: (response) => {
+          if (response.error) {
+            gaError = response.error;
+            return;
+          }
+          accessToken = response.access_token;
+          fetchAnalyticsCallback();
+        },
+      });
+    };
+    document.body.appendChild(script);
+  }
+
+  function connectAnalytics() {
+    if (tokenClient) {
+      // Force prompt so you can select the right google account
+      tokenClient.requestAccessToken({ prompt: "consent" });
+    }
+  }
+
+  async function fetchAnalyticsCallback() {
+    isLoadingData = true;
+    gaError = null;
+
+    try {
+      // Define the report request
+      const requestBody = {
+        dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+        metrics: [{ name: "activeUsers" }, { name: "sessions" }],
+      };
+
+      const response = await fetch(
+        `https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY_ID}:runReport`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error.message);
+      }
+
+      // Parse response
+      if (data.rows && data.rows.length > 0) {
+        analyticsData = {
+          users: data.rows[0].metricValues[0].value,
+          sessions: data.rows[0].metricValues[1].value,
+        };
+      } else {
+        analyticsData = { users: 0, sessions: 0 };
+      }
+    } catch (e) {
+      gaError = e.message;
+    } finally {
+      isLoadingData = false;
+    }
+  }
 
   function checkPassword() {
     if (passwordInput === ADMIN_PASSWORD) {
@@ -38,6 +128,8 @@
   function logout() {
     localStorage.removeItem(SESSION_KEY);
     isUnlocked = false;
+    accessToken = null;
+    analyticsData = null;
   }
 </script>
 
@@ -73,23 +165,39 @@
     <div class="grid">
       <!-- Analytics Widget -->
       <div class="card analytics-card">
-        <h2>📊 Analytics</h2>
-        <div class="stat-row">
-          <span class="stat-label">Property</span>
-          <span class="stat-value">sito portfolio</span>
+        <h2>📊 Analytics (Last 30 Days)</h2>
+
+        {#if !accessToken}
+          <div class="auth-prompt">
+            <p>Connect Google Account to view data.</p>
+            <button class="connect-btn" onclick={connectAnalytics}>
+              Sign in with Google
+            </button>
+          </div>
+        {:else if isLoadingData}
+          <div class="loading">Loading data...</div>
+        {:else if gaError}
+          <div class="error-msg">Error: {gaError}</div>
+          <button class="retry-btn" onclick={fetchAnalyticsCallback}
+            >Retry</button
+          >
+        {:else if analyticsData}
+          <div class="stat-row">
+            <span class="stat-label">Active Users</span>
+            <span class="stat-value">{analyticsData.users}</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label">Sessions</span>
+            <span class="stat-value">{analyticsData.sessions}</span>
+          </div>
+        {:else}
+          <div class="no-data">No data returned.</div>
+        {/if}
+
+        <div class="stat-row mt-4">
+          <span class="stat-label">Property ID</span>
+          <span class="stat-value mono">{PROPERTY_ID}</span>
         </div>
-        <div class="stat-row">
-          <span class="stat-label">ID</span>
-          <span class="stat-value mono">G-FXENJE6FZ2</span>
-        </div>
-        <a
-          href="https://analytics.google.com/analytics/web/#/p7843855770/reports/reportinghub"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="ga-link"
-        >
-          Open Google Analytics →
-        </a>
       </div>
 
       <!-- Status Widget -->
@@ -100,8 +208,8 @@
           <span class="stat-value online">Online</span>
         </div>
         <div class="stat-row">
-          <span class="stat-label">Last Deploy</span>
-          <span class="stat-value mono">—</span>
+          <span class="stat-label">Env</span>
+          <span class="stat-value mono">Production</span>
         </div>
       </div>
     </div>
@@ -256,6 +364,11 @@
     border-bottom: 1px dotted rgba(128, 128, 128, 0.3);
   }
 
+  .stat-row.mt-4 {
+    margin-top: 1rem;
+    border-top: 1px dotted rgba(128, 128, 128, 0.3);
+  }
+
   .stat-row:last-of-type {
     border-bottom: none;
   }
@@ -280,20 +393,43 @@
     color: #22c55e;
   }
 
-  .ga-link {
-    display: block;
-    margin-top: 1rem;
-    padding: 0.75rem;
-    background: var(--color-text);
-    color: var(--color-bg);
+  /* Auth UI */
+  .auth-prompt {
     text-align: center;
-    text-decoration: none;
-    font-size: 0.8rem;
-    font-weight: 600;
-    transition: background 0.2s;
+    padding: 1rem 0;
   }
 
-  .ga-link:hover {
-    background: var(--color-accent);
+  .auth-prompt p {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .connect-btn {
+    background: #4285f4;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .connect-btn:hover {
+    background: #3367d6;
+  }
+
+  .error-msg {
+    color: red;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .loading {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    text-align: center;
+    padding: 1rem;
   }
 </style>
