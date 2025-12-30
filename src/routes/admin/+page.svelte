@@ -156,8 +156,9 @@
         "https://www.githubstatus.com/api/v2/summary.json"
       );
       const data = await res.json();
-      const pages = data.components.find((c) => c.name === "GitHub Pages");
-      const actions = data.components.find((c) => c.name === "GitHub Actions");
+      // API returns "Pages" and "Actions", not "GitHub Pages/Actions"
+      const pages = data.components.find((c) => c.name === "Pages");
+      const actions = data.components.find((c) => c.name === "Actions");
       githubStatus = {
         pages: pages ? pages.status : "unknown",
         actions: actions ? actions.status : "unknown",
