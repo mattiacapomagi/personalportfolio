@@ -297,6 +297,9 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     if (projectDetails.timeline === "fixed") {
       finalDeadline = `Fixed Date: ${projectDetails.specificDate}`;
     }
+    if (projectDetails.timeline === "rush" && projectDetails.rushDays) {
+      finalDeadline = `RUSH (${projectDetails.rushDays} days)`;
+    }
 
     // 3. INTERNAL QUOTE CALCULATION
     const estimate = calculateQuote(projectDetails);
@@ -366,7 +369,18 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
     switch (details.timeline) {
       case "rush":
-        multiplier = 1.5;
+        // Dynamic Rush Multiplier
+        multiplier = 1.5; // Default
+        if (details.rushDays) {
+          const days = parseInt(details.rushDays);
+          if (!isNaN(days)) {
+            if (days <= 2)
+              multiplier = 2.0; // Extreme
+            else if (days <= 5)
+              multiplier = 1.5; // Standard
+            else multiplier = 1.2; // Manageable
+          }
+        }
         break;
       case "fixed":
         multiplier = 1.2;
