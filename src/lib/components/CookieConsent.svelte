@@ -1,4 +1,6 @@
 <script>
+  import { language } from "$lib/stores/language.js";
+
   let showBanner = $state(false);
   let consentGiven = $state(false);
 
@@ -57,12 +59,17 @@
   <div class="cookie-banner">
     <div class="cookie-content">
       <p class="cookie-text">
-        Questo sito utilizza cookie analitici (Google Analytics) per migliorare
-        l'esperienza utente.
+        {$language === "en"
+          ? "This site uses analytical cookies (Google Analytics) to improve user experience."
+          : "Questo sito utilizza cookie analitici (Google Analytics) per migliorare l'esperienza utente."}
       </p>
       <div class="cookie-actions">
-        <button class="cookie-btn accept" onclick={accept}>Accetta</button>
-        <button class="cookie-btn decline" onclick={decline}>Rifiuta</button>
+        <button class="cookie-btn accept" onclick={accept}>
+          {$language === "en" ? "Accept" : "Accetta"}
+        </button>
+        <button class="cookie-btn decline" onclick={decline}>
+          {$language === "en" ? "Decline" : "Rifiuta"}
+        </button>
       </div>
     </div>
   </div>
