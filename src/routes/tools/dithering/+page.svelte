@@ -564,27 +564,24 @@
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     box-sizing: border-box;
-    width: 40px;
-    height: 40px;
-    border: 12px solid transparent;
+    width: 16px;
+    height: 16px;
+    border: none;
     background: var(--color-text);
-    background-clip: content-box;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: -16px;
+    margin-top: -4px;
     box-shadow: none;
   }
 
   .slider::-moz-range-thumb {
     box-sizing: border-box;
-    width: 40px;
-    height: 40px;
-    border: 12px solid transparent;
+    width: 16px;
+    height: 16px;
+    border: none;
     background: var(--color-text);
-    background-clip: content-box;
     border-radius: 50%;
     cursor: pointer;
-    border: none;
     box-shadow: none;
   }
 
