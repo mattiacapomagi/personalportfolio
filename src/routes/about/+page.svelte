@@ -294,9 +294,6 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     );
     if (deadlineObj) finalDeadline = deadlineObj.label;
 
-    if (projectDetails.timeline === "fixed") {
-      finalDeadline = `Fixed Date: ${projectDetails.specificDate}`;
-    }
     if (projectDetails.timeline === "rush" && projectDetails.rushDays) {
       finalDeadline = `RUSH (${projectDetails.rushDays} days)`;
     }
@@ -387,8 +384,6 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
           }
         }
         break;
-      case "fixed":
-        multiplier = 1.2;
         break;
       default:
         multiplier = 1.0;
@@ -686,40 +681,35 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
               <label>{translations[$language].deadline_label}</label>
               <div class="radio-group-vertical">
                 {#each translations[$language].deadlines as d}
-                  <label
-                    class="radio-label"
-                    style:align-items={d.value === "rush" &&
-                    projectDetails.timeline === "rush"
-                      ? "center"
-                      : "center"}
-                  >
+                  <label class="radio-label">
                     <input
                       type="radio"
                       bind:group={projectDetails.timeline}
                       value={d.value}
                     />
-                    <span class="radio-text">{d.label}</span>
 
-                    <!-- INLINE RUSH INPUT -->
                     {#if d.value === "rush" && projectDetails.timeline === "rush"}
+                      <!-- Dynamic Replacement -->
                       <input
                         type="number"
                         min="1"
                         placeholder={translations[$language].rush_placeholder}
                         bind:value={projectDetails.rushDays}
                         in:slide={{ axis: "x", duration: 300 }}
-                        style="width: 150px; margin-left: 10px; padding: 5px; font-size: 0.9em;"
+                        style="width: 150px; margin-left: 0px; padding: 5px; font-size: 0.9em; border-bottom: 1px solid currentColor; background:transparent; border-top:none; border-left:none; border-right:none;"
                       />
+                    {:else}
+                      <span class="radio-text">{d.label}</span>
                     {/if}
                   </label>
                 {/each}
               </div>
             </div>
 
-            <!-- Conditional Date Picker (logic fixed) -->
-
             <button type="submit">
-              {translations[$language].buttons.submit}
+              <button type="submit">
+                {translations[$language].buttons.submit}
+              </button>
             </button>
           </form>
 
