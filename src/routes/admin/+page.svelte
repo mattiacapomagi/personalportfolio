@@ -1,5 +1,4 @@
 <script>
-  import { base } from "$app/paths";
   import { onMount } from "svelte";
 
   /* --- Admin Auth Logic --- */
@@ -15,14 +14,19 @@
   /* --- Analytics Logic --- */
   let tokenClient;
   let accessToken = $state(null);
-  let analyticsData = $state(null);
   let isLoadingData = $state(false);
   let gaError = $state(null);
 
+  // Data States
+  let overviewData = $state(null);
+  let pagesData = $state([]);
+  let deviceData = $state([]);
+  let geoData = $state([]);
+
   // CONFIGURATION
   const CLIENT_ID =
-    "927763286022-7hqkq16cgqterrgcv08eabcf5bg03bq1.apps.googleusercontent.com"; // Your new Client ID
-  const PROPERTY_ID = "436388629"; // Correct Property ID
+    "927763286022-7hqkq16cgqterrgcv08eabcf5bg03bq1.apps.googleusercontent.com";
+  const PROPERTY_ID = "436388629";
 
   onMount(() => {
     checkSession();
@@ -51,7 +55,7 @@
             return;
           }
           accessToken = response.access_token;
-          fetchAnalyticsCallback();
+          fetchAllAnalytics();
         },
       });
     };
@@ -60,54 +64,103 @@
 
   function connectAnalytics() {
     if (tokenClient) {
-      // Force prompt so you can select the right google account
       tokenClient.requestAccessToken({ prompt: "consent" });
     }
   }
 
-  async function fetchAnalyticsCallback() {
+  async function fetchAllAnalytics() {
     isLoadingData = true;
     gaError = null;
 
     try {
-      // Define the report request
-      const requestBody = {
-        dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-        metrics: [{ name: "activeUsers" }, { name: "sessions" }],
-      };
+      const [overview, pages, devices, geo] = await Promise.all([
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          metrics: [{ name: "activeUsers" }, { name: "sessions" }],
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "pagePath" }],
+          metrics: [{ name: "screenPageViews" }],
+          orderBys: [{ desc: true, metric: { metricName: "screenPageViews" } }],
+          limit: 5,
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "deviceCategory" }],
+          metrics: [{ name: "sessions" }],
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "country" }],
+          metrics: [{ name: "activeUsers" }],
+          orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+          limit: 5,
+        }),
+      ]);
 
-      const response = await fetch(
-        `https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY_ID}:runReport`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(data.error.message);
+      // Process Overview
+      if (overview.rows && overview.rows.length > 0) {
+        overviewData = {
+          users: overview.rows[0].metricValues[0].value,
+          sessions: overview.rows[0].metricValues[1].value,
+        };
       }
 
-      // Parse response
-      if (data.rows && data.rows.length > 0) {
-        analyticsData = {
-          users: data.rows[0].metricValues[0].value,
-          sessions: data.rows[0].metricValues[1].value,
-        };
-      } else {
-        analyticsData = { users: 0, sessions: 0 };
+      // Process Pages
+      if (pages.rows) {
+        pagesData = pages.rows.map((row) => ({
+          path: row.dimensionValues[0].value,
+          views: row.metricValues[0].value,
+        }));
+      }
+
+      // Process Devices
+      if (devices.rows) {
+        const total = devices.rows.reduce(
+          (acc, row) => acc + parseInt(row.metricValues[0].value),
+          0
+        );
+        deviceData = devices.rows.map((row) => ({
+          category: row.dimensionValues[0].value,
+          count: row.metricValues[0].value,
+          percent: Math.round(
+            (parseInt(row.metricValues[0].value) / total) * 100
+          ),
+        }));
+      }
+
+      // Process Geo
+      if (geo.rows) {
+        geoData = geo.rows.map((row) => ({
+          country: row.dimensionValues[0].value,
+          users: row.metricValues[0].value,
+        }));
       }
     } catch (e) {
+      console.error(e);
       gaError = e.message;
     } finally {
       isLoadingData = false;
     }
+  }
+
+  async function runReport(requestBody) {
+    const response = await fetch(
+      `https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY_ID}:runReport`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error.message);
+    return data;
   }
 
   function checkPassword() {
@@ -129,7 +182,10 @@
     localStorage.removeItem(SESSION_KEY);
     isUnlocked = false;
     accessToken = null;
-    analyticsData = null;
+    overviewData = null;
+    pagesData = [];
+    deviceData = [];
+    geoData = [];
   }
 </script>
 
@@ -138,7 +194,7 @@
 </svelte:head>
 
 {#if checking}
-  <!-- Blank screen while checking session -->
+  <!-- Blank screen while checking -->
 {:else if !isUnlocked}
   <!-- Login Overlay -->
   <div class="login-overlay">
@@ -162,146 +218,128 @@
       <button class="logout-btn" onclick={logout}>Logout</button>
     </div>
 
-    <div class="grid">
-      <!-- Analytics Widget -->
-      <div class="card analytics-card">
-        <h2>📊 Analytics (Last 30 Days)</h2>
-
-        {#if !accessToken}
-          <div class="auth-prompt">
-            <p>Connect Google Account to view data.</p>
-            <button class="connect-btn" onclick={connectAnalytics}>
-              Sign in with Google
-            </button>
-          </div>
-        {:else if isLoadingData}
-          <div class="loading">Loading data...</div>
-        {:else if gaError}
-          <div class="error-msg">Error: {gaError}</div>
-          <button class="retry-btn" onclick={fetchAnalyticsCallback}
-            >Retry</button
-          >
-        {:else if analyticsData}
-          <div class="stat-row">
-            <span class="stat-label">Active Users</span>
-            <span class="stat-value">{analyticsData.users}</span>
-          </div>
-          <div class="stat-row">
-            <span class="stat-label">Sessions</span>
-            <span class="stat-value">{analyticsData.sessions}</span>
-          </div>
-        {:else}
-          <div class="no-data">No data returned.</div>
+    <!-- Auth Prompt (if not connected) -->
+    {#if !accessToken}
+      <div class="card auth-card">
+        <h2>📊 Connect Analytics</h2>
+        <p>Sign in to view real-time data from Google Analytics.</p>
+        <button class="connect-btn" onclick={connectAnalytics}>
+          Sign in with Google
+        </button>
+        {#if gaError}
+          <div class="error-msg dev-error">Error: {gaError}</div>
         {/if}
+      </div>
+    {:else if isLoadingData}
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Fetching satellite data...</p>
+      </div>
+    {:else}
+      <div class="grid">
+        <!-- 1. Overview Widget -->
+        <div class="card overview-card">
+          <h2>Overview (30d)</h2>
+          {#if overviewData}
+            <div class="big-stats">
+              <div class="stat-item">
+                <span class="label">Users</span>
+                <span class="value">{overviewData.users}</span>
+              </div>
+              <div class="stat-item">
+                <span class="label">Sessions</span>
+                <span class="value">{overviewData.sessions}</span>
+              </div>
+            </div>
+          {:else}
+            <p class="no-data">No overview data available.</p>
+          {/if}
+        </div>
 
-        <div class="stat-row mt-4">
-          <span class="stat-label">Property ID</span>
-          <span class="stat-value mono">{PROPERTY_ID}</span>
+        <!-- 2. Devices Widget -->
+        <div class="card">
+          <h2>Devices</h2>
+          {#if deviceData.length > 0}
+            <div class="list-container">
+              {#each deviceData as device}
+                <div class="list-row">
+                  <span class="row-name">{device.category}</span>
+                  <div class="row-bar-container">
+                    <div class="row-bar" style="width: {device.percent}%"></div>
+                  </div>
+                  <span class="row-stat">{device.percent}%</span>
+                </div>
+              {/each}
+            </div>
+          {:else}
+            <p class="no-data">No device data.</p>
+          {/if}
+        </div>
+
+        <!-- 3. Top Pages Widget -->
+        <div class="card wide-card">
+          <h2>Top Content</h2>
+          {#if pagesData.length > 0}
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Path</th>
+                  <th>Views</th>
+                </tr>
+              </thead>
+              <tbody>
+                {#each pagesData as page}
+                  <tr>
+                    <td class="page-path">{page.path}</td>
+                    <td class="mono">{page.views}</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {:else}
+            <p class="no-data">No page data received.</p>
+          {/if}
+        </div>
+
+        <!-- 4. Geography Widget -->
+        <div class="card">
+          <h2>Audience</h2>
+          {#if geoData.length > 0}
+            <div class="list-container">
+              {#each geoData as item}
+                <div class="list-row">
+                  <span class="row-name">{item.country}</span>
+                  <span class="row-stat">{item.users}</span>
+                </div>
+              {/each}
+            </div>
+          {:else}
+            <p class="no-data">No geo data.</p>
+          {/if}
+        </div>
+
+        <!-- 5. System Status -->
+        <div class="card">
+          <h2>System</h2>
+          <div class="list-row">
+            <span class="row-name">Environment</span>
+            <span class="row-stat online">Production</span>
+          </div>
+          <div class="list-row">
+            <span class="row-name">Property ID</span>
+            <span class="row-stat mono">{PROPERTY_ID}</span>
+          </div>
         </div>
       </div>
-
-      <!-- Status Widget -->
-      <div class="card">
-        <h2>⚡ Status</h2>
-        <div class="stat-row">
-          <span class="stat-label">Site</span>
-          <span class="stat-value online">Online</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-label">Env</span>
-          <span class="stat-value mono">Production</span>
-        </div>
-      </div>
-    </div>
+    {/if}
   </div>
 {/if}
 
 <style>
-  /* Login Overlay */
-  .login-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--color-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    font-family: var(--font-mono);
-  }
-
-  .login-card {
-    width: 100%;
-    max-width: 320px;
-    padding: 2rem;
-    border: 1px solid var(--color-text);
-    text-align: center;
-  }
-
-  .login-card h1 {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 2rem;
-    opacity: 0.7;
-  }
-
-  .login-card input {
-    width: 100%;
-    background: transparent;
-    border: 1px solid var(--color-text);
-    padding: 1rem;
-    margin-bottom: 1rem;
-    color: var(--color-text);
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
-    border-radius: 0;
-    transition: border-color 0.2s;
-  }
-
-  .login-card input:focus {
-    border-color: var(--color-accent);
-  }
-
-  .login-card input.error {
-    border-color: red;
-    animation: shake 0.3s;
-  }
-
-  .login-card button {
-    width: 100%;
-    padding: 1rem;
-    background: var(--color-text);
-    color: var(--color-bg);
-    border: none;
-    font-family: inherit;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .login-card button:hover {
-    background: var(--color-accent);
-  }
-
-  @keyframes shake {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-5px);
-    }
-    75% {
-      transform: translateX(5px);
-    }
-  }
-
-  /* Dashboard */
+  /* Global Layout */
   .dashboard {
     padding: var(--page-padding);
-    max-width: var(--max-width);
+    max-width: 1200px;
     margin: 0 auto;
     font-family: var(--font-mono);
   }
@@ -310,7 +348,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem;
     border-bottom: 1px solid var(--color-text);
     padding-bottom: 1rem;
   }
@@ -318,118 +356,202 @@
   .header h1 {
     font-size: 1.5rem;
     text-transform: uppercase;
-    font-weight: 700;
-  }
-
-  .logout-btn {
-    background: none;
-    border: 1px solid var(--color-text);
-    padding: 0.5rem 1rem;
-    font-family: inherit;
-    font-size: 0.8rem;
-    color: var(--color-text);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .logout-btn:hover {
-    background: var(--color-text);
-    color: var(--color-bg);
   }
 
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
+  /* Wide card spans 2 columns on larger screens */
+  @media (min-width: 900px) {
+    .wide-card {
+      grid-column: span 2;
+    }
+  }
+
+  /* Card Styles */
   .card {
     border: 1px solid var(--color-text);
     padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.02); /* Glassy hint */
   }
 
   .card h2 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
     border-bottom: 1px dashed var(--color-text-light);
     padding-bottom: 0.5rem;
   }
 
-  /* Widget Styles */
-  .stat-row {
+  /* Overview Stats */
+  .big-stats {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+  }
+  .stat-item .label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+  }
+  .stat-item .value {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  /* List / Bar Charts */
+  .list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .list-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0;
-    border-bottom: 1px dotted rgba(128, 128, 128, 0.3);
-  }
-
-  .stat-row.mt-4 {
-    margin-top: 1rem;
-    border-top: 1px dotted rgba(128, 128, 128, 0.3);
-  }
-
-  .stat-row:last-of-type {
-    border-bottom: none;
-  }
-
-  .stat-label {
-    font-size: 0.8rem;
-    opacity: 0.7;
-  }
-
-  .stat-value {
     font-size: 0.85rem;
+  }
+  .row-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-right: 1rem;
+  }
+  .row-bar-container {
+    flex: 1;
+    height: 6px;
+    background: rgba(128, 128, 128, 0.2);
+    border-radius: 3px;
+    margin-right: 1rem;
+    max-width: 100px;
+  }
+  .row-bar {
+    height: 100%;
+    background: var(--color-accent);
+    border-radius: 3px;
+  }
+  .row-stat {
     font-weight: 600;
-  }
-
-  .stat-value.mono {
     font-family: monospace;
-    font-size: 0.75rem;
-    opacity: 0.8;
   }
-
-  .stat-value.online {
+  .row-stat.online {
     color: #22c55e;
   }
 
-  /* Auth UI */
-  .auth-prompt {
+  /* Data Table */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .data-table th {
+    text-align: left;
+    opacity: 0.5;
+    padding-bottom: 0.5rem;
+    font-weight: normal;
+  }
+  .data-table td {
+    padding: 0.5rem 0;
+    border-top: 1px dotted rgba(128, 128, 128, 0.2);
+  }
+  .page-path {
+    font-family: monospace;
+    color: var(--color-accent);
+  }
+
+  /* Auth & Loading */
+  .auth-card {
     text-align: center;
-    padding: 1rem 0;
+    max-width: 400px;
+    margin: 4rem auto;
   }
-
-  .auth-prompt p {
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-    opacity: 0.7;
-  }
-
   .connect-btn {
     background: #4285f4;
     color: white;
     border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    font-size: 0.85rem;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
     cursor: pointer;
-    font-weight: 500;
+    margin-top: 1rem;
   }
-
   .connect-btn:hover {
     background: #3367d6;
   }
-
-  .error-msg {
+  .loading-state {
+    text-align: center;
+    padding: 4rem;
+    opacity: 0.6;
+  }
+  .dev-error {
     color: red;
+    margin-top: 1rem;
     font-size: 0.8rem;
-    margin-bottom: 1rem;
+  }
+  .no-data {
+    text-align: center;
+    opacity: 0.5;
+    font-style: italic;
+    font-size: 0.8rem;
+    padding: 1rem;
   }
 
-  .loading {
-    font-size: 0.8rem;
-    opacity: 0.6;
+  /* Reuse existing Login Styles */
+  .login-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 320px;
+    padding: 2rem;
+    border: 1px solid var(--color-text);
     text-align: center;
+  }
+  .login-card h1 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .login-card input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--color-text);
     padding: 1rem;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+    font-family: inherit;
+    outline: none;
+  }
+  .login-card input:focus {
+    border-color: var(--color-accent);
+  }
+  .login-card button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .logout-btn {
+    background: none;
+    border: 1px solid var(--color-text);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    color: inherit;
   }
 </style>
