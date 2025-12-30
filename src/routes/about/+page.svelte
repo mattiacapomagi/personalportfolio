@@ -395,7 +395,6 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       `New Lead: ${dataObject.name} (${dataObject.Service})`
     );
     // Note: FormSubmit sends auto-response to the 'email' field by default if not disabled.
-    formData.append("_subject", "New Contact from Portfolio");
 
     for (const [key, value] of Object.entries(dataObject)) {
       formData.append(key, value);
