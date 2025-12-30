@@ -37,6 +37,159 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
   ];
 
   /* --- PROGRESSIVE FORM LOGIC --- */
+
+  // TRANSLATION DICTIONARY (STRICT JSON)
+  const translations = {
+    it: {
+      interception_title: "Messaggio pronto. Vuoi un preventivo più preciso?",
+      interception_sub:
+        "Rispondi a poche domande mirate per aiutarmi a capire il contesto.",
+      btn_yes: "Sì, specifico il progetto",
+      btn_no: "No, invia solo il messaggio",
+      service_label: "Di cosa hai bisogno principalmente?",
+      services: [
+        { value: "branding", label: "Branding & Identità Visiva" },
+        { value: "web", label: "Sito Web / UI Design" },
+        { value: "social", label: "Social Media & Content" },
+        { value: "editorial", label: "Editoriale & Stampa" },
+        { value: "other", label: "Altro / Consulenza" },
+      ],
+      deadline_label: "Che tempistiche hai?",
+      deadlines: [
+        { value: "flexible", label: "Flessibile (Nessuna fretta)" },
+        { value: "standard", label: "Standard (Entro 1 mese)" },
+        { value: "fixed", label: "Data tassativa (Ho un evento/lancio)" },
+        { value: "rush", label: "Urgente / Ieri (Priorità massima)" },
+      ],
+      budget_label: "Budget indicativo",
+      budgets: [
+        { value: "low", label: "< 1.000€ (Start)" },
+        { value: "medium", label: "1.000€ - 3.000€" },
+        { value: "high", label: "3.000€ - 5.000€" },
+        { value: "premium", label: "> 5.000€" },
+      ],
+      questions: {
+        branding: {
+          q1: {
+            label: "Stato attuale",
+            placeholder: "Partiamo da zero o è un restyling?",
+          },
+          q2: {
+            label: "Obiettivo principale",
+            placeholder:
+              "Es. Essere più professionali, posizionamento lusso...",
+          },
+          q3: {
+            label: "Competitor",
+            placeholder: "Chi ammiri o chi vuoi superare?",
+          },
+        },
+        web: {
+          q1: {
+            label: "Tipologia sito",
+            options: [
+              "Landing Page",
+              "Sito Vetrina",
+              "E-commerce",
+              "Portfolio",
+            ],
+          },
+          q2: {
+            label: "Contenuti (Testi/Foto)",
+            options: ["Tutto pronto", "In lavorazione", "Da creare"],
+          },
+          q3: {
+            label: "Link di riferimento",
+            placeholder: "incolla qui un link...",
+          },
+        },
+        social: {
+          q1: { label: "Piattaforme", placeholder: "Instagram, TikTok..." },
+          q2: { label: "Quantità", placeholder: "Es. 10 post/mese" },
+          q3: { label: "Stile", placeholder: "Minimal, Pop..." },
+        },
+        editorial: {
+          q1: { label: "Formato", placeholder: "Brochure, Catalogo..." },
+          q2: { label: "Stampa", placeholder: "Hai già un tipografo?" },
+        },
+        other: {
+          q1: { label: "Dettagli", placeholder: "Descrivi qui..." },
+        },
+      },
+      buttons: { back: "Indietro", submit: "Invia Richiesta Completa" },
+    },
+    en: {
+      interception_title: "Message ready. Want a precise quote?",
+      interception_sub: "Answer a few quick questions to give me context.",
+      btn_yes: "Yes, define project",
+      btn_no: "No, just send",
+      service_label: "What do you need primarily?",
+      services: [
+        { value: "branding", label: "Branding & Visual Identity" },
+        { value: "web", label: "Web Design / UI" },
+        { value: "social", label: "Social Media & Content" },
+        { value: "editorial", label: "Editorial & Print" },
+        { value: "other", label: "Other / Consultancy" },
+      ],
+      deadline_label: "What's your timeline?",
+      deadlines: [
+        { value: "flexible", label: "Flexible (No rush)" },
+        { value: "standard", label: "Standard (Within 1 month)" },
+        { value: "fixed", label: "Hard Deadline (Event/Launch)" },
+        { value: "rush", label: "Urgent / Yesterday (High Priority)" },
+      ],
+      budget_label: "Estimated Budget",
+      budgets: [
+        { value: "low", label: "< €1k (Start)" },
+        { value: "medium", label: "€1k - €3k" },
+        { value: "high", label: "€3k - €5k" },
+        { value: "premium", label: "> €5k" },
+      ],
+      questions: {
+        branding: {
+          q1: {
+            label: "Current Status",
+            placeholder: "From scratch or Rebranding?",
+          },
+          q2: {
+            label: "Main Goal",
+            placeholder: "E.g. Look premium, attract leads...",
+          },
+          q3: { label: "Competitors", placeholder: "Who do you admire/envy?" },
+        },
+        web: {
+          q1: {
+            label: "Scope",
+            options: [
+              "Landing Page",
+              "Corporate Site",
+              "E-commerce",
+              "Portfolio",
+            ],
+          },
+          q2: {
+            label: "Content Status",
+            options: ["Ready", "In progress", "To be created"],
+          },
+          q3: { label: "Benchmark Link", placeholder: "Paste a link here..." },
+        },
+        social: {
+          q1: { label: "Platforms", placeholder: "Instagram, TikTok..." },
+          q2: { label: "Volume", placeholder: "E.g. 10 posts/month" },
+          q3: { label: "Style", placeholder: "Minimal, Pop..." },
+        },
+        editorial: {
+          q1: { label: "Format", placeholder: "Brochure, Catalog..." },
+          q2: { label: "Printing", placeholder: "Do you have a printer?" },
+        },
+        other: {
+          q1: { label: "Details", placeholder: "Describe here..." },
+        },
+      },
+      buttons: { back: "Back", submit: "Send Full Inquiry" },
+    },
+  };
+
   let formStep = $state("input"); // 'input', 'choice', 'details', 'submitting', 'success', 'error'
   let formErrors = $state({ name: false, email: false, message: false });
 
