@@ -702,12 +702,14 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
                     <!-- INLINE RUSH INPUT -->
                     {#if d.value === "rush" && projectDetails.timeline === "rush"}
-                      type="number" min="1" placeholder={translations[$language]
-                        .rush_placeholder}
-                      bind:value={projectDetails.rushDays}
-                      in:slide={{ axis: "x", duration: 300 }}
-                      style="width: 150px; margin-left: 10px; padding: 5px; font-size:
-                      0.9em;" />
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder={translations[$language].rush_placeholder}
+                        bind:value={projectDetails.rushDays}
+                        in:slide={{ axis: "x", duration: 300 }}
+                        style="width: 150px; margin-left: 10px; padding: 5px; font-size: 0.9em;"
+                      />
                     {/if}
                   </label>
                 {/each}
