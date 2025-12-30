@@ -286,50 +286,32 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
         dynamicPayload[questionsDef.q3.label] = projectDetails.q3;
     }
 
-    // RE-EVALUATING PAYLOAD CONSTRUCTION
-    // Since the template now uses generic projectDetails.q1, q2, q3 for the dynamic questions (see lines 384 in previous view)
-    // We need to map these generic answers to the specific Questions Labels.
-
-    // Get the questions definition to retrieve labels
-    const questionsDef = t.questions[s];
-    if (questionsDef) {
-      if (questionsDef.q1)
-        dynamicPayload[questionsDef.q1.label] = projectDetails.q1;
-      if (questionsDef.q2)
-        dynamicPayload[questionsDef.q2.label] = projectDetails.q2;
-      if (questionsDef.q3)
-        dynamicPayload[questionsDef.q3.label] = projectDetails.q3;
-    }
-
-    // Also include other specific bindings if they were used (Branding vibe etc were removed in generic generic version if I replaced it fully)
-    // Looking at Step 6866, I replaced the SPECIFIC blocks with a GENERIC loop.
-    // So projectDetails.brandingVibe is NO LONGER USED in the template. Everything binds to q1, q2, q3.
-    // So my "branding", "web" specific payload blocks above are WRONG/OBSOLETE.
-    // I must rely purely on the generic mapping.
-
-    // Deadline Logic
+    // 2. Deadline Logic
     let finalDeadline = projectDetails.timeline;
-    // Map value 'fixed' to readable label
+    // Map value 'fixed' to readable label if possible
     const deadlineObj = t.deadlines.find(
       (d) => d.value === projectDetails.timeline
     );
-    finalDeadline = deadlineObj ? deadlineObj.label : projectDetails.timeline;
+    if (deadlineObj) finalDeadline = deadlineObj.label;
 
     if (projectDetails.timeline === "fixed") {
-      finalDeadline = `Specific Date: ${projectDetails.specificDate}`;
+      finalDeadline = `Fixed Date: ${projectDetails.specificDate}`;
     }
 
-    // INTERNAL QUOTE CALCULATION
+    // 3. INTERNAL QUOTE CALCULATION
     const estimate = calculateQuote(projectDetails);
 
     const combinedData = {
       ...initialData,
-      "Service Type": s ? s.toUpperCase() : "Not Specified",
-      "Budget Range": projectDetails.budget || "Not Specified",
+      Service: s ? s.toUpperCase() : "Not Specified",
+      Budget: projectDetails.budget || "Not Specified",
       Deadline: finalDeadline || "Not Specified",
+
+      "----------------": "----------------",
       ...dynamicPayload,
-      "--- ADMIN INTERNAL ---": "----------------",
-      "Auto-Quote Estimate": estimate,
+
+      "---------------- ": "----------------",
+      "[INTERNAL ESTIMATE]": estimate,
     };
 
     await submitFinalData(combinedData);
