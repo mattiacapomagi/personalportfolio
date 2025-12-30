@@ -350,6 +350,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
           </div>
 
           <!-- STEP 2: PROJECT DETAILS -->
+          <!-- STEP 2: PROJECT DETAILS -->
         {:else if formStep === "details"}
           <form
             class="contact-form details-form"
@@ -358,214 +359,111 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
           >
             <!-- SERVICE TYPE -->
             <div class="form-group">
-              <label
-                >{$language === "en"
-                  ? "Service Type"
-                  : "Tipo di Servizio"}</label
-              >
+              <label>{translations[$language].service_label}</label>
               <select bind:value={projectDetails.service}>
                 <option value="" disabled selected
                   >{$language === "en" ? "Select..." : "Seleziona..."}</option
                 >
-                <option value="Branding">Branding / Identity</option>
-                <option value="Web Design">Web Design / UI</option>
-                <option value="Motion">Photo / Video / Motion</option>
-                <option value="Other">Other (General)</option>
+                {#each translations[$language].services as s}
+                  <option value={s.value}>{s.label}</option>
+                {/each}
               </select>
             </div>
 
-            <!-- DYNAMIC FIELDS BASED ON SERVICE -->
-            {#if projectDetails.service === "Branding"}
+            <!-- DYNAMIC QUESTIONS -->
+            {#if projectDetails.service && translations[$language].questions[projectDetails.service]}
+              {@const qs =
+                translations[$language].questions[projectDetails.service]}
+
               <div class="dynamic-group" in:slide>
-                <div class="form-group">
-                  <textarea
-                    placeholder={$language === "en"
-                      ? "Current Vibe vs Desired Vibe..."
-                      : "Vibe Attuale vs Vibe Desiderata..."}
-                    rows="2"
-                    bind:value={projectDetails.brandingVibe}
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <input
-                    type="text"
-                    placeholder={$language === "en"
-                      ? "Top 3 Competitors"
-                      : "Top 3 Competitors"}
-                    bind:value={projectDetails.brandingCompetitors}
-                  />
-                </div>
-                <div class="form-group">
-                  <label
-                    >{$language === "en"
-                      ? "Primary Medium"
-                      : "Supporto Principale"}</label
-                  >
-                  <select bind:value={projectDetails.brandingMedium}>
-                    <option value="Digital">Digital First</option>
-                    <option value="Print">Print / Packaging</option>
-                    <option value="Hybrid">Hybrid</option>
-                  </select>
-                </div>
-              </div>
-            {:else if projectDetails.service === "Web Design"}
-              <div class="dynamic-group" in:slide>
-                <div class="form-group checkbox-group">
-                  <label
-                    >{$language === "en"
-                      ? "Project Scope"
-                      : "Scopo del Progetto"}</label
-                  >
-                  <div class="checkbox-row">
-                    <label class="checkbox-label"
-                      ><input
-                        type="checkbox"
-                        bind:group={projectDetails.webScope}
-                        value="Landing Page"
-                      /> Landing</label
-                    >
-                    <label class="checkbox-label"
-                      ><input
-                        type="checkbox"
-                        bind:group={projectDetails.webScope}
-                        value="Corporate Site"
-                      /> Corporate</label
-                    >
-                    <label class="checkbox-label"
-                      ><input
-                        type="checkbox"
-                        bind:group={projectDetails.webScope}
-                        value="E-commerce"
-                      /> E-com</label
-                    >
+                <!-- Q1 -->
+                {#if qs.q1}
+                  <div class="form-group">
+                    <label>{qs.q1.label}</label>
+                    {#if qs.q1.options}
+                      <select bind:value={projectDetails.q1}>
+                        {#each qs.q1.options as opt}
+                          <option value={opt}>{opt}</option>
+                        {/each}
+                      </select>
+                    {:else}
+                      <input
+                        type="text"
+                        placeholder={qs.q1.placeholder}
+                        bind:value={projectDetails.q1}
+                      />
+                    {/if}
                   </div>
-                </div>
-                <div class="form-group">
-                  <label
-                    >{$language === "en"
-                      ? "Content Readiness"
-                      : "Stato Contenuti"}</label
-                  >
-                  <select bind:value={projectDetails.webContent}>
-                    <option value="Ready">Ready (Copy & Images)</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="None">Starting from scratch</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <input
-                    type="text"
-                    placeholder={$language === "en"
-                      ? "Benchmark Link (Site you admire)"
-                      : "Link Benchmark (Sito che ammiri)"}
-                    bind:value={projectDetails.webBenchmark}
-                  />
-                </div>
-              </div>
-            {:else if projectDetails.service === "Motion"}
-              <div class="dynamic-group" in:slide>
-                <div class="form-group">
-                  <input
-                    type="text"
-                    placeholder={$language === "en"
-                      ? "Est. Quantity of Assets"
-                      : "Quantità stimata asset"}
-                    bind:value={projectDetails.photoQty}
-                  />
-                </div>
-                <div class="form-group">
-                  <label
-                    >{$language === "en"
-                      ? "Usage Rights"
-                      : "Diritti Utilizzo"}</label
-                  >
-                  <select bind:value={projectDetails.photoRights}>
-                    <option value="Social">Social Only</option>
-                    <option value="Web">Web / Digital</option>
-                    <option value="Advertising">Advertising / Billboard</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <textarea
-                    placeholder={$language === "en"
-                      ? "Mood / Style Reference..."
-                      : "Riferimento Mood / Stile..."}
-                    rows="2"
-                    bind:value={projectDetails.photoMood}
-                  ></textarea>
-                </div>
-              </div>
-            {:else if projectDetails.service === "Other"}
-              <div class="dynamic-group" in:slide>
-                <div class="form-group">
-                  <textarea
-                    placeholder={$language === "en"
-                      ? "Tell me more about your needs..."
-                      : "Dimmi di più..."}
-                    rows="4"
-                    bind:value={projectDetails.otherDetails}
-                  ></textarea>
-                </div>
+                {/if}
+
+                <!-- Q2 -->
+                {#if qs.q2}
+                  <div class="form-group">
+                    <label>{qs.q2.label}</label>
+                    {#if qs.q2.options}
+                      <select bind:value={projectDetails.q2}>
+                        {#each qs.q2.options as opt}
+                          <option value={opt}>{opt}</option>
+                        {/each}
+                      </select>
+                    {:else}
+                      <input
+                        type="text"
+                        placeholder={qs.q2.placeholder}
+                        bind:value={projectDetails.q2}
+                      />
+                    {/if}
+                  </div>
+                {/if}
+
+                <!-- Q3 -->
+                {#if qs.q3}
+                  <div class="form-group">
+                    <label>{qs.q3.label}</label>
+                    <input
+                      type="text"
+                      placeholder={qs.q3.placeholder}
+                      bind:value={projectDetails.q3}
+                    />
+                  </div>
+                {/if}
               </div>
             {/if}
 
+            <!-- BUDGET -->
             <div class="form-group">
-              <label>Budget (EUR)</label>
+              <label>{translations[$language].budget_label}</label>
               <select bind:value={projectDetails.budget}>
                 <option value="" disabled selected
                   >{$language === "en"
                     ? "Select Range..."
                     : "Seleziona Range..."}</option
                 >
-                <option value="< 1k">&lt; 1.000 €</option>
-                <option value="1k - 3k">1.000 € - 3.000 €</option>
-                <option value="3k - 5k">3.000 € - 5.000 €</option>
-                <option value="5k - 10k">5.000 € - 10.000 €</option>
-                <option value="> 10k">&gt; 10.000 €</option>
+                {#each translations[$language].budgets as b}
+                  <option value={b.value}>{b.label}</option>
+                {/each}
               </select>
             </div>
 
-            <!-- STRATEGIC DEADLINE -->
+            <!-- DEADLINE -->
             <div class="form-group">
-              <label>{$language === "en" ? "Deadline" : "Deadline"}</label>
+              <label>{translations[$language].deadline_label}</label>
               <div class="radio-group-vertical">
-                {#each deadlineOptions as opt}
+                {#each translations[$language].deadlines as d}
                   <label class="radio-label">
                     <input
                       type="radio"
-                      bind:group={projectDetails.timeline}
-                      value={opt}
+                      bind:group={projectDetails.deadline}
+                      value={d.value}
                     />
-                    <span class="radio-text">
-                      {#if opt === "Flexible"}
-                        {$language === "en"
-                          ? "Flexible (Standard Rate)"
-                          : "Flessibile (Tariffa Standard)"}
-                      {:else if opt === "Within 1 month"}
-                        {$language === "en" ? "Within 1 month" : "Entro 1 mese"}
-                      {:else if opt === "Specific Date"}
-                        {$language === "en"
-                          ? "Specific Hard Deadline"
-                          : "Data Specifica"}
-                      {:else if opt === "ASAP (Rush)"}
-                        {$language === "en"
-                          ? "ASAP (Rush Fee likely)"
-                          : "ASAP (Possibile Rush Fee)"}
-                      {/if}
-                    </span>
+                    <span class="radio-text">{d.label}</span>
                   </label>
                 {/each}
               </div>
             </div>
 
-            {#if projectDetails.timeline === "Specific Date"}
-              <div class="form-group" in:slide>
-                <input type="date" bind:value={projectDetails.specificDate} />
-              </div>
-            {/if}
-
             <button type="submit">
-              {$language === "en" ? "send request" : "invia richiesta"}
+              {translations[$language].buttons.submit}
             </button>
           </form>
 
