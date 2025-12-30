@@ -301,6 +301,16 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     // 3. INTERNAL QUOTE CALCULATION
     const estimate = calculateQuote(projectDetails);
 
+    // 4. TIMESTAMP (ROME)
+    const nowIT = new Date().toLocaleString("it-IT", {
+      timeZone: "Europe/Rome",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
     const combinedData = {
       ...initialData,
       Service: s ? s.toUpperCase() : "Not Specified",
@@ -312,6 +322,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
       "---------------- ": "----------------",
       "[INTERNAL ESTIMATE]": estimate,
+      "[SUBMITTED AT]": nowIT,
     };
 
     await submitFinalData(combinedData);
@@ -377,7 +388,13 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
     // Convert object to FormData for FormSubmit
     const formData = new FormData();
-    formData.append("_captcha", "true");
+    formData.append("_captcha", "false");
+    formData.append("_template", "table");
+    formData.append(
+      "_subject",
+      `New Lead: ${dataObject.name} (${dataObject.Service})`
+    );
+    // Note: FormSubmit sends auto-response to the 'email' field by default if not disabled.
     formData.append("_subject", "New Contact from Portfolio");
 
     for (const [key, value] of Object.entries(dataObject)) {
