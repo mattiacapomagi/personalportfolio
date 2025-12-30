@@ -22,7 +22,7 @@
   // CONFIGURATION
   const CLIENT_ID =
     "927763286022-7hqkq16cgqterrgcv08eabcf5bg03bq1.apps.googleusercontent.com"; // Your new Client ID
-  const PROPERTY_ID = "7843855770"; // From your screenshot
+  const PROPERTY_ID = "436388629"; // Correct Property ID
 
   onMount(() => {
     checkSession();
