@@ -74,10 +74,15 @@
   const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 Minutes
 
   function checkPassword() {
-    if (passwordInput.toLowerCase() === SITE_PASSWORD) {
+    console.log("Checking Password...");
+    console.log("Expected (Env):", SITE_PASSWORD); // Debug: Check what's loaded
+    console.log("Input:", passwordInput);
+
+    if (passwordInput === SITE_PASSWORD) {
       isUnlocked = true;
       updateSession();
     } else {
+      console.warn("Access Denied");
       unlockError = true;
       passwordInput = "";
       setTimeout(() => (unlockError = false), 1000);
