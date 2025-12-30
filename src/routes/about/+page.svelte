@@ -1,5 +1,7 @@
 <script>
   import { language } from "$lib/stores/language.js";
+  import { fade, slide } from "svelte/transition";
+  import { quintOut } from "svelte/easing";
 
   const bio_en = `Rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. I don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
 
@@ -23,9 +25,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     {
       name: "Gumroad",
       url: "https://mattiacapomagi.gumroad.com/",
-      /* Added padding to viewBox (-200 offset, 2900 size) to match visual height of other icons (approx 83% fill) */
       viewBox: "-200 -200 2900 2900",
-      /* Using inner HTML to preserve specific colors (Black & White with strokes) as requested */
       content: `<path d="M1419.3,2462.2c596.9,0,1080.7-467.1,1080.7-1043.3S2016.1,375.6,1419.3,375.6,338.5,842.7,338.5,1418.9s483.9,1043.3,1080.8,1043.3Z" fill="currentColor"/><path d="M1140.3,2243.6c627.8,0,1140.3-491.8,1140.3-1102.9S1768.1,37.8,1140.3,37.8,0,529.6,0,1140.7s512.6,1102.9,1140.3,1102.9Z" fill="#fff" stroke="#000" stroke-width="11.8" stroke-miterlimit="30.2"/><path d="M1054.6,1697.1c-319.1,0-506.9-257.9-506.9-578.6s206.5-603.8,600.7-603.8,544.4,276.7,550.7,434h-294.1c-6.3-88-81.3-220.1-262.8-220.1s-319.1,169.8-319.1,377.4,125.2,377.4,319.1,377.4,250.3-138.4,281.6-276.7h-281.6v-113.2h590.9v578.6h-259.2v-364.8c-18.8,132.1-100.1,389.9-419.3,389.9h0Z" fill="currentColor"/>`,
     },
     {
@@ -36,12 +36,21 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     },
   ];
 
-  let formStatus = $state("idle"); // 'idle', 'submitting', 'success', 'error'
+  /* --- PROGRESSIVE FORM LOGIC --- */
+  let formStep = $state("input"); // 'input', 'choice', 'details', 'submitting', 'success', 'error'
   let formErrors = $state({ name: false, email: false, message: false });
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  // Data Storage
+  let initialData = $state({});
+  let projectDetails = $state({
+    service: "",
+    budget: "",
+    timeline: "",
+  });
 
+  // Step 1: Validate Basic Info & Show Choice
+  function handleInitialSubmit(e) {
+    e.preventDefault();
     formErrors = { name: false, email: false, message: false };
 
     const formData = new FormData(e.target);
@@ -50,26 +59,66 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     const message = formData.get("message");
 
     let isValid = true;
-
     if (!name) {
       formErrors.name = true;
       isValid = false;
-      setTimeout(() => (formErrors.name = false), 3000); // Revert after 3s
     }
     if (!email) {
       formErrors.email = true;
       isValid = false;
-      setTimeout(() => (formErrors.email = false), 3000);
     }
     if (!message) {
       formErrors.message = true;
       isValid = false;
-      setTimeout(() => (formErrors.message = false), 3000);
     }
 
-    if (!isValid) return;
+    if (!isValid) {
+      setTimeout(
+        () => (formErrors = { name: false, email: false, message: false }),
+        3000
+      );
+      return;
+    }
 
-    formStatus = "submitting";
+    // Save Data & Move to Choice
+    initialData = { name, email, message };
+    formStep = "choice";
+  }
+
+  // Option B: Quick Send
+  async function handleQuickSend() {
+    await submitFinalData(initialData);
+  }
+
+  // Option A: Deep Dive
+  function handleDeepDive() {
+    formStep = "details";
+  }
+
+  // Step 2: Submit with Details
+  async function handleFinalSubmit(e) {
+    e.preventDefault();
+    const combinedData = {
+      ...initialData,
+      "Project Service": projectDetails.service || "Not Specified",
+      "Project Budget": projectDetails.budget || "Not Specified",
+      "Project Timeline": projectDetails.timeline || "Not Specified",
+    };
+    await submitFinalData(combinedData);
+  }
+
+  // Submitter
+  async function submitFinalData(dataObject) {
+    formStep = "submitting";
+
+    // Convert object to FormData for FormSubmit
+    const formData = new FormData();
+    formData.append("_captcha", "true");
+    formData.append("_subject", "New Contact from Portfolio");
+
+    for (const [key, value] of Object.entries(dataObject)) {
+      formData.append(key, value);
+    }
 
     try {
       const response = await fetch(
@@ -77,23 +126,23 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
         {
           method: "POST",
           body: formData,
-          headers: {
-            Accept: "application/json",
-          },
+          headers: { Accept: "application/json" },
         }
       );
 
       if (response.ok) {
-        formStatus = "success";
-        e.target.reset();
+        formStep = "success";
+        // Reset after delay
         setTimeout(() => {
-          formStatus = "idle";
+          formStep = "input";
+          initialData = {};
+          projectDetails = { service: "", budget: "", timeline: "" };
         }, 5000);
       } else {
-        formStatus = "error";
+        formStep = "error";
       }
     } catch (err) {
-      formStatus = "error";
+      formStep = "error";
     }
   }
 </script>
@@ -142,89 +191,170 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
     <!-- ... form column ... -->
     <div class="form-column">
-      <!-- ... (keeping form content same as before) ... -->
       <h3 class="contact-header">
         {$language === "en" ? "get in touch with me" : "contattami"}
       </h3>
-      <!-- ... form ... -->
-      <form class="contact-form" onsubmit={handleSubmit} novalidate>
-        <!-- ... inputs ... -->
-        <input type="text" name="_honey" style="display:none" />
-        <input type="hidden" name="_captcha" value="true" />
-        <input
-          type="hidden"
-          name="_subject"
-          value="New Contact from Portfolio"
-        />
 
-        <div class="form-group">
-          <input
-            type="text"
-            name="name"
-            class:input-error={formErrors.name}
-            placeholder={formErrors.name
-              ? $language === "en"
-                ? "Required field"
-                : "Campo obbligatorio"
-              : $language === "en"
-                ? "Name"
-                : "Nome"}
-            disabled={formStatus === "submitting"}
-          />
-        </div>
-        <div class="form-group">
-          <input
-            type="email"
-            name="email"
-            class:input-error={formErrors.email}
-            placeholder={formErrors.email
-              ? $language === "en"
-                ? "Required field"
-                : "Campo obbligatorio"
-              : "Email"}
-            disabled={formStatus === "submitting"}
-          />
-        </div>
-        <div class="form-group">
-          <textarea
-            name="message"
-            rows="4"
-            class:input-error={formErrors.message}
-            placeholder={formErrors.message
-              ? $language === "en"
-                ? "Required field"
-                : "Campo obbligatorio"
-              : $language === "en"
-                ? "Message"
-                : "Messaggio"}
-            disabled={formStatus === "submitting"}
-          ></textarea>
-        </div>
+      <!-- PROGRESSIVE FORM CONTAINER -->
+      <div class="form-wrapper">
+        <!-- STEP 1: BASIC INPUT -->
+        {#if formStep === "input"}
+          <form
+            class="contact-form"
+            onsubmit={handleInitialSubmit}
+            novalidate
+            in:fade
+          >
+            <div class="form-group">
+              <input
+                type="text"
+                name="name"
+                class:input-error={formErrors.name}
+                placeholder={formErrors.name
+                  ? $language === "en"
+                    ? "Required field"
+                    : "Campo obbligatorio"
+                  : $language === "en"
+                    ? "Name"
+                    : "Nome"}
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="email"
+                name="email"
+                class:input-error={formErrors.email}
+                placeholder={formErrors.email
+                  ? $language === "en"
+                    ? "Required field"
+                    : "Campo obbligatorio"
+                  : "Email"}
+              />
+            </div>
+            <div class="form-group">
+              <textarea
+                name="message"
+                rows="4"
+                class:input-error={formErrors.message}
+                placeholder={formErrors.message
+                  ? $language === "en"
+                    ? "Required field"
+                    : "Campo obbligatorio"
+                  : $language === "en"
+                    ? "Message"
+                    : "Messaggio"}
+              ></textarea>
+            </div>
+            <button type="submit">
+              {$language === "en" ? "next" : "avanti"}
+            </button>
+          </form>
 
-        <button type="submit" disabled={formStatus === "submitting"}>
-          {#if formStatus === "submitting"}
+          <!-- INTERSTITIAL CHOICE -->
+        {:else if formStep === "choice"}
+          <div class="choice-ui" in:fade={{ duration: 300 }}>
+            <p class="choice-text">
+              {$language === "en"
+                ? "Message ready. Want to make your inquiry more effective?"
+                : "Messaggio pronto. Vuoi rendere la tua richiesta più efficace?"}
+            </p>
+            <div class="choice-buttons">
+              <button class="btn-primary" onclick={handleDeepDive}>
+                {$language === "en"
+                  ? "Yes, define the project"
+                  : "Sì, definisci il progetto"}
+              </button>
+              <button class="btn-secondary" onclick={handleQuickSend}>
+                {$language === "en" ? "No, send as is" : "No, invia così"}
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: PROJECT DETAILS -->
+        {:else if formStep === "details"}
+          <form
+            class="contact-form details-form"
+            onsubmit={handleFinalSubmit}
+            in:slide
+          >
+            <div class="form-group">
+              <label
+                >{$language === "en"
+                  ? "Service Type"
+                  : "Tipo di Servizio"}</label
+              >
+              <select bind:value={projectDetails.service}>
+                <option value="" disabled selected
+                  >{$language === "en" ? "Select..." : "Seleziona..."}</option
+                >
+                <option value="Branding">Branding Identity</option>
+                <option value="Web Design">Web Design / Development</option>
+                <option value="Motion">Motion Design</option>
+                <option value="Editorial">Editorial / Layout</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Budget (EUR)</label>
+              <select bind:value={projectDetails.budget}>
+                <option value="" disabled selected
+                  >{$language === "en"
+                    ? "Select Range..."
+                    : "Seleziona Range..."}</option
+                >
+                <option value="< 1k">&lt; 1.000 €</option>
+                <option value="1k - 3k">1.000 € - 3.000 €</option>
+                <option value="3k - 5k">3.000 € - 5.000 €</option>
+                <option value="5k - 10k">5.000 € - 10.000 €</option>
+                <option value="> 10k">&gt; 10.000 €</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>{$language === "en" ? "Timeline" : "Tempistiche"}</label>
+              <select bind:value={projectDetails.timeline}>
+                <option value="" disabled selected
+                  >{$language === "en"
+                    ? "When do you need it?"
+                    : "Per quando ti serve?"}</option
+                >
+                <option value="ASAP">ASAP (Urgent)</option>
+                <option value="1-2 months"
+                  >1-2 {$language === "en" ? "months" : "mesi"}</option
+                >
+                <option value="3+ months"
+                  >3+ {$language === "en" ? "months" : "mesi"}</option
+                >
+                <option value="Flexible">Flexible</option>
+              </select>
+            </div>
+
+            <button type="submit">
+              {$language === "en" ? "send request" : "invia richiesta"}
+            </button>
+          </form>
+
+          <!-- SUBMITTING / SUCCESS / ERROR -->
+        {:else if formStep === "submitting"}
+          <div class="loading-ui">
             {$language === "en" ? "sending..." : "inviando..."}
-          {:else}
-            {$language === "en" ? "send" : "invia"}
-          {/if}
-        </button>
-
-        {#if formStatus === "success"}
-          <p class="success-message">
+          </div>
+        {:else if formStep === "success"}
+          <p class="success-message" in:fade>
             {$language === "en"
               ? "Message sent successfully."
               : "Messaggio inviato con successo."}
           </p>
-        {/if}
-
-        {#if formStatus === "error"}
-          <p class="error-message">
+        {:else if formStep === "error"}
+          <p class="error-message" in:fade>
             {$language === "en"
               ? "Something went wrong. Please try again."
               : "Qualcosa è andato storto. Riprova."}
           </p>
+          <button onclick={() => (formStep = "input")}>Retry</button>
         {/if}
-      </form>
+      </div>
     </div>
   </div>
 </div>
@@ -443,10 +573,79 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     }
   }
 
+  /* SELECT INPUT STYLES */
+  select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-text);
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 1.1rem;
+    color: var(--color-text);
+    outline: none;
+    border-radius: 0;
+    appearance: none; /* Remove default arrow */
+    cursor: pointer;
+  }
+
+  label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+
+  /* CHOICE UI */
+  .choice-ui {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  .choice-text {
+    font-size: 1.2rem;
+    line-height: 1.4;
+  }
+
+  .choice-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--color-text);
+    color: var(--color-bg);
+    border: 1px solid var(--color-text);
+  }
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-text);
+    opacity: 0.7;
+  }
+  .btn-secondary:hover {
+    opacity: 1;
+    background: rgba(128, 128, 128, 0.1);
+  }
+
+  .form-wrapper {
+    width: 100%;
+    min-height: 300px; /* Prevent layout shift */
+  }
+
   @media (max-width: 480px) {
     .bio {
       font-size: 0.9rem;
     }
-    /* ... rest ... */
+    .choice-buttons {
+      flex-direction: column;
+    }
   }
 </style>
