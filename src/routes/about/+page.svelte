@@ -45,8 +45,32 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
   let projectDetails = $state({
     service: "",
     budget: "",
-    timeline: "",
+    timeline: "", // Used for strategic deadline
+    specificDate: "", // Used if timeline is 'Specific Date'
+
+    // Dynamic Fields
+    brandingVibe: "",
+    brandingCompetitors: "",
+    brandingMedium: "",
+
+    webScope: [], // ['Landing', 'Ecom', etc]
+    webContent: "",
+    webBenchmark: "",
+
+    photoQty: "",
+    photoRights: "",
+    photoMood: "",
+
+    otherDetails: "",
   });
+
+  // Deadline Options
+  const deadlineOptions = [
+    "Flexible",
+    "Within 1 month",
+    "Specific Date",
+    "ASAP (Rush)",
+  ];
 
   // Step 1: Validate Basic Info & Show Choice
   function handleInitialSubmit(e) {
@@ -96,14 +120,53 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
   }
 
   // Step 2: Submit with Details
+  // Step 2: Submit with Details
   async function handleFinalSubmit(e) {
     e.preventDefault();
+
+    // Construct Payload based on Service Type
+    let dynamicPayload = {};
+    const s = projectDetails.service;
+
+    if (s === "Branding") {
+      dynamicPayload = {
+        "Current vs Desired Vibe": projectDetails.brandingVibe,
+        Competitors: projectDetails.brandingCompetitors,
+        "Primary Medium": projectDetails.brandingMedium,
+      };
+    } else if (s === "Web Design") {
+      dynamicPayload = {
+        Scope: projectDetails.webScope.join(", "),
+        "Content Ready?": projectDetails.webContent,
+        "Benchmark URL": projectDetails.webBenchmark,
+      };
+    } else if (s === "Motion" || s === "Editorial") {
+      // Using Photo/Editorial logic
+      dynamicPayload = {
+        "Asset Qty": projectDetails.photoQty,
+        "Usage Rights": projectDetails.photoRights,
+        "Mood/Style": projectDetails.photoMood,
+      };
+    } else if (s === "Other") {
+      dynamicPayload = {
+        Details: projectDetails.otherDetails,
+      };
+    }
+
+    // Deadline Logic
+    let finalDeadline = projectDetails.timeline;
+    if (projectDetails.timeline === "Specific Date") {
+      finalDeadline = `Specific Date: ${projectDetails.specificDate}`;
+    }
+
     const combinedData = {
       ...initialData,
-      "Project Service": projectDetails.service || "Not Specified",
-      "Project Budget": projectDetails.budget || "Not Specified",
-      "Project Timeline": projectDetails.timeline || "Not Specified",
+      "Service Type": projectDetails.service || "Not Specified",
+      "Budget Override": projectDetails.budget || "Not Specified",
+      "Strategic Deadline": finalDeadline || "Not Specified",
+      ...dynamicPayload,
     };
+
     await submitFinalData(combinedData);
   }
 
@@ -136,7 +199,23 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
         setTimeout(() => {
           formStep = "input";
           initialData = {};
-          projectDetails = { service: "", budget: "", timeline: "" };
+          // Reset all details
+          projectDetails = {
+            service: "",
+            budget: "",
+            timeline: "",
+            specificDate: "",
+            brandingVibe: "",
+            brandingCompetitors: "",
+            brandingMedium: "",
+            webScope: [],
+            webContent: "",
+            webBenchmark: "",
+            photoQty: "",
+            photoRights: "",
+            photoMood: "",
+            otherDetails: "",
+          };
         }, 5000);
       } else {
         formStep = "error";
@@ -277,6 +356,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
             onsubmit={handleFinalSubmit}
             in:slide
           >
+            <!-- SERVICE TYPE -->
             <div class="form-group">
               <label
                 >{$language === "en"
@@ -287,13 +367,147 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
                 <option value="" disabled selected
                   >{$language === "en" ? "Select..." : "Seleziona..."}</option
                 >
-                <option value="Branding">Branding Identity</option>
-                <option value="Web Design">Web Design / Development</option>
-                <option value="Motion">Motion Design</option>
-                <option value="Editorial">Editorial / Layout</option>
-                <option value="Other">Other</option>
+                <option value="Branding">Branding / Identity</option>
+                <option value="Web Design">Web Design / UI</option>
+                <option value="Motion">Photo / Video / Motion</option>
+                <option value="Other">Other (General)</option>
               </select>
             </div>
+
+            <!-- DYNAMIC FIELDS BASED ON SERVICE -->
+            {#if projectDetails.service === "Branding"}
+              <div class="dynamic-group" in:slide>
+                <div class="form-group">
+                  <textarea
+                    placeholder={$language === "en"
+                      ? "Current Vibe vs Desired Vibe..."
+                      : "Vibe Attuale vs Vibe Desiderata..."}
+                    rows="2"
+                    bind:value={projectDetails.brandingVibe}
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    placeholder={$language === "en"
+                      ? "Top 3 Competitors"
+                      : "Top 3 Competitors"}
+                    bind:value={projectDetails.brandingCompetitors}
+                  />
+                </div>
+                <div class="form-group">
+                  <label
+                    >{$language === "en"
+                      ? "Primary Medium"
+                      : "Supporto Principale"}</label
+                  >
+                  <select bind:value={projectDetails.brandingMedium}>
+                    <option value="Digital">Digital First</option>
+                    <option value="Print">Print / Packaging</option>
+                    <option value="Hybrid">Hybrid</option>
+                  </select>
+                </div>
+              </div>
+            {:else if projectDetails.service === "Web Design"}
+              <div class="dynamic-group" in:slide>
+                <div class="form-group checkbox-group">
+                  <label
+                    >{$language === "en"
+                      ? "Project Scope"
+                      : "Scopo del Progetto"}</label
+                  >
+                  <div class="checkbox-row">
+                    <label class="checkbox-label"
+                      ><input
+                        type="checkbox"
+                        bind:group={projectDetails.webScope}
+                        value="Landing Page"
+                      /> Landing</label
+                    >
+                    <label class="checkbox-label"
+                      ><input
+                        type="checkbox"
+                        bind:group={projectDetails.webScope}
+                        value="Corporate Site"
+                      /> Corporate</label
+                    >
+                    <label class="checkbox-label"
+                      ><input
+                        type="checkbox"
+                        bind:group={projectDetails.webScope}
+                        value="E-commerce"
+                      /> E-com</label
+                    >
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label
+                    >{$language === "en"
+                      ? "Content Readiness"
+                      : "Stato Contenuti"}</label
+                  >
+                  <select bind:value={projectDetails.webContent}>
+                    <option value="Ready">Ready (Copy & Images)</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="None">Starting from scratch</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    placeholder={$language === "en"
+                      ? "Benchmark Link (Site you admire)"
+                      : "Link Benchmark (Sito che ammiri)"}
+                    bind:value={projectDetails.webBenchmark}
+                  />
+                </div>
+              </div>
+            {:else if projectDetails.service === "Motion"}
+              <div class="dynamic-group" in:slide>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    placeholder={$language === "en"
+                      ? "Est. Quantity of Assets"
+                      : "Quantità stimata asset"}
+                    bind:value={projectDetails.photoQty}
+                  />
+                </div>
+                <div class="form-group">
+                  <label
+                    >{$language === "en"
+                      ? "Usage Rights"
+                      : "Diritti Utilizzo"}</label
+                  >
+                  <select bind:value={projectDetails.photoRights}>
+                    <option value="Social">Social Only</option>
+                    <option value="Web">Web / Digital</option>
+                    <option value="Advertising">Advertising / Billboard</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <textarea
+                    placeholder={$language === "en"
+                      ? "Mood / Style Reference..."
+                      : "Riferimento Mood / Stile..."}
+                    rows="2"
+                    bind:value={projectDetails.photoMood}
+                  ></textarea>
+                </div>
+              </div>
+            {:else if projectDetails.service === "Other"}
+              <div class="dynamic-group" in:slide>
+                <div class="form-group">
+                  <textarea
+                    placeholder={$language === "en"
+                      ? "Tell me more about your needs..."
+                      : "Dimmi di più..."}
+                    rows="4"
+                    bind:value={projectDetails.otherDetails}
+                  ></textarea>
+                </div>
+              </div>
+            {/if}
 
             <div class="form-group">
               <label>Budget (EUR)</label>
@@ -311,24 +525,44 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
               </select>
             </div>
 
+            <!-- STRATEGIC DEADLINE -->
             <div class="form-group">
-              <label>{$language === "en" ? "Timeline" : "Tempistiche"}</label>
-              <select bind:value={projectDetails.timeline}>
-                <option value="" disabled selected
-                  >{$language === "en"
-                    ? "When do you need it?"
-                    : "Per quando ti serve?"}</option
-                >
-                <option value="ASAP">ASAP (Urgent)</option>
-                <option value="1-2 months"
-                  >1-2 {$language === "en" ? "months" : "mesi"}</option
-                >
-                <option value="3+ months"
-                  >3+ {$language === "en" ? "months" : "mesi"}</option
-                >
-                <option value="Flexible">Flexible</option>
-              </select>
+              <label>{$language === "en" ? "Deadline" : "Deadline"}</label>
+              <div class="radio-group-vertical">
+                {#each deadlineOptions as opt}
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      bind:group={projectDetails.timeline}
+                      value={opt}
+                    />
+                    <span class="radio-text">
+                      {#if opt === "Flexible"}
+                        {$language === "en"
+                          ? "Flexible (Standard Rate)"
+                          : "Flessibile (Tariffa Standard)"}
+                      {:else if opt === "Within 1 month"}
+                        {$language === "en" ? "Within 1 month" : "Entro 1 mese"}
+                      {:else if opt === "Specific Date"}
+                        {$language === "en"
+                          ? "Specific Hard Deadline"
+                          : "Data Specifica"}
+                      {:else if opt === "ASAP (Rush)"}
+                        {$language === "en"
+                          ? "ASAP (Rush Fee likely)"
+                          : "ASAP (Possibile Rush Fee)"}
+                      {/if}
+                    </span>
+                  </label>
+                {/each}
+              </div>
             </div>
+
+            {#if projectDetails.timeline === "Specific Date"}
+              <div class="form-group" in:slide>
+                <input type="date" bind:value={projectDetails.specificDate} />
+              </div>
+            {/if}
 
             <button type="submit">
               {$language === "en" ? "send request" : "invia richiesta"}
@@ -637,7 +871,78 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
   .form-wrapper {
     width: 100%;
-    min-height: 300px; /* Prevent layout shift */
+    min-height: 400px; /* Increased prevent layout shift */
+  }
+
+  .dynamic-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-left: 10px;
+    border-left: 2px solid var(--color-accent);
+    margin-bottom: 20px;
+  }
+
+  /* RADIO STYLES */
+  .radio-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+  }
+  .radio-label:hover {
+    opacity: 1;
+  }
+
+  input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--color-text);
+    border-radius: 50%;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  input[type="radio"]:checked {
+    background: var(--color-text);
+  }
+
+  .checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9rem;
+  }
+
+  input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--color-text);
+    appearance: none;
+    border-radius: 0; /* Square */
+    margin: 0;
+    padding: 0;
+  }
+  input[type="checkbox"]:checked {
+    background: var(--color-text);
   }
 
   @media (max-width: 480px) {
@@ -646,6 +951,10 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     }
     .choice-buttons {
       flex-direction: column;
+    }
+    .checkbox-row {
+      flex-direction: column;
+      gap: 8px;
     }
   }
 </style>
