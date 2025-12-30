@@ -1,7 +1,6 @@
 <script>
   import { base } from "$app/paths";
   import { onMount } from "svelte";
-  import { base } from "$app/paths";
 
   /** @type {{ images: string[] }} */
   let { images } = $props();
