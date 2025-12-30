@@ -47,8 +47,34 @@
 
     requestAnimationFrame(raf);
 
+    // --- Global Error Tracking (Phase 10) ---
+    function logError(msg, source, lineno, colno, error) {
+      if (typeof gtag !== "undefined") {
+        gtag("event", "app_error", {
+          event_category: "error",
+          event_label: `${msg} at ${source}:${lineno}`,
+          non_interaction: true,
+        });
+      }
+    }
+
+    window.addEventListener("error", (event) => {
+      logError(
+        event.message,
+        event.filename,
+        event.lineno,
+        event.colno,
+        event.error
+      );
+    });
+
+    window.addEventListener("unhandledrejection", (event) => {
+      logError(event.reason, "promise", 0, 0, event.reason);
+    });
+
     return () => {
       lenis.destroy();
+      // Listeners are on window, technically should clean up but they are global for the app
     };
   });
 

@@ -602,7 +602,32 @@
     font-family: var(--font-mono);
   }
 
-  .header {
+  .bad-badge {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7em;
+      font-weight: bold;
+  }
+  
+  .error-badge {
+      background: rgba(234, 179, 8, 0.2);
+      color: #facc15;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7em;
+      font-weight: bold;
+  }
+  
+  .ok-badge {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7em;
+      font-weight: bold;
+  }
     display: flex;
     justify-content: space-between;
     align-items: center;
