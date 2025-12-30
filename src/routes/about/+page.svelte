@@ -686,34 +686,35 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
               <label>{translations[$language].deadline_label}</label>
               <div class="radio-group-vertical">
                 {#each translations[$language].deadlines as d}
-                  <label class="radio-label">
+                  <label
+                    class="radio-label"
+                    style:align-items={d.value === "rush" &&
+                    projectDetails.timeline === "rush"
+                      ? "center"
+                      : "center"}
+                  >
                     <input
                       type="radio"
                       bind:group={projectDetails.timeline}
                       value={d.value}
                     />
                     <span class="radio-text">{d.label}</span>
+
+                    <!-- INLINE RUSH INPUT -->
+                    {#if d.value === "rush" && projectDetails.timeline === "rush"}
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder={translations[$language].rush_placeholder}
+                        bind:value={projectDetails.rushDays}
+                        in:slide={{ axis: "x", duration: 300 }}
+                        style="width: 120px; margin-left: 10px; padding: 5px; font-size: 0.9em;"
+                      />
+                    {/if}
                   </label>
                 {/each}
               </div>
             </div>
-
-            <!-- Conditional Rush Days input -->
-            {#if projectDetails.timeline === "rush"}
-              <div class="form-group" in:slide>
-                <label
-                  style="font-size: 0.9em; margin-bottom: 5px; opacity: 0.8;"
-                >
-                  {translations[$language].rush_days_label}
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="Es. 2"
-                  bind:value={projectDetails.rushDays}
-                />
-              </div>
-            {/if}
 
             <!-- Conditional Date Picker (logic fixed) -->
 
