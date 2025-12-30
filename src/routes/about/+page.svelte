@@ -314,17 +314,22 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       minute: "2-digit",
     });
 
+    // Map Budget Value to Label
+    let finalBudget = projectDetails.budget;
+    const budgetObj = t.budgets.find((b) => b.value === projectDetails.budget);
+    if (budgetObj) finalBudget = budgetObj.label;
+
     const combinedData = {
       ...initialData,
       Service: s ? s.toUpperCase() : "Not Specified",
-      Budget: projectDetails.budget || "Not Specified",
+      Budget: finalBudget || "Not Specified",
       Deadline: finalDeadline || "Not Specified",
 
       "----------------": "----------------",
       ...dynamicPayload,
 
       "---------------- ": "----------------",
-      "[INTERNAL ESTIMATE]": estimate,
+      "*** ESTIMATED RANGE ***": estimate,
       "[SUBMITTED AT]": nowIT,
     };
 
