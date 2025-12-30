@@ -27,7 +27,7 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/about" | "/bento" | "/projects" | "/projects/[slug]" | "/tools" | "/tools/asciify" | "/tools/dithering" | "/tools/[slug]";
+		RouteId(): "/" | "/about" | "/admin" | "/bento" | "/projects" | "/projects/[slug]" | "/tools" | "/tools/asciify" | "/tools/dithering" | "/tools/[slug]";
 		RouteParams(): {
 			"/projects/[slug]": { slug: string };
 			"/tools/[slug]": { slug: string }
@@ -35,6 +35,7 @@ declare module "$app/types" {
 		LayoutParams(): {
 			"/": { slug?: string };
 			"/about": Record<string, never>;
+			"/admin": Record<string, never>;
 			"/bento": Record<string, never>;
 			"/projects": { slug?: string };
 			"/projects/[slug]": { slug: string };
@@ -43,8 +44,8 @@ declare module "$app/types" {
 			"/tools/dithering": Record<string, never>;
 			"/tools/[slug]": { slug: string }
 		};
-		Pathname(): "/" | "/about" | "/about/" | "/bento" | "/bento/" | "/projects" | "/projects/" | `/projects/${string}` & {} | `/projects/${string}/` & {} | "/tools" | "/tools/" | "/tools/asciify" | "/tools/asciify/" | "/tools/dithering" | "/tools/dithering/" | `/tools/${string}` & {} | `/tools/${string}/` & {};
+		Pathname(): "/" | "/about" | "/about/" | "/admin" | "/admin/" | "/bento" | "/bento/" | "/projects" | "/projects/" | `/projects/${string}` & {} | `/projects/${string}/` & {} | "/tools" | "/tools/" | "/tools/asciify" | "/tools/asciify/" | "/tools/dithering" | "/tools/dithering/" | `/tools/${string}` & {} | `/tools/${string}/` & {};
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): "/.DS_Store" | "/.nojekyll" | "/fonts/Icon\r" | "/fonts/PPKyoto-Extrabold.woff" | "/fonts/PPKyoto-Extrabold.woff2" | "/fonts/PPKyoto-ExtraboldItalic.woff" | "/fonts/PPKyoto-ExtraboldItalic.woff2" | "/fonts/PPKyoto-Heavy.woff" | "/fonts/PPKyoto-Heavy.woff2" | "/fonts/PPKyoto-HeavyItalic.woff" | "/fonts/PPKyoto-HeavyItalic.woff2" | "/fonts/PPKyoto-Light.woff" | "/fonts/PPKyoto-Light.woff2" | "/fonts/PPKyoto-LightItalic.woff" | "/fonts/PPKyoto-LightItalic.woff2" | "/fonts/PPKyoto-Medium.woff" | "/fonts/PPKyoto-Medium.woff2" | "/fonts/PPKyoto-MediumItalic.woff" | "/fonts/PPKyoto-MediumItalic.woff2" | "/fonts/PPKyoto-Regular.woff" | "/fonts/PPKyoto-Regular.woff2" | "/fonts/PPKyoto-RegularItalic.woff" | "/fonts/PPKyoto-RegularItalic.woff2" | "/fonts/PPKyoto-Thin.woff" | "/fonts/PPKyoto-Thin.woff2" | "/fonts/PPKyoto-ThinItalic.woff" | "/fonts/PPKyoto-ThinItalic.woff2" | "/media/.DS_Store" | "/media/brand/favicon.jpg" | "/media/brand/gumroad-1 (1).svg" | string & {};
+		Asset(): "/.DS_Store" | "/.nojekyll" | "/fonts/Icon\r" | "/fonts/PPKyoto-Extrabold.woff" | "/fonts/PPKyoto-Extrabold.woff2" | "/fonts/PPKyoto-ExtraboldItalic.woff" | "/fonts/PPKyoto-ExtraboldItalic.woff2" | "/fonts/PPKyoto-Heavy.woff" | "/fonts/PPKyoto-Heavy.woff2" | "/fonts/PPKyoto-HeavyItalic.woff" | "/fonts/PPKyoto-HeavyItalic.woff2" | "/fonts/PPKyoto-Light.woff" | "/fonts/PPKyoto-Light.woff2" | "/fonts/PPKyoto-LightItalic.woff" | "/fonts/PPKyoto-LightItalic.woff2" | "/fonts/PPKyoto-Medium.woff" | "/fonts/PPKyoto-Medium.woff2" | "/fonts/PPKyoto-MediumItalic.woff" | "/fonts/PPKyoto-MediumItalic.woff2" | "/fonts/PPKyoto-Regular.woff" | "/fonts/PPKyoto-Regular.woff2" | "/fonts/PPKyoto-RegularItalic.woff" | "/fonts/PPKyoto-RegularItalic.woff2" | "/fonts/PPKyoto-Thin.woff" | "/fonts/PPKyoto-Thin.woff2" | "/fonts/PPKyoto-ThinItalic.woff" | "/fonts/PPKyoto-ThinItalic.woff2" | "/freccia-dx.svg" | "/freccia-sx.svg" | "/media/.DS_Store" | "/media/brand/favicon.jpg" | "/media/brand/gumroad-1 (1).svg" | string & {};
 	}
 }

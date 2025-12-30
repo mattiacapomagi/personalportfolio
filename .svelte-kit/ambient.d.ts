@@ -28,6 +28,8 @@
 declare module '$env/static/private' {
 	export const VITE_MAINTENANCE_MODE: string;
 	export const VITE_SITE_PASSWORD: string;
+	export const ADMIN_PASSWORD: string;
+	export const ADMIN_SECRET: string;
 	export const ANTIGRAVITY_AGENT: string;
 	export const TERM_PROGRAM: string;
 	export const NODE: string;
@@ -130,6 +132,8 @@ declare module '$env/dynamic/private' {
 	export const env: {
 		VITE_MAINTENANCE_MODE: string;
 		VITE_SITE_PASSWORD: string;
+		ADMIN_PASSWORD: string;
+		ADMIN_SECRET: string;
 		ANTIGRAVITY_AGENT: string;
 		TERM_PROGRAM: string;
 		NODE: string;

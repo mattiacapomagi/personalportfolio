@@ -1,1 +1,1 @@
-export { default as component } from "../../../../src/routes/tools/dithering/+page.svelte";
+export { default as component } from "../../../../src/routes/tools/asciify/+page.svelte";

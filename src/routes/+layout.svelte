@@ -2,6 +2,7 @@
   import "../app.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
+  import CookieConsent from "$lib/components/CookieConsent.svelte";
   import { onMount } from "svelte";
   import Lenis from "lenis";
   import "lenis/dist/lenis.css";
@@ -188,6 +189,8 @@
     <Footer />
   </div>
 {/if}
+
+<CookieConsent />
 
 <style>
   /* Standard Layout */

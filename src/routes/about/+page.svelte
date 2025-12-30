@@ -13,7 +13,6 @@ La tipografia è un pilastro fondamentale del mio lavoro. Amo sperimentare con i
 
 Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelligenza artificiale come un laboratorio dedicato alla sperimentazione, uno strumento che mi permette di esplorare nuovi territori visivi e generare idee che vanno oltre i metodi tradizionali.`;
 
-
   const socials = [
     {
       name: "Instagram",
@@ -64,10 +63,6 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     }
     if (!message) {
       formErrors.message = true;
-      isValid = false;
-      setTimeout(() => (formErrors.message = false), 3000);
-    }
-
       isValid = false;
       setTimeout(() => (formErrors.message = false), 3000);
     }
