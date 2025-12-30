@@ -21,9 +21,11 @@
   let deviceData = $state([]);
   let geoData = $state([]);
   let securityData = $state([]);
-  let sourcesData = $state([]); // NEW
-  let osData = $state([]); // NEW
-  let engagementData = $state(null); // NEW
+  let sourcesData = $state([]);
+  let osData = $state([]);
+  let engagementData = $state(null);
+  let projectsData = $state([]); // NEW
+  let toolsData = $state([]); // NEW
 
   let githubStatus = $state({ pages: "loading", actions: "loading" });
   let repoSize = $state("...");
@@ -118,6 +120,13 @@
       if (profile.email === ALLOWED_EMAIL) {
         isUnlocked = true;
         unauthorized = false;
+        // Log Admin Access (Heartbeat)
+        if (typeof gtag !== "undefined") {
+          gtag("event", "admin_access", {
+            event_category: "admin",
+            non_interaction: true,
+          });
+        }
         // Proceed to load data
         fetchAllAnalytics();
         fetchGithubStatus();
@@ -191,67 +200,109 @@
     gaError = null;
 
     try {
-      const [overview, pages, devices, geo, security, sources, engagement, os] =
-        await Promise.all([
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            metrics: [{ name: "activeUsers" }, { name: "sessions" }],
-          }),
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            dimensions: [{ name: "pagePath" }],
-            metrics: [{ name: "screenPageViews" }],
-            orderBys: [
-              { desc: true, metric: { metricName: "screenPageViews" } },
-            ],
-            limit: 5,
-          }),
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            dimensions: [{ name: "deviceCategory" }],
-            metrics: [{ name: "activeUsers" }],
-          }),
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            dimensions: [{ name: "country" }],
-            metrics: [{ name: "activeUsers" }],
-            orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
-            limit: 5,
-          }),
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            dimensions: [{ name: "eventName" }, { name: "date" }],
-            metrics: [{ name: "eventCount" }],
-            dimensionFilter: {
-              filter: {
-                fieldName: "eventName",
-                stringFilter: { value: "security_login_failed" },
+      const [
+        overview,
+        pages,
+        devices,
+        geo,
+        security,
+        sources,
+        engagement,
+        os,
+        projects,
+        tools,
+      ] = await Promise.all([
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          metrics: [{ name: "activeUsers" }, { name: "sessions" }],
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "pagePath" }],
+          metrics: [{ name: "screenPageViews" }],
+          orderBys: [{ desc: true, metric: { metricName: "screenPageViews" } }],
+          limit: 5,
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "deviceCategory" }],
+          metrics: [{ name: "activeUsers" }],
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "country" }],
+          metrics: [{ name: "activeUsers" }],
+          orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+          limit: 5,
+        }),
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [
+            { name: "eventName" },
+            { name: "date" },
+            { name: "hour" },
+          ],
+          metrics: [{ name: "eventCount" }],
+          dimensionFilter: {
+            filter: {
+              fieldName: "eventName",
+              inListFilter: {
+                values: ["security_login_failed", "app_error", "admin_access"],
               },
             },
-            orderBys: [{ desc: true, dimension: { dimensionName: "date" } }],
-          }),
-          // NEW 1: Traffic Sources
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            dimensions: [{ name: "sessionSource" }],
-            metrics: [{ name: "activeUsers" }],
-            orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
-            limit: 5,
-          }),
-          // NEW 2: Engagement
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            metrics: [{ name: "averageSessionDuration" }],
-          }),
-          // NEW 3: OS
-          runReport({
-            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-            dimensions: [{ name: "operatingSystem" }],
-            metrics: [{ name: "activeUsers" }],
-            orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
-            limit: 5,
-          }),
-        ]);
+          },
+          orderBys: [{ desc: true, dimension: { dimensionName: "date" } }],
+        }),
+        // Traffic Sources
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "sessionSource" }],
+          metrics: [{ name: "activeUsers" }],
+          orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+          limit: 5,
+        }),
+        // Engagement
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          metrics: [{ name: "averageSessionDuration" }],
+        }),
+        // OS
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "operatingSystem" }],
+          metrics: [{ name: "activeUsers" }],
+          orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+          limit: 5,
+        }),
+        // NEW: Projects
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "pagePath" }],
+          metrics: [{ name: "screenPageViews" }],
+          dimensionFilter: {
+            filter: {
+              fieldName: "pagePath",
+              stringFilter: { matchType: "CONTAINS", value: "/projects/" },
+            },
+          },
+          orderBys: [{ desc: true, metric: { metricName: "screenPageViews" } }],
+          limit: 5,
+        }),
+        // NEW: Tools
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "pagePath" }],
+          metrics: [{ name: "screenPageViews" }],
+          dimensionFilter: {
+            filter: {
+              fieldName: "pagePath",
+              stringFilter: { matchType: "CONTAINS", value: "/tools/" },
+            },
+          },
+          orderBys: [{ desc: true, metric: { metricName: "screenPageViews" } }],
+          limit: 5,
+        }),
+      ]);
 
       if (overview.rows && overview.rows.length > 0) {
         overviewData = {
@@ -318,8 +369,29 @@
 
       if (security.rows) {
         securityData = security.rows.map((row) => ({
+          type: row.dimensionValues[0].value,
           date: row.dimensionValues[1].value,
           count: row.metricValues[0].value,
+        }));
+      }
+
+      if (projects.rows) {
+        projectsData = projects.rows.map((row) => ({
+          name:
+            row.dimensionValues[0].value
+              .replace("/projects/", "")
+              .replace(/\/$/, "") || "Index",
+          views: row.metricValues[0].value,
+        }));
+      }
+
+      if (tools.rows) {
+        toolsData = tools.rows.map((row) => ({
+          name:
+            row.dimensionValues[0].value
+              .replace("/tools/", "")
+              .replace(/\/$/, "") || "Index",
+          views: row.metricValues[0].value,
         }));
       }
     } catch (e) {
@@ -510,6 +582,44 @@
           {/if}
         </div>
 
+        <!-- NEW: Top Projects -->
+        <div class="card">
+          <h2>🔥 Projects</h2>
+          {#if projectsData.length > 0}
+            <table class="data-table">
+              <tbody>
+                {#each projectsData as p}
+                  <tr>
+                    <td style="text-transform: capitalize;">{p.name}</td>
+                    <td class="mono">{p.views}</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {:else}
+            <p class="no-data">No project data.</p>
+          {/if}
+        </div>
+
+        <!-- NEW: Top Tools -->
+        <div class="card">
+          <h2>🛠️ Tools</h2>
+          {#if toolsData.length > 0}
+            <table class="data-table">
+              <tbody>
+                {#each toolsData as t}
+                  <tr>
+                    <td style="text-transform: capitalize;">{t.name}</td>
+                    <td class="mono">{t.views}</td>
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {:else}
+            <p class="no-data">No tool data.</p>
+          {/if}
+        </div>
+
         <!-- 4. Geography Widget -->
         <div class="card">
           <h2>Audience</h2>
@@ -535,6 +645,9 @@
               {#each sourcesData as item}
                 <div class="list-row">
                   <span class="row-name">{item.source}</span>
+                  <div class="row-bar-container">
+                    <div class="row-bar" style="width: 100%"></div>
+                  </div>
                   <span class="row-stat">{item.users}</span>
                 </div>
               {/each}
@@ -544,26 +657,34 @@
           {/if}
         </div>
 
-        <!-- 5. Security Log Widget -->
+        <!-- 5. System Log Widget -->
         <div class="card col-span-2">
-          <h2>Security Log</h2>
+          <h2>System Log</h2>
           {#if securityData.length > 0}
             <table class="data-table">
-              <thead><tr><th>Date</th><th>Failed Attempts</th></tr></thead>
+              <thead><tr><th>Type</th><th>Date</th><th>Count</th></tr></thead>
               <tbody>
                 {#each securityData as event}
                   <tr>
+                    <td>
+                      {#if event.type === "security_login_failed"}
+                        <span class="bad-badge">INTRUSION</span>
+                      {:else if event.type === "app_error"}
+                        <span class="error-badge">BUG</span>
+                      {:else if event.type === "admin_access"}
+                        <span class="ok-badge">ACCESS</span>
+                      {/if}
+                    </td>
                     <td class="mono">{event.date}</td>
-                    <td style="color: red; font-weight: bold;">{event.count}</td
-                    >
+                    <td class="mono">{event.count}</td>
                   </tr>
                 {/each}
               </tbody>
             </table>
           {:else}
             <div class="secure-state">
-              <span class="icon">SECURE</span>
-              <p>No recent intrusions detected.</p>
+              <span class="icon">✅</span>
+              <p>System logs clear.</p>
             </div>
           {/if}
         </div>
@@ -628,6 +749,7 @@
     font-size: 0.7em;
     font-weight: bold;
   }
+
   .header {
     display: flex;
     justify-content: space-between;
