@@ -11,11 +11,20 @@
   const SESSION_KEY = "admin_session_timestamp";
   const SESSION_TIMEOUT = 30 * 60 * 1000;
 
+  const ADMIN_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
+  const SESSION_KEY = "admin_session_timestamp";
+  const SESSION_TIMEOUT = 30 * 60 * 1000;
+
   /* --- Analytics Logic --- */
   let tokenClient;
   let accessToken = $state(null);
   let isLoadingData = $state(false);
   let gaError = $state(null);
+
+  // Token Persistence
+  const GA_TOKEN_KEY = "ga_access_token";
+  const GA_TOKEN_TIMESTAMP = "ga_token_timestamp";
+  const TOKEN_VALIDITY = 50 * 60 * 1000; // 50 mins (Google tokens last 1h)
 
   // Data States
   let overviewData = $state(null);
@@ -30,6 +39,7 @@
 
   onMount(() => {
     checkSession();
+    checkStoredToken(); // Check for existing GA token
     loadGoogleScripts();
   });
 
@@ -40,6 +50,23 @@
       isUnlocked = true;
     }
     checking = false;
+  }
+
+  function checkStoredToken() {
+    const storedToken = localStorage.getItem(GA_TOKEN_KEY);
+    const storedTime = localStorage.getItem(GA_TOKEN_TIMESTAMP);
+
+    if (storedToken && storedTime) {
+      const age = Date.now() - parseInt(storedTime);
+      if (age < TOKEN_VALIDITY) {
+        accessToken = storedToken;
+        fetchAllAnalytics(); // Auto-fetch if token is valid
+      } else {
+        // Clear expired token
+        localStorage.removeItem(GA_TOKEN_KEY);
+        localStorage.removeItem(GA_TOKEN_TIMESTAMP);
+      }
+    }
   }
 
   function loadGoogleScripts() {
@@ -54,7 +81,11 @@
             gaError = response.error;
             return;
           }
+          // Save Token
           accessToken = response.access_token;
+          localStorage.setItem(GA_TOKEN_KEY, response.access_token);
+          localStorage.setItem(GA_TOKEN_TIMESTAMP, Date.now().toString());
+
           fetchAllAnalytics();
         },
       });
@@ -88,7 +119,7 @@
         runReport({
           dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
           dimensions: [{ name: "deviceCategory" }],
-          metrics: [{ name: "sessions" }],
+          metrics: [{ name: "activeUsers" }], // Changed from sessions to activeUsers
         }),
         runReport({
           dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
@@ -140,6 +171,13 @@
     } catch (e) {
       console.error(e);
       gaError = e.message;
+
+      // If 401 or 403, clear local token as it might be invalid
+      if (e.message.includes("401") || e.message.includes("403")) {
+        localStorage.removeItem(GA_TOKEN_KEY);
+        localStorage.removeItem(GA_TOKEN_TIMESTAMP);
+        accessToken = null;
+      }
     } finally {
       isLoadingData = false;
     }
