@@ -21,6 +21,10 @@
   let deviceData = $state([]);
   let geoData = $state([]);
   let securityData = $state([]);
+  let sourcesData = $state([]); // NEW
+  let osData = $state([]); // NEW
+  let engagementData = $state(null); // NEW
+
   let githubStatus = $state({ pages: "loading", actions: "loading" });
   let repoSize = $state("...");
 
@@ -187,49 +191,80 @@
     gaError = null;
 
     try {
-      const [overview, pages, devices, geo, security] = await Promise.all([
-        runReport({
-          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-          metrics: [{ name: "activeUsers" }, { name: "sessions" }],
-        }),
-        runReport({
-          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-          dimensions: [{ name: "pagePath" }],
-          metrics: [{ name: "screenPageViews" }],
-          orderBys: [{ desc: true, metric: { metricName: "screenPageViews" } }],
-          limit: 5,
-        }),
-        runReport({
-          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-          dimensions: [{ name: "deviceCategory" }],
-          metrics: [{ name: "activeUsers" }],
-        }),
-        runReport({
-          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-          dimensions: [{ name: "country" }],
-          metrics: [{ name: "activeUsers" }],
-          orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
-          limit: 5,
-        }),
-        runReport({
-          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
-          dimensions: [{ name: "eventName" }, { name: "date" }],
-          metrics: [{ name: "eventCount" }],
-          dimensionFilter: {
-            filter: {
-              fieldName: "eventName",
-              stringFilter: { value: "security_login_failed" },
+      const [overview, pages, devices, geo, security, sources, engagement, os] =
+        await Promise.all([
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            metrics: [{ name: "activeUsers" }, { name: "sessions" }],
+          }),
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            dimensions: [{ name: "pagePath" }],
+            metrics: [{ name: "screenPageViews" }],
+            orderBys: [
+              { desc: true, metric: { metricName: "screenPageViews" } },
+            ],
+            limit: 5,
+          }),
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            dimensions: [{ name: "deviceCategory" }],
+            metrics: [{ name: "activeUsers" }],
+          }),
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            dimensions: [{ name: "country" }],
+            metrics: [{ name: "activeUsers" }],
+            orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+            limit: 5,
+          }),
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            dimensions: [{ name: "eventName" }, { name: "date" }],
+            metrics: [{ name: "eventCount" }],
+            dimensionFilter: {
+              filter: {
+                fieldName: "eventName",
+                stringFilter: { value: "security_login_failed" },
+              },
             },
-          },
-          orderBys: [{ desc: true, dimension: { dimensionName: "date" } }],
-        }),
-      ]);
+            orderBys: [{ desc: true, dimension: { dimensionName: "date" } }],
+          }),
+          // NEW 1: Traffic Sources
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            dimensions: [{ name: "sessionSource" }],
+            metrics: [{ name: "activeUsers" }],
+            orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+            limit: 5,
+          }),
+          // NEW 2: Engagement
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            metrics: [{ name: "averageSessionDuration" }],
+          }),
+          // NEW 3: OS
+          runReport({
+            dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+            dimensions: [{ name: "operatingSystem" }],
+            metrics: [{ name: "activeUsers" }],
+            orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
+            limit: 5,
+          }),
+        ]);
 
       if (overview.rows && overview.rows.length > 0) {
         overviewData = {
           users: overview.rows[0].metricValues[0].value,
           sessions: overview.rows[0].metricValues[1].value,
         };
+      }
+
+      if (engagement.rows && engagement.rows.length > 0) {
+        const seconds = parseInt(engagement.rows[0].metricValues[0].value);
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        engagementData = `${mins}m ${secs}s`;
       }
 
       if (pages.rows) {
@@ -253,9 +288,30 @@
         }));
       }
 
+      if (osData.rows || os.rows) {
+        const rows = os.rows || [];
+        const total = rows.reduce(
+          (acc, row) => acc + parseInt(row.metricValues[0].value),
+          0
+        );
+        osData = rows.map((row) => ({
+          os: row.dimensionValues[0].value,
+          percent: Math.round(
+            (parseInt(row.metricValues[0].value) / total) * 100
+          ),
+        }));
+      }
+
       if (geo.rows) {
         geoData = geo.rows.map((row) => ({
           country: row.dimensionValues[0].value,
+          users: row.metricValues[0].value,
+        }));
+      }
+
+      if (sources.rows) {
+        sourcesData = sources.rows.map((row) => ({
+          source: row.dimensionValues[0].value,
           users: row.metricValues[0].value,
         }));
       }
@@ -367,7 +423,7 @@
     {:else}
       <div class="grid">
         <!-- 1. Overview Widget -->
-        <div class="card overview-card col-span-1">
+        <div class="card overview-card col-span-2">
           <h2>Overview (30d)</h2>
           {#if overviewData}
             <div class="big-stats">
@@ -378,6 +434,10 @@
               <div class="stat-item">
                 <span class="label">Sessions</span>
                 <span class="value">{overviewData.sessions}</span>
+              </div>
+              <div class="stat-item">
+                <span class="label">Avg Time</span>
+                <span class="value">{engagementData || "--"}</span>
               </div>
             </div>
           {:else}
@@ -402,6 +462,26 @@
             </div>
           {:else}
             <p class="no-data">No device data.</p>
+          {/if}
+        </div>
+
+        <!-- 2b. OS Widget -->
+        <div class="card">
+          <h2>Tech (OS)</h2>
+          {#if osData.length > 0}
+            <div class="list-container">
+              {#each osData as item}
+                <div class="list-row">
+                  <span class="row-name">{item.os}</span>
+                  <div class="row-bar-container">
+                    <div class="row-bar" style="width: {item.percent}%"></div>
+                  </div>
+                  <span class="row-stat">{item.percent}%</span>
+                </div>
+              {/each}
+            </div>
+          {:else}
+            <p class="no-data">No OS data.</p>
           {/if}
         </div>
 
@@ -447,6 +527,23 @@
           {/if}
         </div>
 
+        <!-- 4b. Traffic Sources -->
+        <div class="card">
+          <h2>Traffic Source</h2>
+          {#if sourcesData.length > 0}
+            <div class="list-container">
+              {#each sourcesData as item}
+                <div class="list-row">
+                  <span class="row-name">{item.source}</span>
+                  <span class="row-stat">{item.users}</span>
+                </div>
+              {/each}
+            </div>
+          {:else}
+            <p class="no-data">No source data.</p>
+          {/if}
+        </div>
+
         <!-- 5. Security Log Widget -->
         <div class="card col-span-2">
           <h2>Security Log</h2>
@@ -472,7 +569,7 @@
         </div>
 
         <!-- 6. System Status -->
-        <div class="card">
+        <div class="card col-span-2">
           <h2>System</h2>
           <div class="list-row">
             <span class="row-name">GH Pages</span>
