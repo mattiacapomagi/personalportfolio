@@ -17,16 +17,18 @@
   let isLoadingData = $state(false);
   let gaError = $state(null);
 
-  // Token Persistence
-  const GA_TOKEN_KEY = "ga_access_token";
-  const GA_TOKEN_TIMESTAMP = "ga_token_timestamp";
-  const TOKEN_VALIDITY = 50 * 60 * 1000; // 50 mins (Google tokens last 1h)
-
   // Data States
   let overviewData = $state(null);
   let pagesData = $state([]);
   let deviceData = $state([]);
   let geoData = $state([]);
+  let securityData = $state([]);
+  let githubStatus = $state({ pages: "loading", actions: "loading" });
+
+  // Token Persistence
+  const GA_TOKEN_KEY = "ga_access_token";
+  const GA_TOKEN_TIMESTAMP = "ga_token_timestamp";
+  const TOKEN_VALIDITY = 50 * 60 * 1000; // 50 mins
 
   // CONFIGURATION
   const CLIENT_ID =
@@ -35,9 +37,31 @@
 
   onMount(() => {
     checkSession();
-    checkStoredToken(); // Check for existing GA token
+    checkStoredToken();
     loadGoogleScripts();
+    fetchGithubStatus();
   });
+
+  /* --- GitHub Status API --- */
+  async function fetchGithubStatus() {
+    try {
+      const res = await fetch(
+        "https://www.githubstatus.com/api/v2/summary.json"
+      );
+      const data = await res.json();
+
+      const pages = data.components.find((c) => c.name === "GitHub Pages");
+      const actions = data.components.find((c) => c.name === "GitHub Actions");
+
+      githubStatus = {
+        pages: pages ? pages.status : "unknown",
+        actions: actions ? actions.status : "unknown",
+      };
+    } catch (e) {
+      console.error("GitHub Status Error", e);
+      githubStatus = { pages: "error", actions: "error" };
+    }
+  }
 
   function checkSession() {
     if (typeof window === "undefined") return;
@@ -56,9 +80,8 @@
       const age = Date.now() - parseInt(storedTime);
       if (age < TOKEN_VALIDITY) {
         accessToken = storedToken;
-        fetchAllAnalytics(); // Auto-fetch if token is valid
+        fetchAllAnalytics();
       } else {
-        // Clear expired token
         localStorage.removeItem(GA_TOKEN_KEY);
         localStorage.removeItem(GA_TOKEN_TIMESTAMP);
       }
@@ -77,7 +100,6 @@
             gaError = response.error;
             return;
           }
-          // Save Token
           accessToken = response.access_token;
           localStorage.setItem(GA_TOKEN_KEY, response.access_token);
           localStorage.setItem(GA_TOKEN_TIMESTAMP, Date.now().toString());
@@ -100,7 +122,7 @@
     gaError = null;
 
     try {
-      const [overview, pages, devices, geo] = await Promise.all([
+      const [overview, pages, devices, geo, security] = await Promise.all([
         runReport({
           dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
           metrics: [{ name: "activeUsers" }, { name: "sessions" }],
@@ -115,7 +137,7 @@
         runReport({
           dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
           dimensions: [{ name: "deviceCategory" }],
-          metrics: [{ name: "activeUsers" }], // Changed from sessions to activeUsers
+          metrics: [{ name: "activeUsers" }],
         }),
         runReport({
           dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
@@ -123,6 +145,19 @@
           metrics: [{ name: "activeUsers" }],
           orderBys: [{ desc: true, metric: { metricName: "activeUsers" } }],
           limit: 5,
+        }),
+        // Security Log Query (Custom Event)
+        runReport({
+          dateRanges: [{ startDate: "30daysAgo", endDate: "today" }],
+          dimensions: [{ name: "eventName" }, { name: "date" }],
+          metrics: [{ name: "eventCount" }],
+          dimensionFilter: {
+            filter: {
+              fieldName: "eventName",
+              stringFilter: { value: "security_login_failed" }, // Exact match
+            },
+          },
+          orderBys: [{ desc: true, dimension: { dimensionName: "date" } }],
         }),
       ]);
 
@@ -164,11 +199,18 @@
           users: row.metricValues[0].value,
         }));
       }
+
+      // Process Security Log
+      if (security.rows) {
+        securityData = security.rows.map((row) => ({
+          date: row.dimensionValues[1].value, // YYYYMMDD
+          count: row.metricValues[0].value,
+        }));
+      }
     } catch (e) {
       console.error(e);
       gaError = e.message;
 
-      // If 401 or 403, clear local token as it might be invalid
       if (e.message.includes("401") || e.message.includes("403")) {
         localStorage.removeItem(GA_TOKEN_KEY);
         localStorage.removeItem(GA_TOKEN_TIMESTAMP);
@@ -204,6 +246,16 @@
     } else {
       unlockError = true;
       passwordInput = "";
+
+      // LOG SECURITY EVENT TO GA4
+      if (typeof gtag !== "undefined") {
+        gtag("event", "security_login_failed", {
+          event_category: "security",
+          event_label: "admin_panel",
+          timestamp: new Date().toISOString(),
+        });
+      }
+
       setTimeout(() => (unlockError = false), 1000);
     }
   }
@@ -220,6 +272,7 @@
     pagesData = [];
     deviceData = [];
     geoData = [];
+    securityData = [];
   }
 </script>
 
@@ -352,16 +405,44 @@
           {/if}
         </div>
 
-        <!-- 5. System Status -->
+        <!-- 5. Security Log Widget -->
         <div class="card">
-          <h2>System</h2>
+          <h2>🚨 Security Log</h2>
+          {#if securityData.length > 0}
+            <table class="data-table">
+              <thead><tr><th>Date</th><th>Failed Attempts</th></tr></thead>
+              <tbody>
+                {#each securityData as event}
+                  <tr>
+                    <td class="mono">{event.date}</td>
+                    <td style="color: red; font-weight: bold;">{event.count}</td
+                    >
+                  </tr>
+                {/each}
+              </tbody>
+            </table>
+          {:else}
+            <div class="secure-state">
+              <span class="icon">🛡️</span>
+              <p>No recent intrusions detected.</p>
+            </div>
+          {/if}
+        </div>
+
+        <!-- 6. System Status -->
+        <div class="card">
+          <h2>GitHub Status</h2>
           <div class="list-row">
-            <span class="row-name">Environment</span>
-            <span class="row-stat online">Production</span>
+            <span class="row-name">GH Pages</span>
+            <span class="row-stat status-{githubStatus.pages}"
+              >{githubStatus.pages}</span
+            >
           </div>
           <div class="list-row">
-            <span class="row-name">Property ID</span>
-            <span class="row-stat mono">{PROPERTY_ID}</span>
+            <span class="row-name">GH Actions</span>
+            <span class="row-stat status-{githubStatus.actions}"
+              >{githubStatus.actions}</span
+            >
           </div>
         </div>
       </div>
@@ -476,8 +557,23 @@
     font-weight: 600;
     font-family: monospace;
   }
-  .row-stat.online {
+
+  /* Status Colors */
+  .status-operational {
     color: #22c55e;
+    text-transform: capitalize;
+  }
+  .status-degraded {
+    color: #eab308;
+    text-transform: capitalize;
+  }
+  .status-major {
+    color: #ef4444;
+    text-transform: capitalize;
+  }
+  .status-loading {
+    opacity: 0.5;
+    font-style: italic;
   }
 
   /* Data Table */
@@ -499,6 +595,18 @@
   .page-path {
     font-family: monospace;
     color: var(--color-accent);
+  }
+
+  .secure-state {
+    text-align: center;
+    padding: 1rem;
+    opacity: 0.7;
+    color: #22c55e;
+  }
+  .secure-state .icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
   }
 
   /* Auth & Loading */
