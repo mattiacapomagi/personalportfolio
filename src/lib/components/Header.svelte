@@ -144,7 +144,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(253, 251, 247, 0.85);
+    background: rgba(253, 251, 247, 0.7);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     transform: translateY(0);
@@ -152,7 +152,7 @@
   }
 
   :global([data-theme="dark"]) .header {
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.7);
   }
 
   .header.menu-open {
