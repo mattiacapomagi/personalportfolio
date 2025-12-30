@@ -77,7 +77,6 @@
 </main>
 
 <style>
-  /* ... Existing Desktop Styles ... */
   .tools-page {
     padding: 0 30px;
   }
@@ -169,10 +168,8 @@
     .tool-title {
       font-size: 2rem; /* +15% from 1.61rem */
       font-weight: 700;
-      transform: translateY(
-        -4.5px
-      ); /* Adjusted offset: -5px was too high, -2px too low */
-      line-height: 1; /* Tight line height for better centering */
+      transform: translateY(-4.5px); /* Optical alignment */
+      line-height: 1;
     }
 
     /* Hide Description & Year on Mobile */

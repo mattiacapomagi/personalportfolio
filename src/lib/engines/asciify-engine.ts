@@ -82,22 +82,10 @@ export function pixelsToAsciiGrid(
         if (magnitude > 120) { 
           isEdge = true;
           const angle = Math.atan2(gy, gx) * (180 / Math.PI);
-          // Map angle to char: | - / \
-          // Vertical: near 90 or -90 (or 270)
-          // Horizontal: near 0 or 180 (or -180)
-          // Diagonals in between
-          
+          // Map angle to char: | - / \ (Visual direction based on edge gradient)
           const absAngle = Math.abs(angle);
-          if (absAngle < 22.5 || absAngle > 157.5) char = "|"; // Vertical gradient -> Horizontal Edge usually represented as '-' but gradient is perpendicular? 
-          // Wait, gradient direction is perpendicular to edge.
-          // If Gx is high, Gy low -> Gradient is Horizontal -> Vertical Edge -> Char '|'
-          // atan2(0, 1) = 0 deg. So 0 deg is horizontal gradient -> Vertical line. Correct.
-          
-          else if (absAngle > 67.5 && absAngle < 112.5) char = "-"; // Vertical gradient -> Horizontal line
-          else if (angle > 22.5 && angle < 67.5) char = "/"; // +/+ Gradient (Tricky, let's simplify)
-          // Visual mapping:
-          // If gradient is 45deg (TopLeft to BottomRight intensity change), edge is BottomLeft to TopRight (/).
-          // Let's just swap slashes until it looks right visually.
+          if (absAngle < 22.5 || absAngle > 157.5) char = "|"; 
+          else if (absAngle > 67.5 && absAngle < 112.5) char = "-";
           else if (angle > 0) char = "\\"; 
           else char = "/";
         }
@@ -109,41 +97,12 @@ export function pixelsToAsciiGrid(
         const normalized = Math.max(0, Math.min(1, gray / 255));
         
         // INVERT MAPPING: Dark pixels should be Dense chars (Index 0 is Dense $)
-        // Light pixels should be Empty (Index Last is Space)
-        // normalized 0 (black) -> index 0 (Dense)
-        // normalized 1 (white) -> index Last (Empty)
-        const charIndex = Math.floor((1 - normalized) * (charLen - 1)); // Wait, if I want 0->0, I use normalized directly IF chart 0 is dark.
-        // My chart: $ (Dark/Dense) ... Space (Light/Empty).
-        // If pixel is black (0), I want $. So index 0.
-        // If pixel is white (1), I want Space. So index Last.
-        // So: index = (1 - normalized) * len? No.
-        // 0 -> (1-0) * len = len (Space). WRONG.
-        // 0 -> 0 * len = 0 ($). CORRECT.
-        // So use 'normalized' directly?
-        // Let's re-verify: normalized = gray/255. 
-        // Black=0. 0 * len = 0 ($). Correct.
-        // White=1. 1 * len = len (Space). Correct.
-        // BUT wait, usually standard ramps go Dark -> Light.
-        // My ramp IS Dark -> Light ($ -> Space).
-        // But what if I want INVERTED (White text on Black bg)?
-        // If bg is black, ' ' is black. '$' is white pixels.
-        // So I want bright pixels to have '$' and dark pixels to have ' '.
-        // In that case: White(1) -> Index 0 ($). Black(0) -> Index Last (Space).
-        // Formula: (1 - normalized).
-        
-        // Let's assume standard "White Text on Black BG" terminal look.
-        // Image Brightness 255 (White) -> Should be drawn with lots of ink or light. So '$'.
-        // Image Brightness 0 (Black) -> Should be empty. So ' '.
-        // So White -> Index 0 ($). Black -> Index Last (Space).
-        // So we need INVERSE mapping: (1 - normalized).
-
+        // White pixels should be Empty (Index Last is Space)
         const charIndexFallback = Math.floor((1 - normalized) * (charLen - 1));
         char = charset[charIndexFallback];
       }
 
       // --- COLOR MAPPING ---
-      // If Color Mode: extract pixel color
-      // If Mono Mode: use null (renderer will use default text color)
       const color = useColor ? `rgb(${r},${g},${b})` : "";
       
       row.push({ char, color });
@@ -189,7 +148,6 @@ export function renderAsciiToCanvas(
   ctx.font = `${fontSize}px ${fontFamily}`;
   ctx.textBaseline = "top";
 
-  // Fill Background
   if (!transparentBg) {
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -197,7 +155,6 @@ export function renderAsciiToCanvas(
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  // Render Loop
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
       const cell = grid[y][x];

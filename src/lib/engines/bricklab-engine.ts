@@ -24,13 +24,11 @@ export const drawBrick = (
   ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
   ctx.fillRect(x, y, size, size);
 
-  // Bevel Configuration
   const bevelSize = Math.max(2, size * 0.15);
 
-  // Highlights (Top and Left) - White Overlay
+  // Highlights (White)
   ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
 
-  // Top Trapezoid
   ctx.beginPath();
   ctx.moveTo(x, y);
   ctx.lineTo(x + size, y);
@@ -38,7 +36,6 @@ export const drawBrick = (
   ctx.lineTo(x + bevelSize, y + bevelSize);
   ctx.fill();
 
-  // Left Trapezoid
   ctx.beginPath();
   ctx.moveTo(x, y);
   ctx.lineTo(x, y + size);
@@ -46,10 +43,9 @@ export const drawBrick = (
   ctx.lineTo(x + bevelSize, y + bevelSize);
   ctx.fill();
 
-  // Shadows (Bottom and Right) - Black Overlay
+  // Shadows (Black)
   ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
 
-  // Right Trapezoid
   ctx.beginPath();
   ctx.moveTo(x + size, y);
   ctx.lineTo(x + size, y + size);
@@ -57,7 +53,6 @@ export const drawBrick = (
   ctx.lineTo(x + size - bevelSize, y + bevelSize);
   ctx.fill();
 
-  // Bottom Trapezoid
   ctx.beginPath();
   ctx.moveTo(x, y + size);
   ctx.lineTo(x + size, y + size);
@@ -154,7 +149,6 @@ export const renderGridToSVG = (
         // Base rect
         svgBody += `<rect x="${x}" y="${y}" width="${blockW}" height="${blockH}" fill="${fill}" />`;
 
-        // Bevels
         svgBody += `<path d="M${x},${y} h${blockW} l-${blockW * 0.15},${blockH * 0.15} h-${blockW * 0.7} z" fill="white" fill-opacity="0.4" />`;
         svgBody += `<path d="M${x},${y} v${blockH} l${blockW * 0.15},-${blockH * 0.15} v-${blockH * 0.7} z" fill="white" fill-opacity="0.4" />`;
         svgBody += `<path d="M${x},${y + blockH} h${blockW} l-${blockW * 0.15},-${blockH * 0.15} h-${blockW * 0.7} z" fill="black" fill-opacity="0.2" />`;

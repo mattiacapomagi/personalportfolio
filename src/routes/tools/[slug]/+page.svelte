@@ -10,7 +10,6 @@
     type Grid,
   } from "$lib/engines/bricklab-engine";
 
-  // State
   let sourceImage: HTMLImageElement | null = $state(null);
   let blockSize = $state(50);
   let isDragActive = $state(false);
@@ -29,9 +28,7 @@
   // Scale adjusted for max density (min block size 5px): (50 - 5) = 45 delta. Factor 0.45
   let uiValue = $derived(Math.round((50 - blockSize) / 0.45));
 
-  // Process Image Effect
   $effect(() => {
-    // Guard: only run in browser
     if (typeof window === "undefined") return;
     if (!sourceImage || !canvasElement) return;
 
@@ -39,7 +36,6 @@
     const ctx = canvasElement.getContext("2d", { willReadFrequently: true });
     if (!ctx) return;
 
-    // Calculate display dimensions
     let w = sourceImage.width;
     let h = sourceImage.height;
     const MAX_DISPLAY = 1500;
@@ -54,14 +50,12 @@
       }
     }
 
-    // Ensure divisible by block size
     w = Math.floor(w / blockSize) * blockSize;
     h = Math.floor(h / blockSize) * blockSize;
 
     canvasElement.width = w;
     canvasElement.height = h;
 
-    // Create analysis canvas
     const analysisCanvas = document.createElement("canvas");
     analysisCanvas.width = w;
     analysisCanvas.height = h;
@@ -76,7 +70,6 @@
     isProcessing = false;
   });
 
-  // Keyboard shortcuts
   function handleKeyDown(e: KeyboardEvent) {
     if ((e.metaKey || e.ctrlKey) && e.key === "z") {
       e.preventDefault();

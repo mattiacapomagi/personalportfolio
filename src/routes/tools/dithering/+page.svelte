@@ -12,21 +12,18 @@
     type Color,
   } from "$lib/engines/dithering-engine";
 
-  // State
   let sourceImage: HTMLImageElement | null = $state(null);
   let isDragActive = $state(false);
   let isProcessing = $state(false);
   let fileInput: HTMLInputElement;
   let canvasRef: HTMLCanvasElement;
 
-  // Params
   let scale = $state(60); // Effect Density (Pixelation) - 100% means low pixelation, 10% means giant pixels
   let selectedAlgo: DitherAlgorithm = $state("FloydSteinberg");
   let selectedPaletteName = $state("GRAYSCALE");
   let blurAmount = $state(0);
   let grainAmount = $state(0);
 
-  // Pre-filled custom colors (16 slots)
   let customColors: string[] = $state([
     "#000000",
     "#ffffff",
@@ -46,7 +43,6 @@
     "#808080",
   ]);
 
-  // Options
   const algoOptions: DitherAlgorithm[] = [
     "FloydSteinberg",
     "FalseFloydSteinberg",
@@ -77,8 +73,6 @@
   });
 
   $effect(() => {
-    // Reactive dependencies
-    // sourceImage, scale, selectedAlgo, selectedPaletteName, blurAmount, grainAmount
     processImage(); // Re-trigger
   });
 

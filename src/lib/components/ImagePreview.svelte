@@ -33,19 +33,19 @@
   .image-preview {
     position: fixed;
     width: 300px;
-    height: auto; /* Allow height to adapt */
+    height: auto;
     pointer-events: none;
     z-index: 1000;
     opacity: 1;
     transition: opacity 0.15s ease;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    background: transparent; /* Remove fixed bg */
+    background: transparent;
     overflow: hidden;
   }
 
   .preview-media {
     width: 100%;
-    height: auto; /* Maintain aspect ratio */
+    height: auto;
     display: block;
   }
 

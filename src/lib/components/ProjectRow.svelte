@@ -79,7 +79,6 @@
   onmouseleave={handleMouseLeave}
 >
   <div class="text-content">
-    <!-- ... text content ... -->
     <span class="col title"
       >{$language === "en"
         ? project.title

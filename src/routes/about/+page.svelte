@@ -13,7 +13,7 @@ La tipografia è un pilastro fondamentale del mio lavoro. Amo sperimentare con i
 
 Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelligenza artificiale come un laboratorio dedicato alla sperimentazione, uno strumento che mi permette di esplorare nuovi territori visivi e generare idee che vanno oltre i metodi tradizionali.`;
 
-  /* Define social links with icons */
+
   const socials = [
     {
       name: "Instagram",
@@ -37,14 +37,12 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     },
   ];
 
-  /* Restoring deleted form logic */
   let formStatus = $state("idle"); // 'idle', 'submitting', 'success', 'error'
   let formErrors = $state({ name: false, email: false, message: false });
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Reset errors
     formErrors = { name: false, email: false, message: false };
 
     const formData = new FormData(e.target);
@@ -70,7 +68,9 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       setTimeout(() => (formErrors.message = false), 3000);
     }
 
-    // Captcha Validation - Removed per user request (utilizing FormSubmit default)
+      isValid = false;
+      setTimeout(() => (formErrors.message = false), 3000);
+    }
 
     if (!isValid) return;
 

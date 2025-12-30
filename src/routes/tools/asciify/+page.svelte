@@ -27,8 +27,6 @@
 
   // Reactive processing
   $effect(() => {
-    // Touching these reactive variables triggers this effect
-    // sourceImage, densitySlider, useLetters, bgColor, textColor, useColor, useEdge, useTransparentBg, canvasRef
     if (sourceImage && canvasRef) {
       // Accessing reactive dependencies to register them
       const _d = densitySlider;
@@ -66,7 +64,7 @@
     tempCtx.drawImage(sourceImage, 0, 0, processWidth, processHeight);
     const imageData = tempCtx.getImageData(0, 0, processWidth, processHeight);
 
-    // 2. Convert to ASCII Grid (Structured)
+    // 2. Convert to ASCII Grid
     const charset = getPresetChars(useLetters);
     const grid = pixelsToAsciiGrid(imageData, charset, useEdge, useColor);
 

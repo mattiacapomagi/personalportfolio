@@ -239,7 +239,6 @@ export function quantizeImage(imageData: ImageData, colorCount: number): Color[]
   }
 
   // Recursive Median Cut
-  // If we just need N colors.
   if (pixels.length <= colorCount) return pixels;
 
   interface Bucket {
@@ -249,7 +248,6 @@ export function quantizeImage(imageData: ImageData, colorCount: number): Color[]
   let buckets: Bucket[] = [{ colors: pixels }];
 
   while (buckets.length < colorCount) {
-    // Find bucket with largest range in any channel
     let maxRange = -1;
     let splitBucketIndex = -1;
     let splitChannel: 'r'|'g'|'b' = 'r';
@@ -280,7 +278,7 @@ export function quantizeImage(imageData: ImageData, colorCount: number): Color[]
     if (splitBucketIndex === -1) break; // Cannot split further
 
     const bucketToSplit = buckets[splitBucketIndex];
-    // Sort
+    // Sort to split
     bucketToSplit.colors.sort((a, b) => a[splitChannel] - b[splitChannel]);
     
     // Split
@@ -288,7 +286,6 @@ export function quantizeImage(imageData: ImageData, colorCount: number): Color[]
     const b1 = { colors: bucketToSplit.colors.slice(0, median) };
     const b2 = { colors: bucketToSplit.colors.slice(median) };
     
-    // Replace
     buckets.splice(splitBucketIndex, 1, b1, b2);
   }
 
@@ -421,7 +418,6 @@ function simpleNoiseDither(imageData: ImageData, palette: Color[]) {
     // Add noise [-32, 32]
     const noise = (Math.random() - 0.5) * 64;
     
-    // Clamp
     const pr = Math.min(255, Math.max(0, r + noise));
     const pg = Math.min(255, Math.max(0, g + noise));
     const pb = Math.min(255, Math.max(0, b + noise));

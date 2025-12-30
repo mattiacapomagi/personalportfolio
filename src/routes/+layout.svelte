@@ -65,17 +65,18 @@
   let textInputRef; // To focus input
   let unlockError = $state(false);
 
-  // Exclude /bento and check lock status
-  let showMaintenance = $derived(!isBentoPage && !isUnlocked);
-
-  // Access env vars safely
   const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
   const SITE_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
   const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 Minutes
 
+  // Exclude /bento and check lock status
+  let showMaintenance = $derived(
+    MAINTENANCE_MODE && !isBentoPage && !isUnlocked
+  );
+
   function checkPassword() {
     console.log("Checking Password...");
-    console.log("Expected (Env):", SITE_PASSWORD); // Debug: Check what's loaded
+    console.log("Expected (Env):", SITE_PASSWORD);
     console.log("Input:", passwordInput);
 
     if (passwordInput === SITE_PASSWORD) {

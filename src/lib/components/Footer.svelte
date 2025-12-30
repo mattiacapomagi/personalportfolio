@@ -27,7 +27,6 @@
     themePreference.update((current) => cycleTheme(current));
   }
 
-  // Get label based on current preference and language
   let themeLabel = $derived(() => {
     if ($themePreference === "light") {
       return $language === "en" ? "LIGHT MODE" : "MODALITÀ CHIARA";
@@ -38,7 +37,6 @@
     return $language === "en" ? "SYSTEM" : "SISTEMA";
   });
 
-  // Mobile labels - universal short words
   let mobileLabel = $derived(() => {
     if ($themePreference === "light") return "LIGHT";
     if ($themePreference === "dark") return "DARK";

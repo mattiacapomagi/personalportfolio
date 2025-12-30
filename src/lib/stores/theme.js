@@ -9,23 +9,19 @@ import { browser } from '$app/environment';
 
 const STORAGE_KEY = 'theme-preference';
 
-// Get initial value from localStorage or default to 'system'
 function getInitialTheme() {
   // Always default to 'system' on load as requested ("SEMPRE in modalità auto")
   return 'system';
 }
 
-// Create the store
 const themePreference = writable(getInitialTheme());
 
-// Subscribe to changes and save to localStorage
 if (browser) {
   themePreference.subscribe((value) => {
     localStorage.setItem(STORAGE_KEY, value);
   });
 }
 
-// Helper function to get the resolved theme (light or dark)
 export function getResolvedTheme(preference) {
   if (preference === 'system') {
     if (browser && window.matchMedia('(prefers-color-scheme: dark)').matches) {

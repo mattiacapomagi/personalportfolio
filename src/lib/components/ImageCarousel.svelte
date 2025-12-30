@@ -382,10 +382,10 @@
   {#if images.length > 1}
     <div class="nav-controls">
       <button class="nav-btn prev" onclick={prev} aria-label="Previous image">
-        ←
+        <img src="/freccia-sx.svg" alt="Previous" />
       </button>
       <button class="nav-btn next" onclick={next} aria-label="Next image">
-        →
+        <img src="/freccia-dx.svg" alt="Next" />
       </button>
     </div>
   {/if}
@@ -417,11 +417,12 @@
   }
 
   /* The actual image area */
+  /* The actual image area */
   .viewport {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: #f4f4f4;
+    background: transparent; /* Transparent to show blurred image + site bg */
     overflow: hidden;
   }
 
@@ -533,7 +534,8 @@
     filter: blur(80px) brightness(0.7);
     transform: scale(1.5);
     z-index: 0;
-    opacity: 0.1;
+    opacity: 0.25;
+    mix-blend-mode: multiply;
   }
 
   /* Video Styles */
@@ -553,44 +555,87 @@
     filter: blur(80px) brightness(0.7);
     transform: scale(1.5);
     z-index: 0;
-    opacity: 0.1;
+    opacity: 0.25;
+    mix-blend-mode: multiply;
   }
 
   @media (max-width: 768px) {
-    .blur-bg,
-    .blur-bg-video {
-      display: none !important;
-    }
-
-    /* Mobile Controls Redesign */
     .carousel {
-      /* aspect-ratio already on viewport */
-      margin-bottom: 20px; /* Space for controls */
+      margin-bottom: 20px;
     }
 
     .nav-controls {
-      position: static; /* Move out of overlay */
-      padding: 10px 0;
+      position: static;
+      padding: 0;
       margin-top: 5px;
-      justify-content: center;
-      gap: 60px; /* Space between arrows */
-      border: none; /* Removed divider */
+      justify-content: space-between;
+      gap: 0;
+      border: none;
+      width: 100%;
     }
 
     .nav-btn {
-      mix-blend-mode: normal; /* Reset blend mode so they are visible on white bg */
-      color: var(--color-text); /* Use theme color */
-      font-size: 32px; /* Bigger arrows */
-      padding: 15px 30px; /* Large touch target */
-      background: none; /* No background */
-      border-radius: 0; /* Brutalist / Square */
-      opacity: 1; /* Always visible */
+      mix-blend-mode: normal;
+      color: var(--color-text);
+      padding: 10px 15px;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 0;
+      opacity: 1;
     }
 
-    .nav-btn:active {
-      transform: scale(0.95);
-      opacity: 0.6;
+    .nav-btn img {
+      width: 40px;
+      height: auto;
+      display: block;
+      box-shadow: none !important;
+      /* Invert for visibility on light backgrounds */
+      filter: invert(1);
     }
+  }
+
+  /* Dark Mode Mobile: Keep White SVG (No Invert) */
+  :global([data-theme="dark"]) .nav-btn img {
+    filter: none !important;
+  }
+
+  /* Desktop Nav Overlay & Styles */
+  @media (min-width: 769px) {
+    /* ... */
+    .nav-btn {
+      pointer-events: auto;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      transition: transform 0.2s ease;
+      cursor: pointer;
+      opacity: 1;
+      filter: none;
+    }
+
+    .nav-btn img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: none !important;
+      box-shadow: none !important;
+      background: none !important;
+    }
+
+    .nav-btn:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  /* Dark Mode Mobile Arrow Support */
+  :global([data-theme="dark"]) .nav-btn img {
+    filter: invert(1);
   }
 
   /* Video Controls Desktop */

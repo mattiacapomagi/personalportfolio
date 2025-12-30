@@ -70,7 +70,7 @@
   }
 
   .project-header {
-    margin-bottom: 20px; /* Space X */
+    margin-bottom: 20px;
   }
 
   .project-title {
@@ -78,7 +78,8 @@
     font-size: 2.5rem;
     font-weight: 700;
     line-height: 1.1;
-    margin-bottom: 20px; /* Space X */
+    line-height: 1.1;
+    margin-bottom: 20px;
     text-transform: uppercase;
   }
 
@@ -86,7 +87,8 @@
     font-family: var(--font-mono);
     display: flex;
     gap: 60px;
-    /* Removed border and padding */
+    display: flex;
+    gap: 60px;
   }
 
   .meta-item {

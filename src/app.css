@@ -2,9 +2,8 @@
    Hash Pulse Design - Global Styles
    ============================================ */
 
-/* Font Face Declarations - Keeping existing if they are correct, but ensuring Monospace is primary */
+/* Font Face Declarations */
 
-/* PP Kyoto Declarations */
 @font-face {
   font-family: "PP Kyoto";
   src: url("/fonts/PPKyoto-Thin.woff2") format("woff2"),

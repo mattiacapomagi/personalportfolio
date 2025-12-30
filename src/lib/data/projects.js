@@ -12,7 +12,6 @@
  */
 
 // Dynamic asset loading
-// We look for all media files in the projects folder
 const globbedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,mp4,mov,svg,gif,tiff,tif,heic}', {
 	eager: true,
 	query: '?url',
@@ -59,8 +58,6 @@ function getProjectThumbnail(slug) {
 	// The first item in the carousel/list
 	const firstKey = keys[0];
 	
-	// Check if this exact key exists in our thumbnail glob
-	// (It will exist if it's an image, it won't if it's a video)
 	if (globbedThumbnails[firstKey]) {
 		return globbedThumbnails[firstKey];
 	}
