@@ -367,7 +367,7 @@
     {:else}
       <div class="grid">
         <!-- 1. Overview Widget -->
-        <div class="card overview-card">
+        <div class="card overview-card col-span-1">
           <h2>Overview (30d)</h2>
           {#if overviewData}
             <div class="big-stats">
@@ -406,7 +406,7 @@
         </div>
 
         <!-- 3. Top Pages Widget -->
-        <div class="card wide-card">
+        <div class="card col-span-2">
           <h2>Top Content</h2>
           {#if pagesData.length > 0}
             <table class="data-table">
@@ -448,7 +448,7 @@
         </div>
 
         <!-- 5. Security Log Widget -->
-        <div class="card">
+        <div class="card col-span-2">
           <h2>Security Log</h2>
           {#if securityData.length > 0}
             <table class="data-table">
@@ -527,13 +527,32 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: 1fr; /* Mobile first */
     gap: 1.5rem;
   }
 
+  /* Bento Grid for Desktop (4 columns) */
+  @media (min-width: 1024px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: minmax(180px, auto);
+    }
+
+    .col-span-2 {
+      grid-column: span 2;
+    }
+
+    .row-span-2 {
+      grid-row: span 2;
+    }
+  }
+
   /* Wide card spans 2 columns on larger screens */
-  @media (min-width: 900px) {
-    .wide-card {
+  @media (min-width: 900px) and (max-width: 1023px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .col-span-2 {
       grid-column: span 2;
     }
   }
