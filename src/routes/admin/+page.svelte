@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
 
   /* --- Admin Auth Logic (Google Gate) --- */
   let checking = $state(true);
@@ -22,6 +22,7 @@
   let geoData = $state([]);
   let securityData = $state([]);
   let githubStatus = $state({ pages: "loading", actions: "loading" });
+  let repoSize = $state("...");
 
   // Token Persistence
   const GA_TOKEN_KEY = "ga_access_token";
@@ -116,6 +117,7 @@
         // Proceed to load data
         fetchAllAnalytics();
         fetchGithubStatus();
+        fetchRepoSize();
       } else {
         // INTRUDER DETECTED
         isUnlocked = false;
@@ -138,8 +140,6 @@
   }
 
   function logSecurityEvent() {
-    // We can't use the GA API to log this because the intruder doesn't have write permissions!
-    // But we can trigger a client-side event if the GA tag is loaded globally (via CookieConsent).
     if (typeof gtag !== "undefined") {
       gtag("event", "security_login_failed", {
         event_category: "security",
@@ -156,7 +156,6 @@
         "https://www.githubstatus.com/api/v2/summary.json"
       );
       const data = await res.json();
-      // API returns "Pages" and "Actions", not "GitHub Pages/Actions"
       const pages = data.components.find((c) => c.name === "Pages");
       const actions = data.components.find((c) => c.name === "Actions");
       githubStatus = {
@@ -165,6 +164,21 @@
       };
     } catch (e) {
       githubStatus = { pages: "error", actions: "error" };
+    }
+  }
+
+  async function fetchRepoSize() {
+    try {
+      const res = await fetch(
+        "https://api.github.com/repos/mattiacapomagi/personalportfolio"
+      );
+      const data = await res.json();
+      if (data.size) {
+        const mb = (data.size / 1024).toFixed(2);
+        repoSize = `${mb} MB`;
+      }
+    } catch (e) {
+      repoSize = "Unknown";
     }
   }
 
@@ -459,7 +473,7 @@
 
         <!-- 6. System Status -->
         <div class="card">
-          <h2>GitHub Status</h2>
+          <h2>System</h2>
           <div class="list-row">
             <span class="row-name">GH Pages</span>
             <span class="row-stat status-{githubStatus.pages}"
@@ -471,6 +485,10 @@
             <span class="row-stat status-{githubStatus.actions}"
               >{githubStatus.actions}</span
             >
+          </div>
+          <div class="list-row">
+            <span class="row-name">Storage</span>
+            <span class="row-stat mono">{repoSize}</span>
           </div>
         </div>
       </div>
