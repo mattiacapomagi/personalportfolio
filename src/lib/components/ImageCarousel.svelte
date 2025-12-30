@@ -1,4 +1,5 @@
 <script>
+  import { base } from "$app/paths";
   import { onMount } from "svelte";
   import { base } from "$app/paths";
 
@@ -381,11 +382,15 @@
   <!-- Navigation Buttons (Inside container but separate from viewport) -->
   {#if images.length > 1}
     <div class="nav-controls">
-      <button class="nav-btn prev" onclick={prev} aria-label="Previous image">
-        <img src="/freccia-sx.svg" alt="Previous" />
+      <button
+        class="nav-btn prev"
+        onclick={prevImage}
+        aria-label="Previous image"
+      >
+        <img src="{base}/freccia-sx.svg" alt="Previous" />
       </button>
-      <button class="nav-btn next" onclick={next} aria-label="Next image">
-        <img src="/freccia-dx.svg" alt="Next" />
+      <button class="nav-btn next" onclick={nextImage} aria-label="Next image">
+        <img src="{base}/freccia-dx.svg" alt="Next" />
       </button>
     </div>
   {/if}
