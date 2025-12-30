@@ -449,7 +449,7 @@
 
         <!-- 5. Security Log Widget -->
         <div class="card">
-          <h2>🚨 Security Log</h2>
+          <h2>Security Log</h2>
           {#if securityData.length > 0}
             <table class="data-table">
               <thead><tr><th>Date</th><th>Failed Attempts</th></tr></thead>
@@ -465,7 +465,7 @@
             </table>
           {:else}
             <div class="secure-state">
-              <span class="icon">🛡️</span>
+              <span class="icon">SECURE</span>
               <p>No recent intrusions detected.</p>
             </div>
           {/if}
