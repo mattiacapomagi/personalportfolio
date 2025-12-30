@@ -228,163 +228,166 @@
 </script>
 
 <div class="carousel">
-  {#if images.length > 1}
-    <button class="nav-btn prev" onclick={prev} aria-label="Previous image">
-      ←
-    </button>
-  {/if}
+  <!-- Viewport for Images (Overflow Hidden) -->
+  <div class="viewport">
+    <!-- Directional Motion Blur Filter -->
+    <svg style="position: absolute; width: 0; height: 0;">
+      <filter id="motion-blur-filter">
+        <!-- Controlled via JS -->
+        <feGaussianBlur
+          in="SourceGraphic"
+          stdDeviation="0 0"
+          bind:this={blurNode}
+        />
+      </filter>
+    </svg>
 
-  <!-- Directional Motion Blur Filter -->
-  <svg style="position: absolute; width: 0; height: 0;">
-    <filter id="motion-blur-filter">
-      <!-- Controlled via JS -->
-      <feGaussianBlur
-        in="SourceGraphic"
-        stdDeviation="0 0"
-        bind:this={blurNode}
-      />
-    </filter>
-  </svg>
+    <div class="carousel-track">
+      {#each images as media, i}
+        <div
+          class="slide"
+          class:active={i === currentCanonicalIndex}
+          style="transform: translateX({getPos(i)}%); z-index: {getZIndex(i)}"
+        >
+          {#if isVideo(media)}
+            <div class="video-container">
+              <!-- Blurred Background Video -->
+              <!-- svelte-ignore a11y_media_has_caption -->
+              <video
+                src={media}
+                class="blur-bg-video"
+                autoplay
+                loop
+                muted
+                playsinline
+              ></video>
 
-  <div class="carousel-track">
-    {#each images as media, i}
-      <div
-        class="slide"
-        class:active={i === currentCanonicalIndex}
-        style="transform: translateX({getPos(i)}%); z-index: {getZIndex(i)}"
-      >
-        {#if isVideo(media)}
-          <div class="video-container">
-            <!-- Blurred Background Video -->
-            <!-- svelte-ignore a11y_media_has_caption -->
-            <video
-              src={media}
-              class="blur-bg-video"
-              autoplay
-              loop
-              muted
-              playsinline
-            ></video>
+              <!-- Main Video -->
+              <!-- svelte-ignore a11y_media_has_caption -->
+              <video
+                src={media}
+                class="main-video"
+                bind:this={videoRefs[i]}
+                loop
+                muted
+                playsinline
+                controls={isMobile}
+                ontimeupdate={(e) => handleTimeUpdate(e, i)}
+                onclick={() => !isMobile && togglePlay(i)}
+              ></video>
 
-            <!-- Main Video -->
-            <!-- svelte-ignore a11y_media_has_caption -->
-            <video
-              src={media}
-              class="main-video"
-              bind:this={videoRefs[i]}
-              loop
-              muted
-              playsinline
-              controls={isMobile}
-              ontimeupdate={(e) => handleTimeUpdate(e, i)}
-              onclick={() => !isMobile && togglePlay(i)}
-            ></video>
+              <!-- Custom Controls (Desktop Overlay) -->
+              <div
+                class="video-controls"
+                class:visible={!isMobile &&
+                  (!isPlaying[i] || i === currentCanonicalIndex)}
+                style:display={isMobile ? "none" : "flex"}
+              >
+                <div class="control-row">
+                  <button
+                    class="icon-btn play-btn"
+                    onclick={(e) => {
+                      e.stopPropagation();
+                      togglePlay(i);
+                    }}
+                    aria-label={isPlaying[i] ? "Pause" : "Play"}
+                  >
+                    {#if isPlaying[i]}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        ><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg
+                      >
+                    {:else}
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"><path d="M8 5v14l11-7z" /></svg
+                      >
+                    {/if}
+                  </button>
 
-            <!-- Custom Controls -->
-            <div
-              class="video-controls"
-              class:visible={!isMobile &&
-                (!isPlaying[i] || i === currentCanonicalIndex)}
-              style:display={isMobile ? "none" : "flex"}
-            >
-              <div class="control-row">
-                <button
-                  class="icon-btn play-btn"
-                  onclick={(e) => {
-                    e.stopPropagation();
-                    togglePlay(i);
-                  }}
-                  aria-label={isPlaying[i] ? "Pause" : "Play"}
-                >
-                  {#if isPlaying[i]}
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      ><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg
-                    >
-                  {:else}
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"><path d="M8 5v14l11-7z" /></svg
-                    >
-                  {/if}
-                </button>
-
-                <!-- Range: Progress -->
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={progress[i] || 0}
-                  oninput={(e) => handleSeek(e, i)}
-                  class="seek-bar"
-                  onclick={(e) => e.stopPropagation()}
-                />
-
-                <!-- Range: Volume -->
-                <div
-                  class="volume-container"
-                  onclick={(e) => e.stopPropagation()}
-                >
-                  <span class="vol-label">VOL</span>
                   <input
                     type="range"
                     min="0"
-                    max="1"
-                    step="0.1"
-                    value={videoRefs[i] ? videoRefs[i].volume : 0.4}
-                    oninput={(e) => handleVolume(e, i)}
-                    class="volume-bar"
+                    max="100"
+                    value={progress[i] || 0}
+                    oninput={(e) => handleSeek(e, i)}
+                    class="seek-bar"
+                    onclick={(e) => e.stopPropagation()}
                   />
-                </div>
 
-                <!-- Fullscreen Button -->
-                <button
-                  class="icon-btn fs-btn"
-                  onclick={(e) => {
-                    e.stopPropagation();
-                    handleVideoFullscreen(i);
-                  }}
-                  aria-label="Fullscreen"
-                >
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    ><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg
+                  <div
+                    class="volume-container"
+                    onclick={(e) => e.stopPropagation()}
                   >
-                </button>
+                    <span class="vol-label">VOL</span>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={videoRefs[i] ? videoRefs[i].volume : 0.4}
+                      oninput={(e) => handleVolume(e, i)}
+                      class="volume-bar"
+                    />
+                  </div>
+
+                  <button
+                    class="icon-btn fs-btn"
+                    onclick={(e) => {
+                      e.stopPropagation();
+                      handleVideoFullscreen(i);
+                    }}
+                    aria-label="Fullscreen"
+                  >
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      ><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg
+                    >
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        {:else}
-          <div class="image-wrapper">
-            <div class="blur-bg" style="background-image: url('{media}')"></div>
-            <!-- svelte-ignore a11y_click_events_have_key_events -->
-            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-            <img
-              src={media}
-              alt="Project slide {i + 1}"
-              onclick={() => openFullscreenImage(media)}
-              class="clickable-image"
-            />
-          </div>
-        {/if}
-      </div>
-    {/each}
+          {:else}
+            <div class="image-wrapper">
+              <div
+                class="blur-bg"
+                style="background-image: url('{media}')"
+              ></div>
+              <!-- svelte-ignore a11y_click_events_have_key_events -->
+              <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+              <img
+                src={media}
+                alt="Project slide {i + 1}"
+                onclick={() => openFullscreenImage(media)}
+                class="clickable-image"
+              />
+            </div>
+          {/if}
+        </div>
+      {/each}
+    </div>
   </div>
 
+  <!-- Navigation Buttons (Inside container but separate from viewport) -->
   {#if images.length > 1}
-    <button class="nav-btn next" onclick={next} aria-label="Next image">
-      →
-    </button>
+    <div class="nav-controls">
+      <button class="nav-btn prev" onclick={prev} aria-label="Previous image">
+        ←
+      </button>
+      <button class="nav-btn next" onclick={next} aria-label="Next image">
+        →
+      </button>
+    </div>
   {/if}
 
   <!-- Lightbox Overlay -->
@@ -406,9 +409,63 @@
   .carousel {
     position: relative;
     width: 100%;
+    /* aspect-ratio removed here, handled by viewport */
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* The actual image area */
+  .viewport {
+    position: relative;
+    width: 100%;
     aspect-ratio: 16 / 9;
     background: #f4f4f4;
     overflow: hidden;
+  }
+
+  /* Navigation Controls Container */
+  .nav-controls {
+    pointer-events: none; /* Let clicks pass through container */
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .nav-btn {
+    pointer-events: auto; /* Re-enable buttons */
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    mix-blend-mode: difference;
+    background: none;
+    border: none;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    /* Removed absolute position from buttons themselves, handled by flex container */
+  }
+
+  .nav-btn:hover {
+    transform: scale(1.1);
+  }
+
+  /* Desktop hover state for buttons */
+  @media (hover: hover) {
+    .nav-btn {
+      opacity: 0.6;
+    }
+    .nav-btn:hover {
+      opacity: 1;
+    }
   }
 
   .carousel-track {
@@ -425,13 +482,10 @@
     justify-content: center;
     align-items: center;
     will-change: transform;
-    /* Apply filter here but controlled mostly by JS attribute, CSS transition just supports it if needed */
     filter: url(#motion-blur-filter);
   }
 
-  /* No explicit .moving class needed for filter since JS updates the SVG directly,
-     but we keep the structure clean */
-
+  /* ... (Rest of existing CSS for videos, images, controls remains mostly same but checked) ... */
   .motion-wrapper {
     width: 100%;
     height: 100%;
@@ -445,11 +499,11 @@
   img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Don't crop */
+    object-fit: contain;
     display: block;
     position: relative;
-    z-index: 1; /* Above blur */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Optional: Separation shadow */
+    z-index: 1;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   }
 
   .clickable-image {
@@ -487,8 +541,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    /* background: #000; Removed to fix black edges */
-    overflow: hidden; /* Contain the blur */
+    overflow: hidden;
   }
 
   .blur-bg-video {
@@ -508,8 +561,39 @@
     .blur-bg-video {
       display: none !important;
     }
+
+    /* Mobile Controls Redesign */
+    .carousel {
+      /* aspect-ratio already on viewport */
+      margin-bottom: 20px; /* Space for controls */
+    }
+
+    .nav-controls {
+      position: static; /* Move out of overlay */
+      padding: 10px 0;
+      margin-top: 5px;
+      justify-content: center;
+      gap: 60px; /* Space between arrows */
+      border: none; /* Removed divider */
+    }
+
+    .nav-btn {
+      mix-blend-mode: normal; /* Reset blend mode so they are visible on white bg */
+      color: var(--color-text); /* Use theme color */
+      font-size: 32px; /* Bigger arrows */
+      padding: 15px 30px; /* Large touch target */
+      background: none; /* No background */
+      border-radius: 0; /* Brutalist / Square */
+      opacity: 1; /* Always visible */
+    }
+
+    .nav-btn:active {
+      transform: scale(0.95);
+      opacity: 0.6;
+    }
   }
 
+  /* Video Controls Desktop */
   .main-video {
     width: 100%;
     height: 100%;
@@ -531,8 +615,8 @@
     transition: opacity 0.3s ease;
     display: flex;
     flex-direction: column;
-    pointer-events: none; /* Let clicks pass unless strictly on controls */
-    z-index: 10; /* Ensure controls are above video */
+    pointer-events: none;
+    z-index: 10;
   }
 
   .video-container:hover .video-controls,
@@ -545,11 +629,10 @@
     align-items: center;
     gap: 15px;
     width: 100%;
-    font-family: var(--font-mono); /* Use title font */
-    pointer-events: auto; /* Re-enable pointer events for buttons */
+    font-family: var(--font-mono);
+    pointer-events: auto;
   }
 
-  /* Icon Buttons */
   .icon-btn {
     background: none;
     border: none;
@@ -561,6 +644,8 @@
     justify-content: center;
     transition: all 0.2s;
     border-radius: 4px;
+    min-width: 30px; /* Ensure clickable */
+    min-height: 30px;
   }
 
   .icon-btn:hover {
@@ -569,17 +654,15 @@
   }
 
   .play-btn {
-    display: flex; /* Ensure proper centering if needed, or just remove if redundant */
     justify-content: center;
     align-items: center;
   }
 
-  /* Seek Bar (Progress) */
   .seek-bar {
     flex-grow: 1;
     height: 4px;
     -webkit-appearance: none;
-    appearance: none; /* Standard property */
+    appearance: none;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 0;
     cursor: pointer;
@@ -595,7 +678,6 @@
     border: none;
   }
 
-  /* Volume Controls */
   .volume-container {
     display: flex;
     align-items: center;
@@ -612,7 +694,7 @@
     width: 60px;
     height: 4px;
     -webkit-appearance: none;
-    appearance: none; /* Standard property */
+    appearance: none;
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
   }
@@ -627,57 +709,18 @@
     border: none;
   }
 
-  /* Navigation */
-  .nav-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: auto;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    color: white;
-    mix-blend-mode: difference;
-    background: none;
-    border: none;
-    z-index: 10;
-    transition: transform 0.2s ease;
-    opacity: 0.6;
-    padding: 20px;
-    cursor: pointer;
-  }
-
-  .nav-btn:hover {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.1);
-  }
-
-  .prev {
-    left: 20px;
-  }
-  .next {
-    right: 20px;
-  }
-
   /* Lightbox Styles */
   .lightbox {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(
-      0,
-      0,
-      0,
-      0.3
-    ); /* Semi-transparent to show blurred content */
+    background: rgba(0, 0, 0, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px;
-    backdrop-filter: blur(20px) grayscale(100%); /* Blur + Desaturate */
-    -webkit-backdrop-filter: blur(20px) grayscale(100%); /* Safari support */
+    backdrop-filter: blur(20px) grayscale(100%);
+    -webkit-backdrop-filter: blur(20px) grayscale(100%);
     transition: all 0.3s ease;
   }
 

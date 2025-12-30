@@ -21,6 +21,11 @@
       mobilePreviewSource?.toLowerCase().endsWith(".mov")
   );
 
+  let imgError = $state(false);
+  let effectiveMobileSource = $derived(
+    imgError ? previewSource : mobilePreviewSource
+  );
+
   function handleMouseEnter() {
     onhover(previewSource);
   }
@@ -74,6 +79,7 @@
   onmouseleave={handleMouseLeave}
 >
   <div class="text-content">
+    <!-- ... text content ... -->
     <span class="col title"
       >{$language === "en"
         ? project.title
@@ -92,7 +98,7 @@
 
   <!-- Mobile Only Preview -->
   <div class="mobile-preview">
-    {#if isMobileVideo}
+    {#if isMobileVideo && !imgError}
       <video
         src={mobilePreviewSource}
         autoplay
@@ -103,12 +109,13 @@
       ></video>
     {:else}
       <img
-        src={mobilePreviewSource}
+        src={effectiveMobileSource}
         alt={project.title}
         loading="lazy"
         width="400"
         height="400"
         class="preview-media"
+        onerror={() => (imgError = true)}
       />
     {/if}
   </div>

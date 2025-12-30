@@ -58,7 +58,103 @@
   let isBentoPage = $derived(
     $page.url.pathname === "/bento" || $page.url.pathname === "/bento/"
   );
+
+  /* --- Maintenance Mode Logic --- */
+  let isUnlocked = $state(false);
+  let passwordInput = $state("");
+  let textInputRef; // To focus input
+  let unlockError = $state(false);
+
+  // Exclude /bento and check lock status
+  let showMaintenance = $derived(!isBentoPage && !isUnlocked);
+
+  // Access env vars safely
+  const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
+  const SITE_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
+  const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 Minutes
+
+  function checkPassword() {
+    if (passwordInput.toLowerCase() === SITE_PASSWORD) {
+      isUnlocked = true;
+      updateSession();
+    } else {
+      unlockError = true;
+      passwordInput = "";
+      setTimeout(() => (unlockError = false), 1000);
+    }
+  }
+
+  function handleKeydown(e) {
+    if (e.key === "Enter") checkPassword();
+  }
+
+  function updateSession() {
+    if (typeof window === "undefined") return;
+    localStorage.setItem("site_session_timestamp", Date.now().toString());
+  }
+
+  function checkSession() {
+    if (typeof window === "undefined") return false;
+    const lastActive = localStorage.getItem("site_session_timestamp");
+    if (!lastActive) return false;
+
+    const diff = Date.now() - parseInt(lastActive, 10);
+    if (diff > SESSION_TIMEOUT) {
+      localStorage.removeItem("site_session_timestamp");
+      return false;
+    }
+    return true;
+  }
+
+  onMount(() => {
+    // Check session
+    if (checkSession()) {
+      isUnlocked = true;
+      updateSession();
+    } else {
+      isUnlocked = false;
+    }
+
+    // Initialize Lenis
+    const lenis = new Lenis();
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+    return () => lenis.destroy();
+  });
+
+  $effect(() => {
+    if (isUnlocked) updateSession();
+  });
 </script>
+
+{#if showMaintenance}
+  <!-- Maintenance Overlay -->
+  <div class="maintenance-overlay">
+    <div class="maintenance-content">
+      <h1 class="m-title">MATTIA CAPOMAGI</h1>
+      <p class="m-status">UNDER MAINTENANCE</p>
+
+      <div class="password-group">
+        <input
+          type="password"
+          placeholder="PASSWORD"
+          bind:value={passwordInput}
+          onkeydown={handleKeydown}
+          class:error={unlockError}
+          autocomplete="off"
+        />
+        <button onclick={checkPassword}>ENTER</button>
+      </div>
+
+      {#if unlockError}
+        <p class="m-error">ACCESS DENIED</p>
+      {/if}
+    </div>
+  </div>
+{/if}
 
 {#if isBentoPage}
   <!-- Bento page has no header/footer -->
@@ -138,5 +234,101 @@
   .bento-layout {
     min-height: 100vh;
     width: 100%;
+  }
+
+  /* --- Maintenance Overlay Styles --- */
+  .maintenance-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #f4f4f4; /* Match site bg */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-mono);
+  }
+
+  .maintenance-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+  }
+
+  .m-title {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 3rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.02em; /* Relaxed kerning */
+    line-height: 0.9;
+    white-space: nowrap; /* Prevent wrapping */
+  }
+
+  /* Box removed */
+
+  .m-status {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #f27200;
+    font-family: var(--font-mono);
+    letter-spacing: -0.02em;
+  }
+
+  .password-group {
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+
+  input[type="password"] {
+    flex: 1;
+    background: transparent;
+    border: 1px solid black;
+    padding: 12px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    border-radius: 0;
+    outline: none;
+    color: black;
+  }
+
+  input[type="password"]:focus {
+    background: white;
+  }
+
+  input[type="password"].error {
+    border-color: red;
+    color: red;
+  }
+
+  button {
+    background: black;
+    color: white;
+    border: 1px solid black;
+    padding: 0 20px;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.2s;
+  }
+
+  button:hover {
+    background: white;
+    color: black;
+  }
+
+  .m-error {
+    color: red;
+    font-size: 0.8rem;
+    margin: 0;
+    font-weight: 700;
   }
 </style>

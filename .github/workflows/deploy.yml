@@ -33,7 +33,9 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          BASE_PATH: "/personalportfolio" # Optional if you want to control it via env, but your config uses dev check.
+          BASE_PATH: "/personalportfolio"
+          VITE_MAINTENANCE_MODE: ${{ vars.VITE_MAINTENANCE_MODE }}
+          VITE_SITE_PASSWORD: ${{ secrets.VITE_SITE_PASSWORD }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
