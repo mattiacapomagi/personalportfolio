@@ -11,10 +11,6 @@
   const SESSION_KEY = "admin_session_timestamp";
   const SESSION_TIMEOUT = 30 * 60 * 1000;
 
-  const ADMIN_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
-  const SESSION_KEY = "admin_session_timestamp";
-  const SESSION_TIMEOUT = 30 * 60 * 1000;
-
   /* --- Analytics Logic --- */
   let tokenClient;
   let accessToken = $state(null);
