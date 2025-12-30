@@ -59,7 +59,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
         { value: "flexible", label: "Flessibile (Nessuna fretta)" },
         { value: "standard", label: "Standard (Entro 1 mese)" },
         { value: "fixed", label: "Data tassativa (Ho un evento/lancio)" },
-        { value: "rush", label: "Urgente / Ieri (Priorità massima)" },
+        { value: "rush", label: "Urgente" },
       ],
       budget_label: "Budget indicativo",
       budgets: [
@@ -702,14 +702,12 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
                     <!-- INLINE RUSH INPUT -->
                     {#if d.value === "rush" && projectDetails.timeline === "rush"}
-                      <input
-                        type="number"
-                        min="1"
-                        placeholder={translations[$language].rush_placeholder}
-                        bind:value={projectDetails.rushDays}
-                        in:slide={{ axis: "x", duration: 300 }}
-                        style="width: 120px; margin-left: 10px; padding: 5px; font-size: 0.9em;"
-                      />
+                      type="number" min="1" placeholder={translations[$language]
+                        .rush_placeholder}
+                      bind:value={projectDetails.rushDays}
+                      in:slide={{ axis: "x", duration: 300 }}
+                      style="width: 150px; margin-left: 10px; padding: 5px; font-size:
+                      0.9em;" />
                     {/if}
                   </label>
                 {/each}
