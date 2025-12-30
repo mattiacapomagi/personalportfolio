@@ -275,31 +275,15 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     let dynamicPayload = {};
     const s = projectDetails.service; // "branding", "web", etc.
 
-    if (s === "branding") {
-      dynamicPayload = {
-        "Current vs Desired Vibe": projectDetails.brandingVibe,
-        Competitors: projectDetails.brandingCompetitors,
-        "Primary Medium": projectDetails.brandingMedium,
-      };
-    } else if (s === "web") {
-      dynamicPayload = {
-        Scope: projectDetails.webScope.join(", "),
-        "Content Ready?": projectDetails.webContent,
-        "Benchmark URL": projectDetails.webBenchmark,
-      };
-    } else if (s === "motion" || s === "editorial") {
-      // Using generic Photo/Editorial logic logic if shared
-      // Note: Dictionary has 'social' and 'editorial'. Adjusting logic to match dictionary keys.
-      if (s === "social") {
-        dynamicPayload = {
-          Platforms: projectDetails.q1, // using generic Qs now? No, we used specific bindings in the old code.
-          // WAIT: The template uses generic q1/q2/q3 bindings?
-          // Let's check the template. The template uses projectDetails.q1, q2, q3 inside the dynamic block?
-          // In my previous replace_content (Step 6866), I used specific bindings: bind:value={projectDetails.q1} inside the loop?
-          // NO. The previous template (Step 6866) used `qs` to render but `bind:value={projectDetails.q1}` GENERICALLY.
-          // So I should map q1/q2/q3 to meaningful keys in the payload.
-        };
-      }
+    // 1. Map Generic Answers (q1, q2, q3) to Specific Labels from Dictionary
+    const questionsDef = t.questions[s];
+    if (questionsDef) {
+      if (questionsDef.q1 && projectDetails.q1)
+        dynamicPayload[questionsDef.q1.label] = projectDetails.q1;
+      if (questionsDef.q2 && projectDetails.q2)
+        dynamicPayload[questionsDef.q2.label] = projectDetails.q2;
+      if (questionsDef.q3 && projectDetails.q3)
+        dynamicPayload[questionsDef.q3.label] = projectDetails.q3;
     }
 
     // RE-EVALUATING PAYLOAD CONSTRUCTION
