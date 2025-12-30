@@ -707,9 +707,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
             </div>
 
             <button type="submit">
-              <button type="submit">
-                {translations[$language].buttons.submit}
-              </button>
+              {translations[$language].buttons.submit}
             </button>
           </form>
 
