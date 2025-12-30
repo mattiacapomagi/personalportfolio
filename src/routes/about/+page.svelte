@@ -51,8 +51,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
     // Generic Dynamic Answers
     q1: "",
     q2: "",
-    q3: ""
-  });
+    q3: "",
   });
 
   // Deadline Options
