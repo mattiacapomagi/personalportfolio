@@ -684,7 +684,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
                   <label class="radio-label">
                     <input
                       type="radio"
-                      bind:group={projectDetails.deadline}
+                      bind:group={projectDetails.timeline}
                       value={d.value}
                     />
                     <span class="radio-text">{d.label}</span>
@@ -692,6 +692,25 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
                 {/each}
               </div>
             </div>
+
+            <!-- Conditional Rush Days input -->
+            {#if projectDetails.timeline === "rush"}
+              <div class="form-group" in:slide>
+                <label
+                  style="font-size: 0.9em; margin-bottom: 5px; opacity: 0.8;"
+                >
+                  {translations[$language].rush_days_label}
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  placeholder="Es. 2"
+                  bind:value={projectDetails.rushDays}
+                />
+              </div>
+            {/if}
+
+            <!-- Conditional Date Picker (logic fixed) -->
 
             <button type="submit">
               {translations[$language].buttons.submit}
