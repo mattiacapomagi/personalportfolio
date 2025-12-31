@@ -119,20 +119,80 @@
     if (isUnlocked) updateSession();
   });
 
-  // Loader onMount logic
+  // Loader onMount logic (robust fallback + session guard)
   onMount(() => {
-    // Determine wait time logic
-    const handleLoad = () => {
-      setTimeout(() => {
-        isLoading = false;
-      }, 800); // Small grace period for visual smoothness
-    };
+    try {
+      const SESSION_KEY = "siteInitialLoadComplete";
 
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad);
-      return () => window.removeEventListener("load", handleLoad);
+      // Skip loader if initial load already completed in this session
+      if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(SESSION_KEY) === "1") {
+        isLoading = false;
+        return;
+      }
+
+      let settled = false;
+      let fallbackTimer = null;
+      let graceTimer = null;
+
+      const finalize = () => {
+        if (settled) return;
+        settled = true;
+
+        // small grace period for visual smoothness
+        graceTimer = setTimeout(() => {
+          isLoading = false;
+          try {
+            if (typeof sessionStorage !== "undefined") sessionStorage.setItem(SESSION_KEY, "1");
+          } catch (e) {
+            // ignore storage errors (private mode)
+          }
+        }, 800);
+      };
+
+      const onLoad = () => {
+        try {
+          finalize();
+        } catch (e) {
+          console.error("Loader onLoad error:", e);
+          finalize();
+        }
+      };
+
+      // Max safety fallback: ensure loader hidden after maxDelay even if load never fires
+      const maxDelay = 5000;
+      fallbackTimer = setTimeout(() => {
+        try {
+          finalize();
+        } catch (e) {
+          console.error("Loader fallback error:", e);
+          finalize();
+        }
+      }, maxDelay);
+
+      if (document.readyState === "complete") {
+        onLoad();
+      } else {
+        window.addEventListener("load", onLoad, { once: true, passive: true });
+      }
+
+      return () => {
+        // cleanup when layout unmounts/remounts
+        try {
+          window.removeEventListener("load", onLoad);
+        } catch (e) {}
+        if (fallbackTimer) {
+          clearTimeout(fallbackTimer);
+          fallbackTimer = null;
+        }
+        if (graceTimer) {
+          clearTimeout(graceTimer);
+          graceTimer = null;
+        }
+      };
+    } catch (err) {
+      console.error("Loader onMount initialization error:", err);
+      // Ensure UI isn't locked on unexpected error
+      isLoading = false;
     }
   });
 
