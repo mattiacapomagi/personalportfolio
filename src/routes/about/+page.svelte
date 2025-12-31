@@ -57,10 +57,10 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       deadline_label: "Che tempistiche hai?",
       deadlines: [
         { value: "flexible", label: "Flessibile (Nessuna fretta)" },
-        { value: "standard", label: "Standard (Entro 1 mese)" },
-        { value: "fixed", label: "Data tassativa (Ho un evento/lancio)" },
         { value: "rush", label: "Urgente" },
       ],
+      rush_placeholder: "Es. 3",
+      rush_suffix: "giorni",
       budget_label: "Budget indicativo",
       budgets: [
         { value: "low", label: "< 1.000€ (Start)" },
@@ -134,10 +134,10 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       deadline_label: "What's your timeline?",
       deadlines: [
         { value: "flexible", label: "Flexible (No rush)" },
-        { value: "standard", label: "Standard (Within 1 month)" },
-        { value: "fixed", label: "Hard Deadline (Event/Launch)" },
-        { value: "rush", label: "Urgent / Yesterday (High Priority)" },
+        { value: "rush", label: "Urgent" },
       ],
+      rush_placeholder: "Eg. 3",
+      rush_suffix: "days",
       budget_label: "Estimated Budget",
       budgets: [
         { value: "low", label: "< €1k (Start)" },
@@ -690,14 +690,19 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
 
                     {#if d.value === "rush" && projectDetails.timeline === "rush"}
                       <!-- Dynamic Replacement -->
-                      <input
-                        type="number"
-                        min="1"
-                        placeholder={translations[$language].rush_placeholder}
-                        bind:value={projectDetails.rushDays}
-                        in:slide={{ axis: "x", duration: 300 }}
-                        style="width: 150px; margin-left: 0px; padding: 5px; font-size: 0.9em; border-bottom: 1px solid currentColor; background:transparent; border-top:none; border-left:none; border-right:none;"
-                      />
+                      <div style="display:flex; align-items:center; gap:5px;">
+                        <input
+                          type="number"
+                          min="1"
+                          placeholder={translations[$language].rush_placeholder}
+                          bind:value={projectDetails.rushDays}
+                          in:slide={{ axis: "x", duration: 300 }}
+                          style="width: 60px; margin:0; padding: 5px; font-size: 0.9em; border-bottom: 1px solid currentColor; background:transparent; border-top:none; border-left:none; border-right:none; text-align:center;"
+                        />
+                        <span style="font-size:0.9em; opacity:0.7;"
+                          >{translations[$language].rush_suffix}</span
+                        >
+                      </div>
                     {:else}
                       <span class="radio-text">{d.label}</span>
                     {/if}
