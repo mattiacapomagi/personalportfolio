@@ -90,10 +90,7 @@
   );
 
   /* --- Maintenance Mode Logic --- */
-  let isUnlocked = $state(false);
-  let passwordInput = $state("");
   let textInputRef; // To focus input
-  let unlockError = $state(false);
 
   const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
   const SITE_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
