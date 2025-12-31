@@ -59,7 +59,9 @@
     {/if}
 
     <div class="project-gallery">
-      <ImageCarousel {project} />
+      {#if project.images && project.images.length > 0}
+        <ImageCarousel images={project.images} />
+      {/if}
     </div>
   </div>
 </article>
