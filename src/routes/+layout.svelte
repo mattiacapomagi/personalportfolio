@@ -16,43 +16,10 @@
 
   let isLoading = $state(true);
 
-  // Maintenance State
-  let isMaintenance = $state(import.meta.env.VITE_MAINTENANCE_MODE === "true");
-  let passwordInput = $state("");
-  let unlockError = $state(false);
-  let isUnlocked = $state(false);
-
   // Check session storage on mount
   onMount(() => {
-    if (typeof window !== "undefined") {
-      const sessionUnlocked = sessionStorage.getItem("site_unlocked");
-      if (sessionUnlocked === "true") {
-        isUnlocked = true;
-        isMaintenance = false;
-      }
-    }
+    // Session check removed
   });
-
-  function checkPassword() {
-    if (passwordInput === import.meta.env.VITE_SITE_PASSWORD) {
-      isUnlocked = true;
-      isMaintenance = false;
-      sessionStorage.setItem("site_unlocked", "true");
-    } else {
-      unlockError = true;
-      passwordInput = "";
-    }
-  }
-
-  function handleKeydown(e) {
-    if (e.key === "Enter") checkPassword();
-  }
-
-  function updateSession() {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("site_unlocked", "true");
-    }
-  }
 
   // Apply theme to document
   $effect(() => {
@@ -88,56 +55,6 @@
   let isBentoPage = $derived(
     $page.url.pathname === "/bento" || $page.url.pathname === "/bento/"
   );
-
-  /* --- Maintenance Mode Logic --- */
-  let textInputRef; // To focus input
-
-  const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === "true";
-  const SITE_PASSWORD = import.meta.env.VITE_SITE_PASSWORD || "capomagico";
-  const SESSION_TIMEOUT = 10 * 60 * 1000; // 10 Minutes
-
-  // Exclude /bento and check lock status
-  let showMaintenance = $derived(
-    MAINTENANCE_MODE && !isBentoPage && !isUnlocked
-  );
-
-  function checkPassword() {
-    console.log("Checking Password...");
-    console.log("Expected (Env):", SITE_PASSWORD);
-    console.log("Input:", passwordInput);
-
-    if (passwordInput === SITE_PASSWORD) {
-      isUnlocked = true;
-      updateSession();
-    } else {
-      console.warn("Access Denied");
-      unlockError = true;
-      passwordInput = "";
-      setTimeout(() => (unlockError = false), 1000);
-    }
-  }
-
-  function handleKeydown(e) {
-    if (e.key === "Enter") checkPassword();
-  }
-
-  function updateSession() {
-    if (typeof window === "undefined") return;
-    localStorage.setItem("site_session_timestamp", Date.now().toString());
-  }
-
-  function checkSession() {
-    if (typeof window === "undefined") return false;
-    const lastActive = localStorage.getItem("site_session_timestamp");
-    if (!lastActive) return false;
-
-    const diff = Date.now() - parseInt(lastActive, 10);
-    if (diff > SESSION_TIMEOUT) {
-      localStorage.removeItem("site_session_timestamp");
-      return false;
-    }
-    return true;
-  }
 
   // CHECK SESSION LOGIC
   // ... (unchanged) ...
@@ -251,32 +168,6 @@
 
 {#if isLoading}
   <Loader />
-{/if}
-
-{#if isMaintenance}
-  <!-- Maintenance Overlay -->
-  <main class="maintenance-container">
-    <div class="maintenance-content">
-      <h1 class="m-title">MATTIA CAPOMAGI</h1>
-      <p class="m-status">UNDER MAINTENANCE</p>
-
-      <div class="password-group">
-        <input
-          type="password"
-          placeholder="PASSWORD"
-          bind:value={passwordInput}
-          onkeydown={handleKeydown}
-          class:error={unlockError}
-          autocomplete="off"
-        />
-        <button onclick={checkPassword}>ENTER</button>
-      </div>
-
-      {#if unlockError}
-        <p class="m-error">ACCESS DENIED</p>
-      {/if}
-    </div>
-  </main>
 {/if}
 
 {#if isBentoPage}
