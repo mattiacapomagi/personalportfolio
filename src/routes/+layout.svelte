@@ -13,7 +13,7 @@
   import { themePreference, getResolvedTheme } from "$lib/stores/theme.js";
 
   let { children } = $props();
-  
+
   let isLoading = $state(true);
 
   // Apply theme to document
@@ -239,6 +239,7 @@
 
       {#if unlockError}
         <p class="m-error">ACCESS DENIED</p>
+      {/if}
     </div>
   </main>
 {/if}
