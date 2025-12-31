@@ -48,6 +48,7 @@ function getProjectImages(slug) {
 
 /**
  * Get the thumbnail corresponding strictly to the first asset (preview image)
+ * For videos, it looks for a generated _thumb.webp file
  * @param {string} slug
  * @returns {string|null}
  */
@@ -58,6 +59,23 @@ function getProjectThumbnail(slug) {
 	// The first item in the carousel/list
 	const firstKey = keys[0];
 	
+	// Check if the first asset is a video
+	const isVideo = firstKey.toLowerCase().endsWith('.mp4') || firstKey.toLowerCase().endsWith('.mov');
+	
+	if (isVideo) {
+		// Look for a corresponding _thumb.webp generated from the video
+		// e.g., /projects/slug/1.mp4 -> /projects/slug/1_thumb.webp
+		const thumbKey = firstKey.replace(/\.(mp4|mov)$/i, '_thumb.webp');
+		if (globbedThumbnails[thumbKey]) {
+			return globbedThumbnails[thumbKey];
+		}
+		// Fallback: check if thumbnail exists in full images glob
+		if (globbedImages[thumbKey]) {
+			return globbedImages[thumbKey];
+		}
+	}
+	
+	// For images, use the resized thumbnail if available
 	if (globbedThumbnails[firstKey]) {
 		return globbedThumbnails[firstKey];
 	}
