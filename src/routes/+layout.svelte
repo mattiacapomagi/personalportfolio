@@ -8,6 +8,7 @@
   import "lenis/dist/lenis.css";
 
   import { page } from "$app/stores";
+  import { afterNavigate } from "$app/navigation";
   import { themePreference, getResolvedTheme } from "$lib/stores/theme.js";
 
   let { children } = $props();
@@ -37,46 +38,7 @@
     return () => mediaQuery.removeEventListener("change", handleChange);
   });
 
-  onMount(() => {
-    const lenis = new Lenis();
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-
-    // --- Global Error Tracking (Phase 10) ---
-    function logError(msg, source, lineno, colno, error) {
-      if (typeof gtag !== "undefined") {
-        gtag("event", "app_error", {
-          event_category: "error",
-          event_label: `${msg} at ${source}:${lineno}`,
-          non_interaction: true,
-        });
-      }
-    }
-
-    window.addEventListener("error", (event) => {
-      logError(
-        event.message,
-        event.filename,
-        event.lineno,
-        event.colno,
-        event.error
-      );
-    });
-
-    window.addEventListener("unhandledrejection", (event) => {
-      logError(event.reason, "promise", 0, 0, event.reason);
-    });
-
-    return () => {
-      lenis.destroy();
-      // Listeners are on window, technically should clean up but they are global for the app
-    };
-  });
+  // Note: Lenis is initialized in the second onMount block below
 
   // Check if we are on a specific tool page (e.g. /tools/bricklab)
   let isToolPage = $derived($page.url.pathname.startsWith("/tools/"));
@@ -139,6 +101,9 @@
     return true;
   }
 
+  // Lenis instance stored for navigation reset
+  let lenisInstance = $state(null);
+
   onMount(() => {
     // Check session
     if (checkSession()) {
@@ -150,12 +115,36 @@
 
     // Initialize Lenis
     const lenis = new Lenis();
+    lenisInstance = lenis;
+
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
+
+    // Global Error Tracking
+    window.addEventListener("error", (event) => {
+      if (typeof gtag !== "undefined") {
+        gtag("event", "app_error", {
+          event_category: "error",
+          event_label: `${event.message} at ${event.filename}:${event.lineno}`,
+          non_interaction: true,
+        });
+      }
+    });
+
     return () => lenis.destroy();
+  });
+
+  // CRITICAL: Scroll to top on navigation (fixes mobile blank page issue)
+  afterNavigate(() => {
+    // Reset scroll position when navigating
+    if (lenisInstance) {
+      lenisInstance.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
   });
 
   $effect(() => {
