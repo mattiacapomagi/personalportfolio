@@ -5,7 +5,10 @@
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
   let { project, onhover } = $props();
 
-  let previewSource = $derived(project.previewImage || project.images[0]);
+  // Universal Preview Source (Animated WebP)
+  let previewSource = $derived(
+    project.generatedPreview || project.previewImage || project.images[0]
+  );
 
   // Mobile Optimization: Use generated mobile video -> generated thumbnail -> original
   let mobilePreviewSource = $derived(
@@ -24,6 +27,10 @@
   );
 
   let imgError = $state(false);
+
+  // Fallback chain: Generated WebP -> Defined Preview -> First Image
+  let finalSource = $derived(imgError ? project.images[0] : previewSource);
+
   let effectiveMobileSource = $derived(
     imgError ? previewSource : mobilePreviewSource
   );
