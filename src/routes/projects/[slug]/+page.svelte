@@ -57,8 +57,8 @@
 
 <style>
   .project-page {
-    padding-top: 60px; /* Reduced further per user request */
-    padding-bottom: 100px;
+    padding-top: 10px; /* Requested 10px */
+    padding-bottom: 10px; /* Requested 10px */
     min-height: 100vh;
     width: 100%;
     color: var(--text-color);
@@ -71,7 +71,7 @@
 
   h1 {
     font-family: var(--font-mono); /* forma-djr-mono */
-    font-weight: 400;
+    font-weight: bold; /* Requested Bold */
     font-size: clamp(2rem, 4vw, 3rem);
     text-transform: uppercase;
     margin: 0;
@@ -83,7 +83,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px 40px; /* Reduced vertical gap */
-    margin-bottom: 40px;
+    margin-bottom: 20px; /* Reduced from 40px (half) */
     padding: 0 var(--spacing-unit);
     margin-top: 0;
     /* Removed border-top to reduce visual noise and spacing */
@@ -121,7 +121,7 @@
 
   @media (max-width: 768px) {
     .project-page {
-      padding-top: 60px; /* Consistent with desktop */
+      padding-top: 10px; /* Consistent with desktop */
     }
 
     h1 {
@@ -132,7 +132,7 @@
     .info-grid {
       flex-direction: column;
       gap: 5px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .description {
