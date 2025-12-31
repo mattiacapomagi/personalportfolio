@@ -99,28 +99,17 @@
     <span class="col year">{project.year}</span>
   </div>
 
-  <!-- Mobile Only Preview -->
+  <!-- Mobile Only Preview (Universal WebP) -->
   <div class="mobile-preview">
-    {#if isMobileVideo && !imgError}
-      <video
-        src={mobilePreviewSource}
-        autoplay
-        loop
-        muted
-        playsinline
-        class="preview-media"
-      ></video>
-    {:else}
-      <img
-        src={effectiveMobileSource}
-        alt={project.title}
-        loading="lazy"
-        width="400"
-        height="400"
-        class="preview-media"
-        onerror={() => (imgError = true)}
-      />
-    {/if}
+    <img
+      src={finalSource}
+      alt={project.title}
+      loading="lazy"
+      width="400"
+      height="225"
+      class="preview-media"
+      onerror={() => (imgError = true)}
+    />
   </div>
 </a>
 

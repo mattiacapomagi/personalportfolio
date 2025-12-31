@@ -28,12 +28,32 @@ const globbedOptimizedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,j
 // 3. Merge for usage (Preserve existing logic variables)
 const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
 
-// Thumbnails for mobile/previews (Small 400px)
+// 4. Load Generated Universal Previews (WebP Animated)
+const globbedPreviews = import.meta.glob('$lib/assets/generated-previews/*.webp', {
+	eager: true,
+	query: '?url',
+	import: 'default'
+});
+
+// Thumbnails for mobile/previews (Small 400px - Legacy/Backup)
 const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
 	eager: true,
 	query: { w: 400, format: 'webp' },
 	import: 'default'
 });
+
+/**
+ * Get the generated universal preview (animated WebP)
+ * @param {string} slug
+ * @returns {string|null}
+ */
+function getProjectPreview(slug) {
+	// Key format: .../generated-previews/slug.webp
+	// The glob keys are absolute-like relative paths.
+	// We scan keys for correct slug.
+	const key = Object.keys(globbedPreviews).find(k => k.endsWith(`/${slug}.webp`));
+	return key ? globbedPreviews[key] : null;
+}
 
 /**
  * Get sorted keys for a project
