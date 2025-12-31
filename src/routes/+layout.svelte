@@ -101,46 +101,38 @@
     return true;
   }
 
+  // CHECK SESSION LOGIC
+  // ... (unchanged) ...
+
+  // CRITICAL DEBUG: DISABLING LENIS AND SCROLL RESET
+  /*
   // Lenis instance stored for navigation reset
   let lenisInstance = $state(null);
 
   onMount(() => {
     // Check session
-    if (checkSession()) {
-      isUnlocked = true;
-      updateSession();
-    } else {
-      isUnlocked = false;
-    }
+    // ...
+    
+    // Initialize Lenis - DISABLED
+    // const lenis = new Lenis();
+    // lenisInstance = lenis;
 
-    // Initialize Lenis
-    const lenis = new Lenis();
-    lenisInstance = lenis;
-
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    // function raf(time) {
+    //   lenis.raf(time);
+    //   requestAnimationFrame(raf);
+    // }
+    // requestAnimationFrame(raf);
 
     // Global Error Tracking
     window.addEventListener("error", (event) => {
-      if (typeof gtag !== "undefined") {
-        gtag("event", "app_error", {
-          event_category: "error",
-          event_label: `${event.message} at ${event.filename}:${event.lineno}`,
-          non_interaction: true,
-        });
-      }
+      // ...
     });
 
-    return () => lenis.destroy();
+    // return () => lenis.destroy();
   });
 
-  // CRITICAL: Scroll to top on navigation (fixes mobile blank page issue)
   afterNavigate(() => {
     try {
-      // Reset scroll position when navigating
       if (lenisInstance && typeof lenisInstance.scrollTo === "function") {
         lenisInstance.scrollTo(0, { immediate: true });
       } else {
@@ -150,6 +142,22 @@
       console.warn("afterNavigate scroll error:", e);
       window.scrollTo(0, 0);
     }
+  });
+  */
+
+  // MINIMAL ONMOUNT FOR SESSION & ERROR TRACKING ONLY
+  onMount(() => {
+    if (checkSession()) {
+      isUnlocked = true;
+      updateSession();
+    } else {
+      isUnlocked = false;
+    }
+  });
+
+  // BASIC SCROLL RESET
+  afterNavigate(() => {
+    window.scrollTo(0, 0);
   });
 
   $effect(() => {
