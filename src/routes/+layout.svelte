@@ -155,6 +155,16 @@
   $effect(() => {
     if (isUnlocked) updateSession();
   });
+  // Global Error Boundary State (Production & Dev)
+  let globalError = $state(null);
+
+  if (import.meta.env.DEV && typeof window !== "undefined") {
+    window.addEventListener("error", (e) => (globalError = e.message));
+    window.addEventListener(
+      "unhandledrejection",
+      (e) => (globalError = e.reason)
+    );
+  }
 </script>
 
 {#if showMaintenance}
@@ -213,33 +223,21 @@
 <CookieConsent />
 
 <!-- GLOBAL ERROR BOUNDARY -->
-{#if import.meta.env.DEV}
-  <script>
-    let globalError = $state(null);
-    if (typeof window !== "undefined") {
-      window.addEventListener("error", (e) => (globalError = e.message));
-      window.addEventListener(
-        "unhandledrejection",
-        (e) => (globalError = e.reason)
-      );
-    }
-  </script>
-  {#if globalError}
-    <div
-      style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; color: red; padding: 20px; overflow: auto; font-family: monospace; font-size: 14px;"
+{#if import.meta.env.DEV && globalError}
+  <div
+    style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 9999; color: red; padding: 20px; overflow: auto; font-family: monospace; font-size: 14px;"
+  >
+    <h1>CRITICAL ERROR</h1>
+    <pre>{JSON.stringify(
+        globalError,
+        Object.getOwnPropertyNames(globalError),
+        2
+      )}</pre>
+    <button
+      onclick={() => (globalError = null)}
+      style="padding: 10px; background: white; color: black;">DISMISS</button
     >
-      <h1>CRITICAL ERROR</h1>
-      <pre>{JSON.stringify(
-          globalError,
-          Object.getOwnPropertyNames(globalError),
-          2
-        )}</pre>
-      <button
-        onclick={() => (globalError = null)}
-        style="padding: 10px; background: white; color: black;">DISMISS</button
-      >
-    </div>
-  {/if}
+  </div>
 {/if}
 
 <style>
