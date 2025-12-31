@@ -1,7 +1,7 @@
-<script>
   import "../app.css";
   import Header from "$lib/components/Header.svelte";
   import Footer from "$lib/components/Footer.svelte";
+  import Loader from "$lib/components/Loader.svelte";
   import CookieConsent from "$lib/components/CookieConsent.svelte";
   import { onMount } from "svelte";
   import Lenis from "lenis";
@@ -12,6 +12,8 @@
   import { themePreference, getResolvedTheme } from "$lib/stores/theme.js";
 
   let { children } = $props();
+  
+  let isLoading = $state(true);
 
   // Apply theme to document
   $effect(() => {
@@ -163,6 +165,37 @@
   $effect(() => {
     if (isUnlocked) updateSession();
   });
+
+  // Loader onMount logic
+  onMount(() => {
+    // Determine wait time logic
+    const handleLoad = () => {
+      setTimeout(() => {
+        isLoading = false;
+      }, 800); // Small grace period for visual smoothness
+    };
+
+    if (document.readyState === "complete") {
+      handleLoad();
+    } else {
+      window.addEventListener("load", handleLoad);
+      return () => window.removeEventListener("load", handleLoad);
+    }
+  });
+
+  // Global Error Handler
+  function handleGlobalError(event) {
+    if (
+      event.message?.includes("ResizeObserver loop") ||
+      event.message?.includes("Extension context invalidated")
+    ) {
+      event.stopPropagation();
+      return;
+    }
+    // Only log, don't break UI for hydration errors unless critical
+    console.error("Global Error Caught:", event.error);
+  }
+
   // Global Error Boundary State (Production & Dev)
   let globalError = $state(null);
 
@@ -175,9 +208,18 @@
   }
 </script>
 
-{#if showMaintenance}
+<svelte:window
+  onerror={handleGlobalError}
+  onunhandledrejection={(e) => handleGlobalError(e.reason)}
+/>
+
+{#if isLoading}
+  <Loader />
+{/if}
+
+{#if isMaintenance}
   <!-- Maintenance Overlay -->
-  <div class="maintenance-overlay">
+  <main class="maintenance-container">
     <div class="maintenance-content">
       <h1 class="m-title">MATTIA CAPOMAGI</h1>
       <p class="m-status">UNDER MAINTENANCE</p>
