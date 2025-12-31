@@ -16,6 +16,44 @@
 
   let isLoading = $state(true);
 
+  // Maintenance State
+  let isMaintenance = $state(import.meta.env.VITE_MAINTENANCE_MODE === "true");
+  let passwordInput = $state("");
+  let unlockError = $state(false);
+  let isUnlocked = $state(false);
+
+  // Check session storage on mount
+  onMount(() => {
+    if (typeof window !== "undefined") {
+      const sessionUnlocked = sessionStorage.getItem("site_unlocked");
+      if (sessionUnlocked === "true") {
+        isUnlocked = true;
+        isMaintenance = false;
+      }
+    }
+  });
+
+  function checkPassword() {
+    if (passwordInput === import.meta.env.VITE_SITE_PASSWORD) {
+      isUnlocked = true;
+      isMaintenance = false;
+      sessionStorage.setItem("site_unlocked", "true");
+    } else {
+      unlockError = true;
+      passwordInput = "";
+    }
+  }
+
+  function handleKeydown(e) {
+    if (e.key === "Enter") checkPassword();
+  }
+
+  function updateSession() {
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("site_unlocked", "true");
+    }
+  }
+
   // Apply theme to document
   $effect(() => {
     if (typeof document === "undefined") return;
