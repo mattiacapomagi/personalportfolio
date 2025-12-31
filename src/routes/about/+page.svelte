@@ -384,7 +384,6 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
           }
         }
         break;
-        break;
       default:
         multiplier = 1.0;
     }
