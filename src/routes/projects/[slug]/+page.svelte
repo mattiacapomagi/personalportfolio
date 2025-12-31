@@ -19,15 +19,17 @@
   <div class="project-content">
     <div class="info-grid">
       <div class="info-item">
-        <span class="label">CLIENT:</span>
+        <span class="label">{$language === "en" ? "CLIENT:" : "CLIENTE:"}</span>
         <span class="value">{project.client}</span>
       </div>
       <div class="info-item">
-        <span class="label">YEAR:</span>
+        <span class="label">{$language === "en" ? "YEAR:" : "ANNO:"}</span>
         <span class="value">{project.year}</span>
       </div>
       <div class="info-item">
-        <span class="label">CATEGORY:</span>
+        <span class="label"
+          >{$language === "en" ? "CATEGORY:" : "CATEGORIA:"}</span
+        >
         <span class="value">
           {$language === "en"
             ? project.category
@@ -55,7 +57,7 @@
 
 <style>
   .project-page {
-    padding-top: 80px; /* Reduced from 120px to match navbar height roughly */
+    padding-top: 60px; /* Reduced further per user request */
     padding-bottom: 100px;
     min-height: 100vh;
     width: 100%;
@@ -63,35 +65,33 @@
   }
 
   .project-header {
-    margin-bottom: 10px; /* Minimal space between title and info */
+    margin-bottom: 5px; /* Almost no space between title and info */
     padding: 0 var(--spacing-unit);
   }
 
   h1 {
+    font-family: var(--font-mono); /* forma-djr-mono */
     font-weight: 400;
-    font-size: clamp(
-      2rem,
-      4vw,
-      3rem
-    ); /* Slightly smaller to match mono aesthetic */
+    font-size: clamp(2rem, 4vw, 3rem);
     text-transform: uppercase;
     margin: 0;
     line-height: 1;
-    /* Font inherited from body (var(--font-mono)) as requested */
   }
 
   .info-grid {
+    font-family: var(--font-mono); /* forma-djr-mono */
     display: flex;
     flex-wrap: wrap;
-    gap: 20px 40px; /* Gap between items */
+    gap: 10px 40px; /* Reduced vertical gap */
     margin-bottom: 40px;
     padding: 0 var(--spacing-unit);
+    margin-top: 0;
     /* Removed border-top to reduce visual noise and spacing */
   }
 
   .info-item {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: baseline;
   }
 
@@ -99,6 +99,7 @@
     font-size: 0.85rem;
     opacity: 0.7;
     text-transform: uppercase;
+    font-weight: bold; /* BOLD LABELS requested */
     /* letter-spacing inherited */
   }
 
@@ -108,24 +109,24 @@
   }
 
   .description {
-    width: 50%; /* Requested 50% width */
-    margin: 0; /* Aligned left, so no margin: 0 auto */
+    width: 50%;
+    margin: 0;
     padding: 0 var(--spacing-unit);
-    font-family: "PP Kyoto", sans-serif; /* Exceptions for description */
-    font-size: 1.1rem; /* Smaller size */
-    line-height: 1.3;
+    font-family: "PP Kyoto", sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.35;
     font-weight: 300;
-    text-align: justify; /* Justified text */
+    text-align: justify;
   }
 
   @media (max-width: 768px) {
     .project-page {
-      padding-top: 70px;
+      padding-top: 60px; /* Consistent with desktop */
     }
 
     h1 {
       font-size: 2rem;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .info-grid {
@@ -135,7 +136,7 @@
     }
 
     .description {
-      width: 100%; /* Full width on mobile */
+      width: 100%;
       font-size: 1rem;
     }
   }
