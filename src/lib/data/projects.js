@@ -32,6 +32,13 @@ const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
 // Now served statically from /previews/
 import { base } from '$app/paths';
 
+// Thumbnails for mobile/previews (Small 400px - Legacy/Backup)
+const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
+	eager: true,
+	query: { w: 400, format: 'webp' },
+	import: 'default'
+});
+
 /**
  * Get the generated universal preview (animated WebP)
  * @param {string} slug
