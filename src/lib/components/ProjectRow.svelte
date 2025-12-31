@@ -104,7 +104,7 @@
     <img
       src={finalSource}
       alt={project.title}
-      loading="lazy"
+      loading="eager"
       width="400"
       height="225"
       class="preview-media"
