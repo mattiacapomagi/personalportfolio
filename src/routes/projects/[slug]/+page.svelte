@@ -1,4 +1,5 @@
 <script>
+  import { base } from "$app/paths";
   let { data } = $props();
 </script>
 
@@ -10,5 +11,5 @@
   <p>Project Slug: {data.project?.slug}</p>
   <p>Project Title: {data.project?.title}</p>
   <hr />
-  <a href="/">BACK TO HOME</a>
+  <a href="{base}/">BACK TO HOME</a>
 </div>
