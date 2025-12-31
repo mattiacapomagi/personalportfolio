@@ -3,13 +3,13 @@
   import { fade, slide } from "svelte/transition";
   import { quintOut } from "svelte/easing";
 
-  const bio_en = `Rome based, 23 years old graphic designer focused on building strong and adaptive brand identities. I don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
+  const bio_en = `Marche born, Rome based graphic designer focused on building strong and adaptive brand identities. I don’t believe in limiting myself to a single aesthetic; my approach is fluid, navigating the wide space between precise minimalism and raw brutalism depending on what the project really needs.
 
 Typography is a fundamental pillar of my work. I love experimenting with type design and lettering, treating letters as structural elements that give a specific voice to every concept.
 
 At the same time, I embrace technology to break boundaries. I use artificial intelligence as a dedicated laboratory for experimentation, a tool that allows me to explore new visual territories and generate ideas that go beyond traditional methods.`;
 
-  const bio_it = `Graphic designer romano di 23 anni, concentrato sulla creazione di identità di marca solide e adattive. Non credo nel limitarmi a un'unica estetica; il mio approccio è fluido, navigando l'ampio spazio tra il minimalismo preciso e il brutalismo grezzo a seconda di ciò che il progetto richiede veramente.
+  const bio_it = `Graphic designer marchigiano di 23 anni, con base a Roma, concentrato sulla creazione di identità di marca solide e adattive. Non credo nel limitarmi a un'unica estetica; il mio approccio è fluido, navigando l'ampio spazio tra il minimalismo preciso e il brutalismo grezzo a seconda di ciò che il progetto richiede veramente.
 
 La tipografia è un pilastro fondamentale del mio lavoro. Amo sperimentare con il type design e il lettering, trattando le lettere come elementi strutturali che danno una voce specifica a ogni concetto.
 

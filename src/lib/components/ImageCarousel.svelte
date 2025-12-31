@@ -35,21 +35,18 @@
   let animationFrame;
 
   function triggerBlur() {
-    if (isMobile) return; // Disable motion blur on mobile for performance
+    /* MOTION BLUR DISABLED FOR STABILITY
+    if (isMobile) return;
     isMoving = true;
-    const duration = 600; // Match CSS transition duration
+    const duration = 600;
     const start = performance.now();
-    const maxBlur = 30; // Max horizontal spread (Reduced slightly from 40 to help perf)
+    const maxBlur = 30;
 
     function animate() {
       const now = performance.now();
       const progress = Math.min((now - start) / duration, 1);
-
-      // Calculate blur intensity using a bell curve (Sine ease-in-out ish)
-      // 0 at start, 1 at 0.5, 0 at end
       const intensity = Math.sin(progress * Math.PI);
 
-      // Apply directional blur
       if (blurNode) {
         blurNode.setAttribute("stdDeviation", `${intensity * maxBlur} 0`);
       }
@@ -64,6 +61,13 @@
 
     if (animationFrame) cancelAnimationFrame(animationFrame);
     animationFrame = requestAnimationFrame(animate);
+    */
+
+    // Minimal fallback just to toggle state if needed by CSS
+    isMoving = true;
+    setTimeout(() => {
+      isMoving = false;
+    }, 600);
   }
 
   function next() {
@@ -487,7 +491,7 @@
     justify-content: center;
     align-items: center;
     will-change: transform;
-    filter: url(#motion-blur-filter);
+    /* filter: url(#motion-blur-filter); REF REMOVED FOR STABILITY */
   }
 
   /* ... (Rest of existing CSS for videos, images, controls remains mostly same but checked) ... */

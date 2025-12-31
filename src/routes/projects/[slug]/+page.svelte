@@ -1,6 +1,7 @@
 <script>
   import { base } from "$app/paths";
   import { language } from "$lib/stores/language.js";
+  import ImageCarousel from "$lib/components/ImageCarousel.svelte";
 
   let { data } = $props();
   let project = $derived(data.project);
@@ -44,34 +45,42 @@
       </p>
     </div>
 
-    <!-- PHASE 2: ImageCarousel will go here -->
-    <div
-      class="project-gallery-placeholder"
-      style="padding: 50px; border: 1px dashed white; text-align: center; margin-top: 40px;"
-    >
-      <p>Image Carousel is currently disabled for stability testing.</p>
-      <p>({project.images ? project.images.length : 0} images available)</p>
+    {#if project.gumroadLink}
+      <div class="gumroad-wrapper">
+        <a
+          href={project.gumroadLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="gumroad-btn"
+        >
+          GET TYPECAFE
+        </a>
+      </div>
+    {/if}
+
+    <div class="project-gallery">
+      <ImageCarousel {project} />
     </div>
   </div>
 </article>
 
 <style>
   .project-page {
-    padding-top: 10px; /* Requested 10px */
-    padding-bottom: 10px; /* Requested 10px */
+    padding-top: 10px;
+    padding-bottom: 10px;
     min-height: 100vh;
     width: 100%;
     color: var(--text-color);
   }
 
   .project-header {
-    margin-bottom: 5px; /* Almost no space between title and info */
+    margin-bottom: 5px;
     padding: 0 var(--spacing-unit);
   }
 
   h1 {
-    font-family: var(--font-mono); /* forma-djr-mono */
-    font-weight: bold; /* Requested Bold */
+    font-family: var(--font-mono);
+    font-weight: bold;
     font-size: clamp(2rem, 4vw, 3rem);
     text-transform: uppercase;
     margin: 0;
@@ -79,14 +88,13 @@
   }
 
   .info-grid {
-    font-family: var(--font-mono); /* forma-djr-mono */
+    font-family: var(--font-mono);
     display: flex;
     flex-wrap: wrap;
-    gap: 10px 40px; /* Reduced vertical gap */
-    margin-bottom: 20px; /* Reduced from 40px (half) */
+    gap: 10px 40px;
+    margin-bottom: 20px;
     padding: 0 var(--spacing-unit);
     margin-top: 0;
-    /* Removed border-top to reduce visual noise and spacing */
   }
 
   .info-item {
@@ -96,15 +104,14 @@
   }
 
   .label {
-    font-size: 0.85rem;
+    font-size: 1.05rem; /* Desktop increased size */
     opacity: 0.7;
     text-transform: uppercase;
-    font-weight: bold; /* BOLD LABELS requested */
-    /* letter-spacing inherited */
+    font-weight: bold;
   }
 
   .value {
-    font-size: 0.85rem;
+    font-size: 1.05rem; /* Desktop increased size */
     text-transform: uppercase;
   }
 
@@ -146,9 +153,16 @@
     color: var(--bg-color);
   }
 
+  .project-gallery {
+    margin-top: 40px;
+    width: 100%;
+    /* removed padding constraint to let carousel handle it or use var(--spacing-unit) if needed? 
+       Previous carousel usage had no extra styles here. */
+  }
+
   @media (max-width: 768px) {
     .project-page {
-      padding-top: 10px; /* Consistent with desktop */
+      padding-top: 10px;
     }
 
     h1 {
@@ -162,9 +176,18 @@
       margin-bottom: 20px;
     }
 
+    .label,
+    .value {
+      font-size: 0.85rem; /* Mobile original size */
+    }
+
     .description {
       width: 100%;
       font-size: 1rem;
+    }
+
+    .gumroad-wrapper {
+      width: 100%;
     }
   }
 </style>
