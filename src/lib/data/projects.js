@@ -11,14 +11,24 @@
  * @property {string} previewImage - Image shown on hover in project list
  */
 
-// Dynamic asset loading
-const globbedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,mp4,mov,svg,gif,tiff,tif,heic}', {
+// 1. Load Videos (Raw URL)
+const globbedVideos = import.meta.glob('$lib/assets/projects/*/*.{mp4,mov,webm}', {
 	eager: true,
 	query: '?url',
 	import: 'default'
 });
 
-// Thumbnails for mobile/previews (Images only, resized)
+// 2. Load Images (Optimized: Max 1500px, WebP)
+const globbedOptimizedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,svg,gif,tiff,tif,heic}', {
+	eager: true,
+	query: { w: 1500, format: 'webp' },
+	import: 'default'
+});
+
+// 3. Merge for usage (Preserve existing logic variables)
+const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
+
+// Thumbnails for mobile/previews (Small 400px)
 const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
 	eager: true,
 	query: { w: 400, format: 'webp' },
