@@ -7,7 +7,7 @@ const execAsync = promisify(exec);
 
 // Config
 const PROJECTS_DIR = 'src/lib/assets/projects';
-const PREVIEWS_OUT_DIR = 'src/lib/assets/generated-previews';
+const PREVIEWS_OUT_DIR = 'static/previews';
 const DURATION = 10; // seconds
 const WIDTH = 450; // slightly larger for retina screens
 const FPS = 12; // Cinematic but low weight

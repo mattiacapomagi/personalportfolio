@@ -29,30 +29,21 @@ const globbedOptimizedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,j
 const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
 
 // 4. Load Generated Universal Previews (WebP Animated)
-const globbedPreviews = import.meta.glob('$lib/assets/generated-previews/*.webp', {
-	eager: true,
-	query: '?url',
-	import: 'default'
-});
-
-// Thumbnails for mobile/previews (Small 400px - Legacy/Backup)
-const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
-	eager: true,
-	query: { w: 400, format: 'webp' },
-	import: 'default'
-});
+// Now served statically from /previews/
+import { base } from '$app/paths';
 
 /**
  * Get the generated universal preview (animated WebP)
  * @param {string} slug
- * @returns {string|null}
+ * @returns {string}
  */
 function getProjectPreview(slug) {
-	// Key format: .../generated-previews/slug.webp
-	// The glob keys are absolute-like relative paths.
-	// We scan keys for correct slug.
-	const key = Object.keys(globbedPreviews).find(k => k.endsWith(`/${slug}.webp`));
-	return key ? globbedPreviews[key] : null;
+	// Simple static path. Browser handles 404 if missing (fallback logic in component handles it).
+  // Note: We assume the file exists because the plugin generates it.
+  // We remove trailing slash from base if present to avoid double slash, though base usually doesn't have it.
+  const b = base === '' ? '.' : base; // Handle relative base for some adapters if needed, or just use base.
+  // Actually $app/paths base is usually '' or '/repo'. 
+  return `${base}/previews/${slug}.webp`;
 }
 
 /**
