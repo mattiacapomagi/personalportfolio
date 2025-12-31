@@ -31,7 +31,11 @@ const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,p
  * @returns {string[]}
  */
 function getProjectKeys(slug) {
-	const projectKeys = Object.keys(globbedImages).filter(key => key.includes(`/projects/${slug}/`));
+	const projectKeys = Object.keys(globbedImages).filter(key => {
+		return key.includes(`/projects/${slug}/`) && 
+		       !key.includes('_thumb.') && 
+		       !key.includes('_preview.');
+	});
 	projectKeys.sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 	return projectKeys;
 }
@@ -66,16 +70,19 @@ function getProjectThumbnail(slug) {
 		// Look for a corresponding _thumb.webp generated from the video
 		// e.g., /projects/slug/1.mp4 -> /projects/slug/1_thumb.webp
 		const thumbKey = firstKey.replace(/\.(mp4|mov)$/i, '_thumb.webp');
-		if (globbedThumbnails[thumbKey]) {
-			return globbedThumbnails[thumbKey];
-		}
-		// Fallback: check if thumbnail exists in full images glob
+		
+		// PREFER globbedImages for _thumb.webp because it is already optimized
+		// and we don't want to re-process it with vite-imagetools query
 		if (globbedImages[thumbKey]) {
 			return globbedImages[thumbKey];
 		}
+		
+		if (globbedThumbnails[thumbKey]) {
+			return globbedThumbnails[thumbKey];
+		}
 	}
 	
-	// For images, use the resized thumbnail if available
+	// For normal images, use the resized thumbnail from vite-imagetools
 	if (globbedThumbnails[firstKey]) {
 		return globbedThumbnails[firstKey];
 	}
