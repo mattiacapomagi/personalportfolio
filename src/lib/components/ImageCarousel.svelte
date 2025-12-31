@@ -70,12 +70,12 @@
     }, 600);
   }
 
-  function next() {
+  function nextImage() {
     currentIndex += 1;
     triggerBlur();
   }
 
-  function prev() {
+  function prevImage() {
     currentIndex -= 1;
     triggerBlur();
   }
