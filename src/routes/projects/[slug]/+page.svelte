@@ -119,6 +119,33 @@
     text-align: justify;
   }
 
+  .gumroad-wrapper {
+    width: 50%;
+    padding: 20px var(--spacing-unit);
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .gumroad-btn {
+    display: inline-block;
+    padding: 12px 24px;
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    background: transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .gumroad-btn:hover {
+    background: var(--text-color);
+    color: var(--bg-color);
+  }
+
   @media (max-width: 768px) {
     .project-page {
       padding-top: 10px; /* Consistent with desktop */
