@@ -1,4 +1,4 @@
-import { $ as head, W as store_get, _ as ensure_array_like, U as attr, V as attr_class, X as unsubscribe_stores } from "../../../chunks/index2.js";
+import { $ as head, W as store_get, _ as ensure_array_like, V as attr, U as attr_class, X as unsubscribe_stores } from "../../../chunks/index2.js";
 import { l as language } from "../../../chunks/language.js";
 import { e as escape_html } from "../../../chunks/context.js";
 function html(value) {
@@ -29,9 +29,7 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       {
         name: "Gumroad",
         url: "https://mattiacapomagi.gumroad.com/",
-        /* Added padding to viewBox (-200 offset, 2900 size) to match visual height of other icons (approx 83% fill) */
         viewBox: "-200 -200 2900 2900",
-        /* Using inner HTML to preserve specific colors (Black & White with strokes) as requested */
         content: `<path d="M1419.3,2462.2c596.9,0,1080.7-467.1,1080.7-1043.3S2016.1,375.6,1419.3,375.6,338.5,842.7,338.5,1418.9s483.9,1043.3,1080.8,1043.3Z" fill="currentColor"/><path d="M1140.3,2243.6c627.8,0,1140.3-491.8,1140.3-1102.9S1768.1,37.8,1140.3,37.8,0,529.6,0,1140.7s512.6,1102.9,1140.3,1102.9Z" fill="#fff" stroke="#000" stroke-width="11.8" stroke-miterlimit="30.2"/><path d="M1054.6,1697.1c-319.1,0-506.9-257.9-506.9-578.6s206.5-603.8,600.7-603.8,544.4,276.7,550.7,434h-294.1c-6.3-88-81.3-220.1-262.8-220.1s-319.1,169.8-319.1,377.4,125.2,377.4,319.1,377.4,250.3-138.4,281.6-276.7h-281.6v-113.2h590.9v578.6h-259.2v-364.8c-18.8,132.1-100.1,389.9-419.3,389.9h0Z" fill="currentColor"/>`
       },
       {
@@ -41,7 +39,6 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
         path: "M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
       }
     ];
-    let formStatus = "idle";
     let formErrors = { name: false, email: false, message: false };
     head("cwls5q", $$renderer2, ($$renderer3) => {
       $$renderer3.title(($$renderer4) => {
@@ -62,20 +59,12 @@ Allo stesso tempo, abbraccio la tecnologia per superare i confini. Uso l'intelli
       }
       $$renderer2.push(`<!--]--></svg></a>`);
     }
-    $$renderer2.push(`<!--]--></div></div> <div class="form-column svelte-cwls5q"><h3 class="contact-header svelte-cwls5q">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "get in touch with me" : "contattami")}</h3> <form class="contact-form svelte-cwls5q" novalidate><input type="text" name="_honey" style="display:none" class="svelte-cwls5q"/> <input type="hidden" name="_captcha" value="true" class="svelte-cwls5q"/> <input type="hidden" name="_subject" value="New Contact from Portfolio" class="svelte-cwls5q"/> <div class="form-group svelte-cwls5q"><input type="text" name="name"${attr("placeholder", store_get($$store_subs ??= {}, "$language", language) === "en" ? "Name" : "Nome")}${attr("disabled", formStatus === "submitting", true)}${attr_class("svelte-cwls5q", void 0, { "input-error": formErrors.name })}/></div> <div class="form-group svelte-cwls5q"><input type="email" name="email"${attr("placeholder", "Email")}${attr("disabled", formStatus === "submitting", true)}${attr_class("svelte-cwls5q", void 0, { "input-error": formErrors.email })}/></div> <div class="form-group svelte-cwls5q"><textarea name="message" rows="4"${attr("placeholder", store_get($$store_subs ??= {}, "$language", language) === "en" ? "Message" : "Messaggio")}${attr("disabled", formStatus === "submitting", true)}${attr_class("svelte-cwls5q", void 0, { "input-error": formErrors.message })}></textarea></div> <button type="submit"${attr("disabled", formStatus === "submitting", true)} class="svelte-cwls5q">`);
+    $$renderer2.push(`<!--]--></div></div> <div class="form-column svelte-cwls5q"><h3 class="contact-header svelte-cwls5q">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "get in touch with me" : "contattami")}</h3> <div class="form-wrapper svelte-cwls5q">`);
     {
-      $$renderer2.push("<!--[!-->");
-      $$renderer2.push(`${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "send" : "invia")}`);
+      $$renderer2.push("<!--[-->");
+      $$renderer2.push(`<form class="contact-form svelte-cwls5q" novalidate><div class="form-group svelte-cwls5q"><input type="text" name="name"${attr("placeholder", store_get($$store_subs ??= {}, "$language", language) === "en" ? "Name" : "Nome")}${attr_class("svelte-cwls5q", void 0, { "input-error": formErrors.name })}/></div> <div class="form-group svelte-cwls5q"><input type="email" name="email"${attr("placeholder", "Email")}${attr_class("svelte-cwls5q", void 0, { "input-error": formErrors.email })}/></div> <div class="form-group svelte-cwls5q"><textarea name="message" rows="4"${attr("placeholder", store_get($$store_subs ??= {}, "$language", language) === "en" ? "Message" : "Messaggio")}${attr_class("svelte-cwls5q", void 0, { "input-error": formErrors.message })}></textarea></div> <button type="submit" class="svelte-cwls5q">${escape_html(store_get($$store_subs ??= {}, "$language", language) === "en" ? "next" : "avanti")}</button></form>`);
     }
-    $$renderer2.push(`<!--]--></button> `);
-    {
-      $$renderer2.push("<!--[!-->");
-    }
-    $$renderer2.push(`<!--]--> `);
-    {
-      $$renderer2.push("<!--[!-->");
-    }
-    $$renderer2.push(`<!--]--></form></div></div></div>`);
+    $$renderer2.push(`<!--]--></div></div></div></div>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }

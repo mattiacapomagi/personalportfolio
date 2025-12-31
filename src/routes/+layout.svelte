@@ -139,10 +139,15 @@
 
   // CRITICAL: Scroll to top on navigation (fixes mobile blank page issue)
   afterNavigate(() => {
-    // Reset scroll position when navigating
-    if (lenisInstance) {
-      lenisInstance.scrollTo(0, { immediate: true });
-    } else {
+    try {
+      // Reset scroll position when navigating
+      if (lenisInstance && typeof lenisInstance.scrollTo === "function") {
+        lenisInstance.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    } catch (e) {
+      console.warn("afterNavigate scroll error:", e);
       window.scrollTo(0, 0);
     }
   });

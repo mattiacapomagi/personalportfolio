@@ -1,4 +1,4 @@
-import { U as attr, Y as stringify, W as store_get, _ as ensure_array_like, X as unsubscribe_stores, V as attr_class } from "../../chunks/index2.js";
+import { V as attr, Y as stringify, W as store_get, _ as ensure_array_like, X as unsubscribe_stores, U as attr_class } from "../../chunks/index2.js";
 import { p as projects } from "../../chunks/projects.js";
 import { l as language } from "../../chunks/language.js";
 import { b as base } from "../../chunks/server.js";
@@ -10,7 +10,10 @@ function ProjectRow($$renderer, $$props) {
     var $$store_subs;
     let { project } = $$props;
     let previewSource = project.previewImage || project.images[0];
-    let isVideoPreview = previewSource?.toLowerCase().endsWith(".mp4") || previewSource?.toLowerCase().endsWith(".mov");
+    let mobilePreviewSource = project.thumbnail || previewSource;
+    previewSource?.toLowerCase().endsWith(".mp4") || previewSource?.toLowerCase().endsWith(".mov");
+    let isMobileVideo = mobilePreviewSource?.toLowerCase().endsWith(".mp4") || mobilePreviewSource?.toLowerCase().endsWith(".mov");
+    let effectiveMobileSource = mobilePreviewSource;
     function getAbbreviation(category) {
       const map = {
         "Editorial Design": "EDI",
@@ -43,12 +46,12 @@ function ProjectRow($$renderer, $$props) {
       $$renderer2.push(`<span class="category-tag svelte-1ftngtl">${escape_html(tag)}</span>`);
     }
     $$renderer2.push(`<!--]--></div></span> <span class="col year svelte-1ftngtl">${escape_html(project.year)}</span></div> <div class="mobile-preview svelte-1ftngtl">`);
-    if (isVideoPreview) {
+    if (isMobileVideo && true) {
       $$renderer2.push("<!--[-->");
-      $$renderer2.push(`<video${attr("src", `${stringify(base)}${stringify(previewSource)}`)} autoplay loop muted playsinline class="preview-media svelte-1ftngtl"></video>`);
+      $$renderer2.push(`<video${attr("src", mobilePreviewSource)} autoplay loop muted playsinline class="preview-media svelte-1ftngtl"></video>`);
     } else {
       $$renderer2.push("<!--[!-->");
-      $$renderer2.push(`<img${attr("src", `${stringify(base)}${stringify(previewSource)}`)}${attr("alt", project.title)} loading="lazy" class="preview-media svelte-1ftngtl"/>`);
+      $$renderer2.push(`<img${attr("src", effectiveMobileSource)}${attr("alt", project.title)} loading="lazy" width="400" height="400" class="preview-media svelte-1ftngtl" onerror="this.__e=event"/>`);
     }
     $$renderer2.push(`<!--]--></div></a>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);

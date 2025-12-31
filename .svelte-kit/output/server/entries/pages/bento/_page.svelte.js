@@ -1,4 +1,4 @@
-import { $ as head, U as attr, Y as stringify } from "../../../chunks/index2.js";
+import { $ as head, V as attr, Y as stringify } from "../../../chunks/index2.js";
 import { b as base } from "../../../chunks/server.js";
 import "@sveltejs/kit/internal/server";
 import { e as escape_html } from "../../../chunks/context.js";
@@ -15,7 +15,7 @@ function _page($$renderer) {
       $$renderer3.push(`<title>Links — MATTIA CAPOMAGI</title>`);
     });
   });
-  $$renderer.push(`<div class="bento-page svelte-1n1j6xb"><div class="bento-container svelte-1n1j6xb"><button class="card header-card svelte-1n1j6xb" aria-label="Activate Easter Egg"><div class="avatar-container svelte-1n1j6xb"><img${attr("src", `${stringify(base)}/media/favicon.jpg`)} alt="Mattia Capomagi" class="avatar svelte-1n1j6xb"/></div> <div class="header-info svelte-1n1j6xb"><!---->`);
+  $$renderer.push(`<div class="bento-page svelte-1n1j6xb"><div class="bento-container svelte-1n1j6xb"><button class="card header-card svelte-1n1j6xb" aria-label="Activate Easter Egg"><div class="avatar-container svelte-1n1j6xb"><img${attr("src", `${stringify(base)}/media/brand/favicon.jpg`)} alt="Mattia Capomagi" class="avatar svelte-1n1j6xb"/></div> <div class="header-info svelte-1n1j6xb"><!---->`);
   {
     $$renderer.push(`<h1 class="svelte-1n1j6xb">${escape_html(headerText)}</h1>`);
   }

@@ -901,7 +901,17 @@ const options = {
   service_worker: false,
   service_worker_options: void 0,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <meta\n      name="description"\n      content="Mattia Capomagi - Graphic Designer Portfolio"\n    />\n    <link rel="icon" href="' + assets + '/media/favicon.jpg" />\n    <link rel="stylesheet" href="https://use.typekit.net/wgo1skk.css">\n    <title>Mattia Capomagi - Visual Designer</title>\n    ' + head + '\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body + "</div>\n  </body>\n</html>\n",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta name="viewport" content="width=device-width, initial-scale=1" />\n    <meta\n      name="description"\n      content="Mattia Capomagi - Graphic Designer Portfolio"\n    />\n    <link rel="icon" href="' + assets + `/media/brand/favicon.jpg" />
+    <link rel="stylesheet" href="https://use.typekit.net/wgo1skk.css">
+    <title>Mattia Capomagi - Visual Designer</title>
+    <script>
+      (function() {
+        // Always load in system/auto mode
+        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    <\/script>
+    ` + head + '\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body + "</div>\n  </body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -973,7 +983,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "18o295k"
+  version_hash: "1klmeih"
 };
 async function get_hooks() {
   let handle;

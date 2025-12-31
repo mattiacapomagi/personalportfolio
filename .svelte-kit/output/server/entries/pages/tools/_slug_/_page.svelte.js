@@ -1,4 +1,4 @@
-import { $ as head, V as attr_class, W as store_get, X as unsubscribe_stores } from "../../../../chunks/index2.js";
+import { $ as head, U as attr_class, W as store_get, X as unsubscribe_stores } from "../../../../chunks/index2.js";
 import { o as onDestroy } from "../../../../chunks/index-server.js";
 import "@sveltejs/kit/internal/server";
 import { l as language } from "../../../../chunks/language.js";
