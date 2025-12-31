@@ -27,6 +27,8 @@
   );
 
   function handleMouseEnter() {
+    // Optimization: Skip hover logic on touch devices
+    if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
     onhover(previewSource);
   }
 

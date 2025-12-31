@@ -43,6 +43,13 @@
     overflow: hidden;
   }
 
+  /* CRITICAL MOBILE OPTIMIZATION: Hide hover preview on touch devices */
+  @media (hover: none) {
+    .image-preview {
+      display: none !important;
+    }
+  }
+
   .preview-media {
     width: 100%;
     height: auto;
