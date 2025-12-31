@@ -7,8 +7,10 @@
 
   let previewSource = $derived(project.previewImage || project.images[0]);
 
-  // Mobile Optimization: Use generated thumbnail if available
-  let mobilePreviewSource = $derived(project.thumbnail || previewSource);
+  // Mobile Optimization: Use generated mobile video -> generated thumbnail -> original
+  let mobilePreviewSource = $derived(
+    project.mobileVideo || project.thumbnail || previewSource
+  );
 
   let isVideoPreview = $derived(
     previewSource?.toLowerCase().endsWith(".mp4") ||

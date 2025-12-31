@@ -100,6 +100,24 @@ function getProjectThumbnail(slug) {
 	return null;
 }
 
+/**
+ * Get the mobile-optimized video if available
+ * @param {string} slug
+ * @returns {string|null}
+ */
+function getProjectMobileVideo(slug) {
+	const keys = getProjectKeys(slug);
+	if (keys.length === 0) return null;
+	const firstKey = keys[0];
+	const isVideo = firstKey.toLowerCase().endsWith('.mp4') || firstKey.toLowerCase().endsWith('.mov');
+	
+	if (isVideo) {
+		const mobKey = firstKey.replace(/\.(mp4|mov)$/i, '_mobile.mp4');
+		if (globbedImages[mobKey]) return globbedImages[mobKey];
+	}
+	return null;
+}
+
 // ... rawProjects definition ...
 
 
