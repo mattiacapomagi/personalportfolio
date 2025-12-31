@@ -239,9 +239,8 @@
 
       {#if unlockError}
         <p class="m-error">ACCESS DENIED</p>
-      {/if}
     </div>
-  </div>
+  </main>
 {/if}
 
 {#if isBentoPage}
