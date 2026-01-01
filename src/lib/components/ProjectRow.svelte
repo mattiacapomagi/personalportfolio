@@ -134,7 +134,14 @@
   }
 
   .mobile-preview {
-    display: none;
+    /* Don't use display:none - prevents eager loading */
+    /* Use visibility instead so images load but are hidden on desktop */
+    visibility: hidden;
+    position: absolute;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    overflow: hidden;
   }
 
   .project-row:first-child {
@@ -191,6 +198,9 @@
     }
 
     .mobile-preview {
+      visibility: visible; /* Reset from desktop hidden */
+      position: static; /* Reset from absolute */
+      pointer-events: auto; /* Reset from none */
       display: flex; /* Change to flex for better centering control */
       align-items: center;
       justify-content: center;
