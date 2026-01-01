@@ -5,35 +5,10 @@
   /** @type {{ project: import('$lib/data/projects').Project, onhover: (imageUrl: string | null) => void }} */
   let { project, onhover } = $props();
 
-  // Universal Preview Source (Animated WebP)
-  let previewSource = $derived(
-    project.generatedPreview || project.previewImage || project.images[0]
-  );
+  // Simple: use thumbnail for mobile, first image for desktop hover
+  let mobilePreviewSource = $derived(project.thumbnail || project.images[0]);
 
-  // Mobile Optimization: Use generated mobile video -> generated thumbnail -> original
-  let mobilePreviewSource = $derived(
-    project.mobileVideo || project.thumbnail || previewSource
-  );
-
-  let isVideoPreview = $derived(
-    previewSource?.toLowerCase().endsWith(".mp4") ||
-      previewSource?.toLowerCase().endsWith(".mov")
-  );
-
-  // Check if the *mobile* source is a video (only if no thumbnail was found)
-  let isMobileVideo = $derived(
-    mobilePreviewSource?.toLowerCase().endsWith(".mp4") ||
-      mobilePreviewSource?.toLowerCase().endsWith(".mov")
-  );
-
-  let imgError = $state(false);
-
-  // Fallback chain: Generated WebP -> Defined Preview -> First Image
-  let finalSource = $derived(imgError ? project.images[0] : previewSource);
-
-  let effectiveMobileSource = $derived(
-    imgError ? previewSource : mobilePreviewSource
-  );
+  let previewSource = $derived(project.previewImage || project.images[0]);
 
   function handleMouseEnter() {
     // Optimization: Skip hover logic on touch devices

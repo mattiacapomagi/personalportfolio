@@ -28,31 +28,12 @@ const globbedOptimizedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,j
 // 3. Merge for usage (Preserve existing logic variables)
 const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
 
-// 4. Load Generated Universal Previews (WebP Animated)
-// Now using import.meta.glob so Vite handles hashing and base paths correctly
-const globbedPreviews = import.meta.glob('$lib/assets/previews/*.webp', {
-  eager: true,
-  query: { url: true }, // request URL, bypassing imagetools processing
-  import: 'default'
-});
-
-// Thumbnails for mobile/previews (Small 400px - Legacy/Backup)
+// Thumbnails for mobile/previews (Small 400px)
 const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
 	eager: true,
 	query: { w: 400, format: 'webp' },
 	import: 'default'
 });
-
-/**
- * Get the generated universal preview (animated WebP)
- * @param {string} slug
- * @returns {string | undefined}
- */
-function getProjectPreview(slug) {
-  // Resolve via glob
-  const path = Object.keys(globbedPreviews).find(p => p.includes(`/${slug}.webp`));
-  return path ? globbedPreviews[path] : undefined;
-}
 
 /**
  * Get sorted keys for a project
@@ -255,7 +236,6 @@ export const projects = rawProjects.map(p => {
 		...p,
 		images,
     thumbnail,
-    generatedPreview: getProjectPreview(p.slug),
 		// If explicit previewImage is set in data, use it, otherwise use first image/video
 		previewImage: p.previewImage || images[0]
 	};
