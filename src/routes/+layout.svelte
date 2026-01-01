@@ -16,11 +16,6 @@
 
   let isLoading = $state(true);
 
-  // Check session storage on mount
-  onMount(() => {
-    // Session check removed
-  });
-
   // Apply theme to document
   $effect(() => {
     if (typeof document === "undefined") return;
@@ -121,18 +116,28 @@
 
   // Loader onMount logic
   onMount(() => {
-    // Determine wait time logic
     const handleLoad = () => {
       setTimeout(() => {
         isLoading = false;
-      }, 800); // Small grace period for visual smoothness
+      }, 800);
     };
+
+    // Failsafe: Ensure loader disappears after 3s max even if load hangs
+    const failsafe = setTimeout(() => {
+      if (isLoading) {
+        console.warn("Loader timed out (failsafe triggered)");
+        isLoading = false;
+      }
+    }, 3000);
 
     if (document.readyState === "complete") {
       handleLoad();
     } else {
       window.addEventListener("load", handleLoad);
-      return () => window.removeEventListener("load", handleLoad);
+      return () => {
+        window.removeEventListener("load", handleLoad);
+        clearTimeout(failsafe);
+      };
     }
   });
 
