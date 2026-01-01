@@ -254,6 +254,7 @@ export const projects = rawProjects.map(p => {
 		...p,
 		images,
     thumbnail,
+    generatedPreview: getProjectPreview(p.slug),
 		// If explicit previewImage is set in data, use it, otherwise use first image/video
 		previewImage: p.previewImage || images[0]
 	};
