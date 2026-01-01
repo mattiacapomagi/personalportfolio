@@ -29,8 +29,12 @@ const globbedOptimizedImages = import.meta.glob('$lib/assets/projects/*/*.{jpg,j
 const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
 
 // 4. Load Generated Universal Previews (WebP Animated)
-// Now served statically from /previews/
-import { base } from '$app/paths';
+// Now using import.meta.glob so Vite handles hashing and base paths correctly
+const globbedPreviews = import.meta.glob('$lib/assets/previews/*.webp', {
+  eager: true,
+  query: { format: 'url' }, // We just need the URL
+  import: 'default'
+});
 
 // Thumbnails for mobile/previews (Small 400px - Legacy/Backup)
 const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,png,webp,tiff,tif,heic}', {
@@ -42,15 +46,12 @@ const globbedThumbnails = import.meta.glob('$lib/assets/projects/*/*.{jpg,jpeg,p
 /**
  * Get the generated universal preview (animated WebP)
  * @param {string} slug
- * @returns {string}
+ * @returns {string | undefined}
  */
 function getProjectPreview(slug) {
-	// Simple static path. Browser handles 404 if missing (fallback logic in component handles it).
-  // Note: We assume the file exists because the plugin generates it.
-  // We remove trailing slash from base if present to avoid double slash, though base usually doesn't have it.
-  const b = base === '' ? '.' : base; // Handle relative base for some adapters if needed, or just use base.
-  // Actually $app/paths base is usually '' or '/repo'. 
-  return `${base}/previews/${slug}.webp`;
+  // Resolve via glob
+  const path = Object.keys(globbedPreviews).find(p => p.includes(`/${slug}.webp`));
+  return path ? globbedPreviews[path] : undefined;
 }
 
 /**
