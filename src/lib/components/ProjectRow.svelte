@@ -191,7 +191,9 @@
     }
 
     .mobile-preview {
-      display: block;
+      display: flex; /* Change to flex for better centering control */
+      align-items: center;
+      justify-content: center;
       width: 50%;
       height: 100%; /* Fill the fixed 250px height */
       /* aspect-ratio removed */
@@ -202,9 +204,11 @@
     }
 
     .preview-media {
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* Show full image without cropping */
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
       display: block;
       filter: drop-shadow(
         0 4px 6px rgba(0, 0, 0, 0.15)
