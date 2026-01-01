@@ -95,23 +95,9 @@
   });
   */
 
-  // MINIMAL ONMOUNT FOR SESSION & ERROR TRACKING ONLY
-  onMount(() => {
-    if (checkSession()) {
-      isUnlocked = true;
-      updateSession();
-    } else {
-      isUnlocked = false;
-    }
-  });
-
   // BASIC SCROLL RESET
   afterNavigate(() => {
     window.scrollTo(0, 0);
-  });
-
-  $effect(() => {
-    if (isUnlocked) updateSession();
   });
 
   // Loader onMount logic
