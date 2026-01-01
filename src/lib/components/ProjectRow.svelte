@@ -106,7 +106,6 @@
     <span class="col year">{project.year}</span>
   </div>
 
-  <!-- Mobile Only Preview (Universal WebP) -->
   <div class="mobile-preview">
     <img
       src={finalSource}
@@ -117,6 +116,9 @@
       class="preview-media"
       onerror={() => (imgError = true)}
     />
+    <span style="font-size: 10px; color: red; display: block;"
+      >DEBUG: {finalSource}</span
+    >
   </div>
 </a>
 
