@@ -32,7 +32,7 @@ const globbedImages = { ...globbedVideos, ...globbedOptimizedImages };
 // Now using import.meta.glob so Vite handles hashing and base paths correctly
 const globbedPreviews = import.meta.glob('$lib/assets/previews/*.webp', {
   eager: true,
-  query: { format: 'url' }, // We just need the URL
+  query: { url: true }, // request URL, bypassing imagetools processing
   import: 'default'
 });
 
