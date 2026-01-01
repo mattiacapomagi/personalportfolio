@@ -102,22 +102,48 @@
 
   // Loader onMount logic
   onMount(() => {
-    const handleLoad = () => {
+    console.log("[Loader] Init");
+
+    const finishLoading = () => {
+      console.log("[Loader] Finishing...");
       setTimeout(() => {
         isLoading = false;
+        console.log("[Loader] Done");
       }, 800);
     };
 
-    // Failsafe: Ensure loader disappears after 3s max even if load hangs
+    // Failsafe: Force close after 4s (localhost can be slow)
     const failsafe = setTimeout(() => {
       if (isLoading) {
-        console.warn("Loader timed out (failsafe triggered)");
-        isLoading = false;
+        console.warn("[Loader] Failsafe timeout");
+        finishLoading();
       }
-    }, 3000);
+    }, 4000);
+
+    const checkImages = () => {
+      const imgs = Array.from(document.images);
+      const pending = imgs.filter((img) => !img.complete);
+
+      if (pending.length === 0) {
+        // All images loaded
+        finishLoading();
+        return true;
+      }
+      return false;
+    };
+
+    const handleLoad = () => {
+      console.log("[Loader] Window Load Event");
+      // Double check images just in case
+      if (!checkImages()) {
+        // If 'load' fired but strict image check failed (rare), wait a bit then force
+        setTimeout(finishLoading, 500);
+      }
+    };
 
     if (document.readyState === "complete") {
-      handleLoad();
+      console.log("[Loader] Document Complete");
+      finishLoading();
     } else {
       window.addEventListener("load", handleLoad);
       return () => {
