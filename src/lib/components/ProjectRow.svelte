@@ -83,11 +83,12 @@
 
   <div class="mobile-preview">
     <img
-      src={finalSource}
+      src={mobilePreviewSource}
       alt={project.title}
       loading="eager"
       width="400"
       height="225"
+      class="preview-media"
     />
   </div>
 </a>
