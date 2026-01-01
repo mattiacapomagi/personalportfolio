@@ -80,17 +80,6 @@
     </span>
     <span class="col year">{project.year}</span>
   </div>
-
-  <div class="mobile-preview">
-    <img
-      src={mobilePreviewSource}
-      alt={project.title}
-      loading="eager"
-      width="400"
-      height="225"
-      class="preview-media"
-    />
-  </div>
 </a>
 
 <style>
@@ -107,17 +96,6 @@
 
   .text-content {
     display: contents; /* Seamlessly integrate into parent grid */
-  }
-
-  .mobile-preview {
-    /* Don't use display:none - prevents eager loading */
-    /* Use visibility instead so images load but are hidden on desktop */
-    visibility: hidden;
-    position: absolute;
-    pointer-events: none;
-    width: 0;
-    height: 0;
-    overflow: hidden;
   }
 
   .project-row:first-child {
@@ -154,51 +132,19 @@
 
   @media (max-width: 480px) {
     .project-row {
-      display: flex; /* Flexbox for row layout */
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center; /* Center vertically */
-      gap: 15px;
-      height: 250px; /* Fixed height as requested */
-      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: auto; /* Auto height instead of fixed */
+      padding: 16px 0;
       border-bottom: 1px solid rgba(128, 128, 128, 0.3);
     }
 
     .text-content {
       display: flex;
       flex-direction: column;
-      width: 50%;
-      height: 100%; /* Fill height to center content vertically */
-      justify-content: center;
+      width: 100%; /* Full width */
       gap: 4px;
-    }
-
-    .mobile-preview {
-      visibility: visible; /* Reset from desktop hidden */
-      position: static; /* Reset from absolute */
-      pointer-events: auto; /* Reset from none */
-      display: flex; /* Change to flex for better centering control */
-      align-items: center;
-      justify-content: center;
-      width: 50%;
-      height: 100%; /* Fill the fixed 250px height */
-      /* aspect-ratio removed */
-      border-radius: 0;
-      /* box-shadow removed, moving to image filter */
-      padding: 15px; /* Add breathing room so images don't touch edges */
-      box-sizing: border-box; /* Ensure padding is included in width/height */
-    }
-
-    .preview-media {
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      display: block;
-      filter: drop-shadow(
-        0 4px 6px rgba(0, 0, 0, 0.15)
-      ); /* Shadow applies to the image itself */
     }
 
     .col {
