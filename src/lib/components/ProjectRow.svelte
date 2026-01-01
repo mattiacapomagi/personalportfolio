@@ -113,12 +113,7 @@
       loading="eager"
       width="400"
       height="225"
-      class="preview-media"
-      onerror={() => (imgError = true)}
     />
-    <span style="font-size: 10px; color: red; display: block;"
-      >DEBUG: {finalSource}</span
-    >
   </div>
 </a>
 
